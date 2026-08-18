@@ -20,3 +20,7 @@
 - [x] Add synthetic earnings-gap and sector-rotation Market Lab scenarios with clear no-real-data disclosure.
 - [x] Add local post-trade reflection journaling to Market Lab simulated trades.
 - [x] Test and validate the expanded curriculum, bookmarking review schedule, journaling, and synthetic scenarios.
+- [x] Establish and implement a comprehensive, source-grounded stock-market curriculum taxonomy across products, market structure, analysis, regulation, accounting, and risk.
+- [x] Expand the glossary and lesson library with authoritative reference links and broader market terminology.
+- [x] Improve curriculum discovery with topic browsing, search, and clear learning-path orientation.
+- [x] Test and validate the expanded reference library and discovery experience.

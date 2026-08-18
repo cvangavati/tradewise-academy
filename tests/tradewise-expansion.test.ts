@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { allGlossaryEntries, searchGlossary } from "../data/glossary";
 import { marketLabDisclosure, syntheticScenarios } from "../data/market-lab";
+import { referenceDomains, referenceTopicCount, searchReferenceTopics } from "../data/reference-library";
 import { nextReviewAt } from "../data/spaced-review";
 import { appendTradeReflection, applyReviewRating, getLearningAnalytics, toggleSavedTerm, type TradeWiseState } from "../lib/tradewise-store";
 
@@ -27,6 +28,16 @@ describe("searchable glossary", () => {
     expect(searchGlossary("settlement").map((entry) => entry.term)).toContain("Settlement");
     expect(allGlossaryEntries.length).toBeGreaterThanOrEqual(90);
     expect(searchGlossary("nonexistent phrase")).toHaveLength(0);
+  });
+});
+
+describe("Stock Market Atlas", () => {
+  it("organizes a broad source-linked reference library that can be searched across domains", () => {
+    expect(referenceDomains).toHaveLength(8);
+    expect(referenceTopicCount).toBeGreaterThanOrEqual(48);
+    expect(searchReferenceTopics("settlement").map((topic) => topic.title)).toContain("Clearing and settlement");
+    expect(searchReferenceTopics("fraud", "governance-protection").every((topic) => topic.domain.id === "governance-protection")).toBe(true);
+    expect(searchReferenceTopics("nonsensical phrase")).toHaveLength(0);
   });
 });
 

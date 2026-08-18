@@ -22,8 +22,9 @@ export default function LearnScreen() {
           <View style={styles.header}>
             <Text style={ui.eyebrow}>Structured curriculum</Text>
             <Text style={ui.title}>Learn the whole process.</Text>
-            <Text style={[ui.subtitle, styles.subtitle]}>Start with mechanics and risk, then compare major methodologies. Every lesson includes a quick knowledge check.</Text>
+            <Text style={[ui.subtitle, styles.subtitle]}>Start with mechanics and risk, then explore company analysis, products, regulation, and market context. Every lesson includes a quick knowledge check.</Text>
             <View style={styles.overview}><View style={styles.overviewTop}><Text style={styles.overviewLabel}>COURSE COMPLETION</Text><Text style={styles.overviewPercent}>{progress}%</Text></View><ProgressBar value={progress} /><Text style={styles.overviewText}>{completedCount} lessons completed across {courses.length} skill areas</Text></View>
+            <Pressable onPress={() => { haptic.light(); router.push("/library" as never); }} style={({ pressed }) => [styles.atlas, pressed && styles.cardPressed]}><View><Text style={styles.atlasEyebrow}>NEW · REFERENCE LIBRARY</Text><Text style={styles.atlasTitle}>Browse the Stock Market Atlas</Text><Text style={styles.atlasText}>Search systems, products, disclosures, and risk concepts.</Text></View><Text style={styles.atlasArrow}>›</Text></Pressable>
           </View>
         }
         renderItem={({ item }) => <CourseCard course={item} completedLessonIds={completedLessonIds} />}
@@ -58,6 +59,11 @@ const styles = StyleSheet.create({
   overviewLabel: { color: "#006663", fontSize: 11, fontWeight: "800", letterSpacing: 0.8 },
   overviewPercent: { color: "#006663", fontSize: 15, fontWeight: "800" },
   overviewText: { color: "#526276", fontSize: 12, lineHeight: 17 },
+  atlas: { backgroundColor: "#10243E", borderRadius: 18, padding: 16, marginTop: 2, flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
+  atlasEyebrow: { color: "#82D8D1", fontSize: 10, fontWeight: "800", letterSpacing: 0.8 },
+  atlasTitle: { color: "#FFFFFF", fontSize: 17, fontWeight: "800", marginTop: 5 },
+  atlasText: { color: "#C8D6E2", fontSize: 12, marginTop: 3 },
+  atlasArrow: { color: "#82D8D1", fontSize: 28, fontWeight: "700", paddingLeft: 10 },
   card: { backgroundColor: "#FFFFFF", borderRadius: 22, padding: 18, borderWidth: 1, borderColor: "#E7E9EC", overflow: "hidden" },
   cardPressed: { opacity: 0.72, transform: [{ scale: 0.99 }] },
   cardTop: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
