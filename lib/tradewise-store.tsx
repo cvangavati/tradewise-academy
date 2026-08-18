@@ -2,6 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type PropsWithChildren } from "react";
 
 import { courses, totalLessons } from "../data/curriculum";
+import { syntheticScenarios } from "../data/market-lab";
 import { simulatedWatchlist } from "../data/practice";
 
 const STORAGE_KEY = "tradewise-academy-state-v1";
@@ -16,6 +17,26 @@ export type TradeWiseState = {
   holdings: Holding[];
   activities: Activity[];
   quizScores: Record<string, boolean>;
+};
+
+export type CourseProgress = {
+  courseId: string;
+  title: string;
+  accent: string;
+  completed: number;
+  total: number;
+  completion: number;
+  quizAttempts: number;
+  quizCorrect: number;
+  quizAccuracy: number;
+};
+
+export type LearningAnalytics = {
+  completedCount: number;
+  quizAttempts: number;
+  quizCorrect: number;
+  quizAccuracy: number;
+  courseProgress: CourseProgress[];
 };
 
 const defaultState: TradeWiseState = {
@@ -35,12 +56,35 @@ type Store = TradeWiseState & {
   investedValue: number;
   completedCount: number;
   nextLessonId: string;
+  learningAnalytics: LearningAnalytics;
 };
 
 const TradeWiseContext = createContext<Store | null>(null);
 
 export function quoteFor(symbol: string) {
-  return simulatedWatchlist.find((item) => item.symbol === symbol);
+  const watchlistQuote = simulatedWatchlist.find((item) => item.symbol === symbol);
+  if (watchlistQuote) return watchlistQuote;
+  const scenario = syntheticScenarios.find((item) => item.symbol === symbol);
+  if (!scenario) return undefined;
+  return {
+    symbol: scenario.symbol,
+    name: `${scenario.title} scenario`,
+    price: scenario.prices[scenario.prices.length - 1],
+  };
+}
+
+export function getLearningAnalytics(state: Pick<TradeWiseState, "completedLessonIds" | "quizScores">): LearningAnalytics {
+  const courseProgress = courses.map((course) => {
+    const completedLessons = course.lessons.filter((lesson) => state.completedLessonIds.includes(lesson.id));
+    const attempts = course.lessons.filter((lesson) => Object.prototype.hasOwnProperty.call(state.quizScores, lesson.id));
+    const quizCorrect = attempts.filter((lesson) => state.quizScores[lesson.id]).length;
+    const completion = Math.round((completedLessons.length / course.lessons.length) * 100);
+    const quizAccuracy = attempts.length ? Math.round((quizCorrect / attempts.length) * 100) : 0;
+    return { courseId: course.id, title: course.title, accent: course.accent, completed: completedLessons.length, total: course.lessons.length, completion, quizAttempts: attempts.length, quizCorrect, quizAccuracy };
+  });
+  const quizAttempts = courseProgress.reduce((sum, course) => sum + course.quizAttempts, 0);
+  const quizCorrect = courseProgress.reduce((sum, course) => sum + course.quizCorrect, 0);
+  return { completedCount: state.completedLessonIds.length, quizAttempts, quizCorrect, quizAccuracy: quizAttempts ? Math.round((quizCorrect / quizAttempts) * 100) : 0, courseProgress };
 }
 
 export function executeSimulatedOrder(state: TradeWiseState, action: "BUY" | "SELL", symbol: string, quantity: number, now = new Date()): { nextState: TradeWiseState; ok: boolean; message: string } {
@@ -129,6 +173,7 @@ export function TradeWiseProvider({ children }: PropsWithChildren) {
     const portfolioValue = state.cash + investedValue;
     const completedCount = state.completedLessonIds.length;
     const nextLessonId = courses.flatMap((course) => course.lessons).find((lesson) => !state.completedLessonIds.includes(lesson.id))?.id ?? courses[0].lessons[0].id;
+    const learningAnalytics = getLearningAnalytics(state);
     return {
       ...state,
       isReady,
@@ -139,6 +184,7 @@ export function TradeWiseProvider({ children }: PropsWithChildren) {
       investedValue,
       completedCount,
       nextLessonId,
+      learningAnalytics,
     };
   }, [state, isReady, completeLesson, placeOrder, resetProgress]);
 

@@ -43,6 +43,7 @@ export default function PracticeScreen() {
             <Text style={[ui.subtitle, styles.subtitle]}>Use simplified, illustrative quotes to rehearse sizing and order mechanics before real capital is ever involved.</Text>
 
             <View style={styles.accountStrip}><View><Text style={styles.accountLabel}>SIMULATED PORTFOLIO</Text><Text style={styles.accountValue}>{money(portfolioValue)}</Text></View><Pressable onPress={() => router.push("/portfolio" as never)} style={({ pressed }) => [styles.accountLink, pressed && styles.pressed]}><Text style={styles.accountLinkText}>View account →</Text></Pressable></View>
+            <Pressable onPress={() => { haptic.light(); router.push("/market-lab" as never); }} style={({ pressed }) => [styles.labLink, pressed && styles.pressed]}><View><Text style={styles.labLabel}>NEW · SYNTHETIC SCENARIOS</Text><Text style={styles.labTitle}>Open Market Lab</Text><Text style={styles.labDetail}>Practice trend, pullback, and range conditions with no real data.</Text></View><Text style={styles.labArrow}>›</Text></Pressable>
 
             <View style={styles.challenge}><View style={styles.challengeTop}><Pill label={challenge.tag} tone="navy" /><Text style={styles.challengeStep}>EXERCISE</Text></View><Text style={styles.challengeTitle}>{challenge.title}</Text><Text style={styles.challengePrompt}>{challenge.prompt}</Text><Text style={styles.challengeScenario}>{challenge.scenario}</Text><ChoiceRow index={0} label={challenge.choices[0]} selected={challengeChoice} setSelected={setChallengeChoice} answerIndex={challenge.answerIndex} /><ChoiceRow index={1} label={challenge.choices[1]} selected={challengeChoice} setSelected={setChallengeChoice} answerIndex={challenge.answerIndex} /><ChoiceRow index={2} label={challenge.choices[2]} selected={challengeChoice} setSelected={setChallengeChoice} answerIndex={challenge.answerIndex} /><ChoiceRow index={3} label={challenge.choices[3]} selected={challengeChoice} setSelected={setChallengeChoice} answerIndex={challenge.answerIndex} />{challengeChoice !== null && <Text style={[styles.feedback, challengeChoice === challenge.answerIndex ? styles.feedbackRight : styles.feedbackWrong]}>{challengeChoice === challenge.answerIndex ? "Good process. " : "Try again. "}{challenge.explanation}</Text>}</View>
 
@@ -80,6 +81,11 @@ const styles = StyleSheet.create({
   accountValue: { color: "#FFFFFF", fontSize: 22, fontWeight: "800", marginTop: 3 },
   accountLink: { paddingVertical: 8, paddingLeft: 10 },
   accountLinkText: { color: "#7EE3DB", fontSize: 13, fontWeight: "800" },
+  labLink: { backgroundColor: "#E9F1F8", borderRadius: 18, padding: 16, marginTop: 12, flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
+  labLabel: { color: "#4666B0", fontSize: 10, letterSpacing: 0.75, fontWeight: "800" },
+  labTitle: { color: "#183B4E", fontSize: 17, fontWeight: "800", marginTop: 4 },
+  labDetail: { color: "#526276", fontSize: 12, lineHeight: 17, marginTop: 3 },
+  labArrow: { color: "#4666B0", fontSize: 26, fontWeight: "700", paddingLeft: 10 },
   challenge: { backgroundColor: "#FFFFFF", borderRadius: 22, padding: 18, borderWidth: 1, borderColor: "#E7E9EC", marginTop: 16, gap: 10 },
   challengeTop: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
   challengeStep: { color: "#657488", fontSize: 10, fontWeight: "800", letterSpacing: 0.8 },

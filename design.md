@@ -16,10 +16,13 @@ The experience is designed for **portrait 9:16 usage** with one-handed interacti
 | Practice | Interactive simulated trade ticket, watchlist quotes, candlestick-pattern challenges, and a paper portfolio. Orders only update local simulation data. |
 | Portfolio | Simulated buying power, holdings, open profit/loss, activity history, and portfolio-performance summary. |
 | Profile | Learning progress, earned milestones, safety disclaimer, reset-learning action, and application preferences. |
+| Progress Dashboard | Visual course completion, quiz accuracy, recent activity, and a course-by-course proficiency view. |
+| Glossary | Searchable alphabetical trading terminology, categories, plain-language definitions, and related lesson links. |
+| Market Lab | Scenario selector, synthetic chart movement, event cards, and a simulated trade ticket that deliberately uses no live data. |
 
 ## Primary Navigation and Layout
 
-The bottom tab bar contains **Today, Learn, Practice, and Profile**. Portfolio information is reached from the Practice screen in a pushed detail view, keeping the top-level navigation focused and reachable with the thumb. Today uses a vertical scroll with the next lesson and a small practice summary above the fold. Learn uses filtered course cards with clear difficulty and duration metadata. Practice begins with the paper account and then exposes tools in a segmented layout to minimize screen changes.
+The bottom tab bar contains **Today, Learn, Practice, and Profile**. Portfolio information is reached from the Practice screen in a pushed detail view, keeping the top-level navigation focused and reachable with the thumb. Today uses a vertical scroll with the next lesson and a small practice summary above the fold. Learn uses filtered course cards with clear difficulty and duration metadata. Practice begins with the paper account and then exposes tools in a segmented layout to minimize screen changes. The Profile screen provides one-handed links to the **Progress Dashboard** and **Glossary**, while Practice leads to **Market Lab**.
 
 Cards use a calm near-white canvas with slate text and a deep navy hierarchy. A directional emerald color is reserved for learning progress and simulated gains; coral is reserved for downside or validation errors. Charts are intentionally high contrast, with educational annotations rather than a live-market visual density.
 
@@ -32,6 +35,9 @@ Cards use a calm near-white canvas with slate text and a deep navy hierarchy. A 
 | Practice a simulated trade | Practice → select a symbol from the watchlist → open trade ticket → choose buy/sell and quantity → preview order → submit simulated order → portfolio refreshes. |
 | Check performance | Practice → tap Portfolio → review buying power, holdings, activity, and educational performance note. |
 | Build a habit | Today → track streak/progress indicator → resume the next short lesson or practice prompt. |
+| Understand a term | Profile → Glossary → type a term or select a category → scan the definition and related learning topic. |
+| Review learning quality | Profile → Progress Dashboard → view lesson completion, quiz accuracy, and course-by-course progress. |
+| Rehearse a market regime | Practice → Market Lab → select synthetic scenario → inspect an illustrative trend and event context → enter a cash-only simulated order. |
 
 ## Visual Language
 

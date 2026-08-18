@@ -3,8 +3,7 @@ import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 
 import { ScreenContainer } from "@/components/screen-container";
 import { AppButton, Pill, SectionHeading, ui } from "@/components/tradewise-ui";
-import { simulatedWatchlist } from "@/data/practice";
-import { useTradeWise, type Activity, type Holding } from "@/lib/tradewise-store";
+import { quoteFor, useTradeWise, type Activity, type Holding } from "@/lib/tradewise-store";
 
 function money(value: number) { return value.toLocaleString("en-US", { style: "currency", currency: "USD" }); }
 
@@ -36,7 +35,7 @@ function Header({ cash, investedValue, portfolioValue, holdingsCount, activities
 }
 
 function HoldingRow({ holding }: { holding: Holding }) {
-  const quote = simulatedWatchlist.find((item) => item.symbol === holding.symbol);
+  const quote = quoteFor(holding.symbol);
   const price = quote?.price ?? holding.averageCost;
   const marketValue = price * holding.quantity;
   const unrealized = (price - holding.averageCost) * holding.quantity;

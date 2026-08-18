@@ -1,4 +1,5 @@
-import { Alert, ScrollView, StyleSheet, Text, View } from "react-native";
+import { router } from "expo-router";
+import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import { ScreenContainer } from "@/components/screen-container";
 import { AppButton, Pill, ProgressBar, SectionHeading, ui } from "@/components/tradewise-ui";
@@ -30,6 +31,11 @@ export default function ProfileScreen() {
         <View style={styles.section}><SectionHeading title="Covered skill areas" /></View>
         <View style={styles.skillCard}><Text style={styles.skillText}>{courses.map((course) => course.title).join("  ·  ")}</Text></View>
 
+        <View style={styles.section}><SectionHeading title="Learning tools" /></View>
+        <ToolLink title="Progress dashboard" detail="Review completed lessons and knowledge-check accuracy." onPress={() => router.push("/progress" as never)} />
+        <View style={{ height: 10 }} />
+        <ToolLink title="Trading glossary" detail="Search definitions across 60 essential terms." onPress={() => router.push("/glossary" as never)} />
+
         <View style={styles.section}><SectionHeading title="Practice record" /></View>
         <View style={ui.card}><Text style={ui.metricLabel}>SIMULATED ORDERS</Text><Text style={ui.metricValue}>{activities.length}</Text><Text style={[ui.cardBody, styles.progressCaption]}>Orders use illustrative quotes. They are not routed to any market or brokerage.</Text></View>
 
@@ -40,6 +46,10 @@ export default function ProfileScreen() {
       </ScrollView>
     </ScreenContainer>
   );
+}
+
+function ToolLink({ title, detail, onPress }: { title: string; detail: string; onPress: () => void }) {
+  return <Pressable onPress={() => { haptic.light(); onPress(); }} style={({ pressed }) => [styles.toolLink, pressed && styles.pressed]}><View style={styles.toolCopy}><Text style={styles.toolTitle}>{title}</Text><Text style={styles.toolDetail}>{detail}</Text></View><Text style={styles.toolArrow}>›</Text></Pressable>;
 }
 
 const styles = StyleSheet.create({
@@ -57,9 +67,15 @@ const styles = StyleSheet.create({
   progressCaption: { marginTop: 12 },
   skillCard: { backgroundColor: "#E7F0EF", borderRadius: 18, padding: 16 },
   skillText: { color: "#22465B", fontSize: 14, lineHeight: 22, fontWeight: "700" },
+  toolLink: { backgroundColor: "#FFFFFF", borderRadius: 18, borderWidth: 1, borderColor: "#E4E9ED", padding: 16, flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
+  toolCopy: { flex: 1, paddingRight: 12 },
+  toolTitle: { color: "#10243E", fontSize: 16, fontWeight: "800" },
+  toolDetail: { color: "#657488", fontSize: 12, lineHeight: 17, marginTop: 3 },
+  toolArrow: { color: "#007C78", fontSize: 25, fontWeight: "700" },
   safetyCard: { backgroundColor: "#FDEEEB", borderRadius: 20, padding: 18, gap: 7 },
   safetyTitle: { color: "#A44640", fontSize: 16, fontWeight: "800" },
   safetyText: { color: "#714945", fontSize: 13, lineHeight: 20 },
   resetArea: { marginTop: 28, gap: 10 },
   resetText: { textAlign: "center" },
+  pressed: { opacity: 0.7 },
 });

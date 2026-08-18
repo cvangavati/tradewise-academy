@@ -10,3 +10,7 @@
 - [x] Generate and apply a distinctive TradeWise Academy application icon and branding metadata.
 - [x] Add unit tests and validate core flows without browser-based mobile testing.
 - [x] Complete final polish, review the checklist, and save the delivery checkpoint.
+- [x] Add a comprehensive, searchable glossary of stock-trading terminology with clear learning definitions.
+- [x] Add a visual progress dashboard for completed lessons, quiz accuracy, and course-level progress.
+- [x] Add synthetic, trend-inspired market scenarios and chart movement with no live or real-market data.
+- [x] Test and validate the glossary search, progress calculations, and synthetic simulator behavior.
