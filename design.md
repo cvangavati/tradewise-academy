@@ -60,3 +60,18 @@ The app avoids hype-driven market imagery. Instead, it uses restrained diagramma
 ## Safety and Content Principles
 
 Every lesson and practice screen makes clear that the content is educational and simulations are not investment recommendations. Examples teach process—thesis, entry, stop, sizing, and review—rather than presenting individual securities as recommendations. The first release stores progress and the practice portfolio on device only, avoiding unnecessary account creation and cloud synchronization.
+
+## Catalog-First Learning Expansion
+
+The catalog becomes the primary learning surface. The Today tab’s main action leads to the learner’s next due catalog item, and the Learn tab leads with **Explore 4,000+ lessons** before the smaller guided courses and reference Atlas. Catalog cards remain short enough for one-handed study; the top of the screen exposes search, a selected learning goal, progress, and the number of review items due.
+
+| Screen or surface | Added content and functionality |
+|---|---|
+| Today | A primary **Continue catalog** card, an adaptive-review count, and one tap to the next due lesson. |
+| Learn | Catalog-first hero, quick goal playlists, and secondary access to the original guided courses and Stock Market Atlas. |
+| Catalog Lesson | A one-question knowledge check after each micro-lesson. Results schedule a local review: incorrect answers return sooner; correct answers return later. |
+| Review | A focused queue of catalog items due for recall, with a calm completion state when no review is due. |
+| Playlists | Curated paths for Market Basics, Filing Research, Risk Foundations, and Market Mechanics, showing lesson count and progress. |
+| Study Plan | A chooser for playlist or goal, a preview of an offline plan, and an action to export a plain-text file through the native share sheet. |
+
+Adaptive review remains transparent: the user sees that a correct check creates a longer interval and an incorrect check creates a shorter interval. No score is used to judge suitability for real-money trading. A study-plan export contains only selected educational lesson titles, prompts, source labels, and the app’s educational disclaimer. It contains no personal financial data, holdings, or recommendations.

@@ -17,6 +17,9 @@ const ownership: ReferenceSource = { label: "Investor.gov — Schedules 13D and 
 const sipc: ReferenceSource = { label: "SIPC — What SIPC Protects", url: "https://www.sipc.org/for-investors/what-sipc-protects" };
 const msrb: ReferenceSource = { label: "MSRB — Municipal Bond Investment Risks", url: "https://www.msrb.org/Education/Municipal-Bond-Investment-Risks" };
 const finraShort: ReferenceSource = { label: "FINRA — Short Interest", url: "https://www.finra.org/investors/insights/short-interest" };
+const taxAccounts: ReferenceSource = { label: "Investor.gov — Tax-Advantaged Accounts", url: "https://www.investor.gov/introduction-investing/investing-basics/investment-accounts/tax-advantaged-accounts" };
+const filingGuide: ReferenceSource = { label: "Investor.gov — How to Read a 10-K/10-Q", url: "https://www.investor.gov/introduction-investing/general-resources/news-alerts/alerts-bulletins/investor-bulletins/how-read" };
+const sentiment: ReferenceSource = { label: "FINRA — Social Sentiment Investing Tools", url: "https://www.finra.org/investors/insights/social-sentiment-investing-tools" };
 
 const topic = (id: string, title: string, summary: string, keywords: string[], source: ReferenceSource): ReferenceTopic => ({ id, title, summary, keywords, source });
 
@@ -159,6 +162,46 @@ export const referenceDomains: ReferenceDomain[] = [
       topic("broker-adviser-check", "Checking financial professionals", "Use official registration and disciplinary-history resources to verify a broker, adviser, or firm before relying on a sales pitch or relationship.", ["BrokerCheck", "registration", "disciplinary history"], fraud),
       topic("identity-phishing", "Identity and phishing awareness", "Unsolicited messages, urgent payment requests, and requests for credentials can be warning signs. Verify contact channels independently.", ["phishing", "identity", "social engineering"], fraud),
       topic("protection-boundaries", "Protection boundaries", "Protection programs, disclosures, and regulators have specific roles. Learn what each covers, the relevant conditions, and what market or advice losses remain outside the scope.", ["coverage", "risk", "investor protection"], sipc),
+    ],
+  },
+  {
+    id: "account-structures", title: "Account structures", description: "Account purpose, custody, tax-aware vocabulary, and disclosure concepts without individualized tax planning.", accent: "#2D7D5E", topics: [
+      topic("tax-advantaged-accounts", "Tax-advantaged account structures", "Tax-advantaged accounts can have specified features such as deductions, tax-deferred growth, or tax-free withdrawals for stated purposes. Rules and consequences depend on the account and individual facts.", ["tax advantaged", "account", "retirement"], taxAccounts),
+      topic("retirement-accounts", "Retirement account vocabulary", "Retirement account types have distinct eligibility, contribution, withdrawal, and tax rules. Learn the structure before treating an account name as a recommendation.", ["IRA", "401(k)", "retirement"], taxAccounts),
+      topic("education-health-accounts", "Education and health account concepts", "Some tax-advantaged structures are designed for qualified education, health, or disability-related expenses. Their permitted uses and tax treatment are rule-based.", ["529", "HSA", "ABLE"], taxAccounts),
+      topic("tax-lots-cost-basis", "Tax lots and cost basis", "A tax lot records the acquisition details for a quantity of securities. Cost-basis records can affect reporting, but individualized tax treatment requires appropriate professional guidance.", ["tax lot", "cost basis", "recordkeeping"], taxAccounts),
+      topic("cash-sweep", "Cash sweep arrangements", "A brokerage account may use a stated arrangement for uninvested cash. Review the program terms, coverage boundaries, interest, and liquidity conditions.", ["cash sweep", "brokerage cash", "terms"], sipc),
+      topic("beneficiary-designations", "Beneficiary designations", "Some accounts allow beneficiary designations that can affect transfer arrangements. Keep account documents current and seek qualified advice for personal legal or tax questions.", ["beneficiary", "account transfer", "estate"], taxAccounts),
+    ],
+  },
+  {
+    id: "filing-analysis", title: "Filing analysis", description: "A section-by-section framework for researching reported company information without converting disclosure into a trade call.", accent: "#8B5A2B", topics: [
+      topic("business-description", "Business description", "A 10-K business section describes products, services, markets, competition, and operating context. Begin by mapping how the company says it earns revenue.", ["10-K", "business", "operations"], filingGuide),
+      topic("risk-factors", "Risk factors", "Risk-factor disclosures identify significant risks the company describes. Compare them across periods and avoid assuming their order is a numerical probability ranking.", ["risk factors", "disclosure", "uncertainty"], filingGuide),
+      topic("mda", "Management discussion and analysis", "MD&A provides management’s discussion of results, liquidity, capital resources, trends, uncertainties, and critical accounting judgments.", ["MD&A", "liquidity", "management"], filingGuide),
+      topic("market-risk-disclosure", "Market-risk disclosure", "A 10-K can include information about exposure to interest-rate, currency, commodity, or equity-price risk under stated methods and assumptions.", ["market risk", "currency", "interest rates"], filingGuide),
+      topic("notes-audit", "Notes and audit report", "Financial-statement notes explain accounting policies and amounts. The auditor’s report and internal-control disclosures provide context for how statements were presented.", ["financial notes", "audit", "controls"], filingGuide),
+      topic("non-gaap", "GAAP and non-GAAP measures", "Non-GAAP measures differ from the most comparable GAAP measures under a company’s adjustments. Understand the reconciliation, definitions, and limits before comparison.", ["GAAP", "non-GAAP", "reconciliation"], filingGuide),
+    ],
+  },
+  {
+    id: "decision-hygiene", title: "Decision hygiene", description: "Behavioral guardrails, source quality, and process discipline for resisting impulsive or misleading market narratives.", accent: "#A64565", topics: [
+      topic("source-quality", "Source quality and provenance", "Evaluate who created information, when it was published, what incentives may exist, and whether a primary disclosure can confirm the claim.", ["source", "provenance", "verification"], sentiment),
+      topic("social-sentiment", "Social sentiment tools", "Social-sentiment tools can aggregate posts or assign ratings, but the underlying information can be inaccurate, incomplete, stale, or misleading.", ["sentiment", "social media", "tool"], sentiment),
+      topic("impulsive-decisions", "Impulsive decision risk", "Urgent headlines, crowd enthusiasm, and real-time feeds can encourage emotionally driven decisions. A pre-defined research process can slow the response.", ["emotion", "impulse", "process"], sentiment),
+      topic("conflicts-promotions", "Promotions and conflicts", "Promotional material and crowd discussion can contain conflicts, incentives, or hidden agendas. Review disclosures and independent sources before treating a claim as evidence.", ["conflict", "promotion", "disclosure"], sentiment),
+      topic("time-horizon-discipline", "Time-horizon discipline", "A research process should distinguish short-lived information from a learner’s stated time horizon. A topic’s immediacy does not establish its long-term relevance.", ["time horizon", "research", "discipline"], sentiment),
+      topic("decision-journal", "Decision journal", "A decision journal records the question, evidence, assumptions, uncertainty, and later review. It supports learning from process rather than retrospective storytelling.", ["journal", "assumptions", "review"], sentiment),
+    ],
+  },
+  {
+    id: "quant-data-literacy", title: "Quant & data literacy", description: "Measurement, modeling, data-quality, and backtest vocabulary for evaluating claims without presenting a trading system.", accent: "#4066B0", topics: [
+      topic("data-definition", "Data definitions and units", "Before comparing a metric, confirm the definition, units, currency, reporting period, adjustment basis, and whether it is an estimate or reported value.", ["definition", "units", "period"], filingGuide),
+      topic("adjusted-unadjusted", "Adjusted and unadjusted series", "Prices and financial series can use different adjustment conventions. Mixing bases across splits, dividends, or reporting adjustments can create misleading comparisons.", ["adjusted", "unadjusted", "split"], finraActions),
+      topic("sampling-window", "Sampling windows", "A measurement depends on its selected time window, frequency, and sample. A short or unusual period can change observed results materially.", ["sample", "window", "frequency"], sentiment),
+      topic("benchmark-bias", "Benchmark selection bias", "A benchmark comparison needs a clearly defined, relevant benchmark and a consistent period, exposure, fee basis, and return convention.", ["benchmark", "bias", "comparison"], finraCosts),
+      topic("correlation-regimes", "Correlation and regime change", "Relationships between assets can change across market environments. Historical correlation describes a past sample, not a promise of diversification in future stress.", ["correlation", "regime", "diversification"], fed),
+      topic("backtest-boundaries", "Backtest boundaries", "Any historical test must avoid using information unavailable at the decision date, define its universe and costs, and distinguish a result from a forecast.", ["backtest", "look-ahead bias", "methodology"], sentiment),
     ],
   },
 ];

@@ -1,15 +1,18 @@
 import { describe, expect, it } from "vitest";
 
+import { buildStudyPlanText, catalogPlaylists, getCatalogQuiz, lessonsForPlaylist, nextCatalogReviewAt } from "../data/catalog-learning";
 import { allGlossaryEntries, searchGlossary } from "../data/glossary";
 import { marketLabDisclosure, syntheticScenarios } from "../data/market-lab";
 import { getMicroLesson, microLessonCount, microLessons, searchMicroLessons } from "../data/micro-curriculum";
 import { referenceDomains, referenceTopicCount, searchReferenceTopics } from "../data/reference-library";
 import { nextReviewAt } from "../data/spaced-review";
-import { appendTradeReflection, applyReviewRating, getLearningAnalytics, markCatalogLessonComplete, toggleSavedTerm, type TradeWiseState } from "../lib/tradewise-store";
+import { appendTradeReflection, applyCatalogQuizResult, applyReviewRating, getLearningAnalytics, markCatalogLessonComplete, toggleSavedTerm, type TradeWiseState } from "../lib/tradewise-store";
 
 const learnerState: TradeWiseState = {
   completedLessonIds: ["stock-ownership", "order-language", "risk-first", "trend-structure"],
   completedCatalogLessonIds: [],
+  catalogQuizScores: {},
+  catalogReviews: [],
   cash: 10_000,
   holdings: [],
   activities: [],
@@ -36,8 +39,8 @@ describe("searchable glossary", () => {
 
 describe("Stock Market Atlas", () => {
   it("organizes a broad source-linked reference library that can be searched across domains", () => {
-    expect(referenceDomains).toHaveLength(14);
-    expect(referenceTopicCount).toBeGreaterThanOrEqual(84);
+    expect(referenceDomains).toHaveLength(18);
+    expect(referenceTopicCount).toBeGreaterThanOrEqual(108);
     expect(searchReferenceTopics("settlement").map((topic) => topic.title)).toContain("Clearing and settlement");
     expect(searchReferenceTopics("SIPC").map((topic) => topic.title)).toContain("SIPC protection scope");
     expect(searchReferenceTopics("fraud", "governance-protection").every((topic) => topic.domain.id === "governance-protection")).toBe(true);
@@ -45,13 +48,13 @@ describe("Stock Market Atlas", () => {
   });
 });
 
-describe("2,000-plus lesson catalog", () => {
+describe("5,000-plus lesson catalog", () => {
   it("creates unique source-linked lessons across the full Atlas and supports scalable search", () => {
-    expect(microLessonCount).toBeGreaterThanOrEqual(2000);
+    expect(microLessonCount).toBeGreaterThanOrEqual(5000);
     expect(microLessons).toHaveLength(microLessonCount);
     expect(new Set(microLessons.map((lesson) => lesson.id)).size).toBe(microLessonCount);
     expect(getMicroLesson(microLessons[0].id)?.source.url).toMatch(/^https:\/\//);
-    expect(searchMicroLessons("SIPC").length).toBeGreaterThanOrEqual(24);
+    expect(searchMicroLessons("SIPC").length).toBeGreaterThanOrEqual(48);
     expect(searchMicroLessons("nonsensical phrase")).toHaveLength(0);
   });
 
@@ -63,6 +66,31 @@ describe("2,000-plus lesson catalog", () => {
     expect(once.completedCatalogLessonIds).toEqual([lessonId]);
     expect(twice.completedCatalogLessonIds).toEqual([lessonId]);
     expect(twice.completedLessonIds).toEqual(learnerState.completedLessonIds);
+  });
+
+  it("creates a transparent one-question check and schedules local adaptive review", () => {
+    const lessonId = microLessons[0].id;
+    const quiz = getCatalogQuiz(lessonId);
+    const base = new Date("2026-08-18T12:00:00.000Z");
+    const incorrect = applyCatalogQuizResult(learnerState, lessonId, false, base);
+    const corrected = applyCatalogQuizResult(incorrect, lessonId, true, base);
+
+    expect(quiz?.correctIndex).toBe(0);
+    expect(incorrect.catalogReviews[0]).toMatchObject({ lessonId, streak: 0, attempts: 1, dueAt: "2026-08-19T12:00:00.000Z" });
+    expect(corrected.catalogReviews[0]).toMatchObject({ lessonId, streak: 1, attempts: 2, dueAt: "2026-08-21T12:00:00.000Z" });
+    expect(nextCatalogReviewAt(true, 2, base)).toBe("2026-09-01T12:00:00.000Z");
+  });
+
+  it("organizes goal playlists and generates an offline education-only plan", () => {
+    const playlist = catalogPlaylists.find((item) => item.id === "filing-research");
+    const lessons = lessonsForPlaylist("filing-research");
+    const text = buildStudyPlanText("filing-research", 6, new Date("2026-08-18T12:00:00.000Z"));
+
+    expect(playlist?.title).toBe("Filing Research");
+    expect(lessons.length).toBeGreaterThan(20);
+    expect(text).toContain("TRADEWISE ACADEMY — OFFLINE STUDY PLAN");
+    expect(text).toContain("Educational material only");
+    expect(text).toContain("Source lane:");
   });
 });
 

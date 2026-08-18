@@ -6,11 +6,11 @@ import { Pill, ProgressBar, ui } from "@/components/tradewise-ui";
 import { courses, type Course } from "@/data/curriculum";
 import { microLessonCount } from "@/data/micro-curriculum";
 import { haptic } from "@/lib/haptics";
-import { learningProgress, useTradeWise } from "@/lib/tradewise-store";
+import { useTradeWise } from "@/lib/tradewise-store";
 
 export default function LearnScreen() {
-  const { completedLessonIds, completedCount } = useTradeWise();
-  const progress = learningProgress(completedCount);
+  const { completedLessonIds, catalogCompletedCount, catalogQuizAccuracy, dueCatalogReviews } = useTradeWise();
+  const catalogProgress = Math.round((catalogCompletedCount / microLessonCount) * 100);
 
   return (
     <ScreenContainer>
@@ -21,12 +21,14 @@ export default function LearnScreen() {
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={
           <View style={styles.header}>
-            <Text style={ui.eyebrow}>Structured curriculum</Text>
-            <Text style={ui.title}>Learn the whole process.</Text>
-            <Text style={[ui.subtitle, styles.subtitle]}>Start with mechanics and risk, then explore company analysis, products, regulation, and market context. Every lesson includes a quick knowledge check.</Text>
-            <View style={styles.overview}><View style={styles.overviewTop}><Text style={styles.overviewLabel}>COURSE COMPLETION</Text><Text style={styles.overviewPercent}>{progress}%</Text></View><ProgressBar value={progress} /><Text style={styles.overviewText}>{completedCount} lessons completed across {courses.length} skill areas</Text></View>
-            <Pressable onPress={() => { haptic.light(); router.push("/catalog" as never); }} style={({ pressed }) => [styles.catalog, pressed && styles.cardPressed]}><View><Text style={styles.catalogEyebrow}>NEW · {microLessonCount.toLocaleString()} MICRO-LESSONS</Text><Text style={styles.catalogTitle}>Open the complete lesson catalog</Text><Text style={styles.catalogText}>Search every topic through 24 short study lenses.</Text></View><Text style={styles.catalogArrow}>›</Text></Pressable>
+            <Text style={ui.eyebrow}>Catalog-first curriculum</Text>
+            <Text style={ui.title}>One market concept at a time.</Text>
+            <Text style={[ui.subtitle, styles.subtitle]}>The catalog is now your main learning path: search {microLessonCount.toLocaleString()} short lessons, take a knowledge check, and return through adaptive review.</Text>
+            <View style={styles.overview}><View style={styles.overviewTop}><Text style={styles.overviewLabel}>CATALOG PROGRESS</Text><Text style={styles.overviewPercent}>{catalogProgress}%</Text></View><ProgressBar value={catalogProgress} /><Text style={styles.overviewText}>{catalogCompletedCount.toLocaleString()} lessons complete · {catalogQuizAccuracy}% quiz accuracy · {dueCatalogReviews.length} review due</Text></View>
+            <Pressable onPress={() => { haptic.light(); router.push("/catalog" as never); }} style={({ pressed }) => [styles.catalog, pressed && styles.cardPressed]}><View><Text style={styles.catalogEyebrow}>MAIN PATH · {microLessonCount.toLocaleString()} MICRO-LESSONS</Text><Text style={styles.catalogTitle}>Explore the complete catalog</Text><Text style={styles.catalogText}>Search every topic through 48 short study lenses and adaptive checks.</Text></View><Text style={styles.catalogArrow}>›</Text></Pressable>
+            <View style={styles.toolRow}><Pressable onPress={() => router.push("/playlists" as never)} style={({ pressed }) => [styles.tool, pressed && styles.cardPressed]}><Text style={styles.toolTitle}>Playlists</Text><Text style={styles.toolText}>Goal-based paths</Text></Pressable><Pressable onPress={() => router.push("/catalog-review" as never)} style={({ pressed }) => [styles.tool, pressed && styles.cardPressed]}><Text style={styles.toolTitle}>Review</Text><Text style={styles.toolText}>{dueCatalogReviews.length ? `${dueCatalogReviews.length} due now` : "Stay fresh"}</Text></Pressable><Pressable onPress={() => router.push("/study-plan" as never)} style={({ pressed }) => [styles.tool, pressed && styles.cardPressed]}><Text style={styles.toolTitle}>Study plan</Text><Text style={styles.toolText}>Download offline</Text></Pressable></View>
             <Pressable onPress={() => { haptic.light(); router.push("/library" as never); }} style={({ pressed }) => [styles.atlas, pressed && styles.cardPressed]}><View><Text style={styles.atlasEyebrow}>NEW · REFERENCE LIBRARY</Text><Text style={styles.atlasTitle}>Browse the Stock Market Atlas</Text><Text style={styles.atlasText}>Search systems, products, disclosures, and risk concepts.</Text></View><Text style={styles.atlasArrow}>›</Text></Pressable>
+            <Text style={styles.guidedHeading}>GUIDED STARTER COURSES</Text>
           </View>
         }
         renderItem={({ item }) => <CourseCard course={item} completedLessonIds={completedLessonIds} />}
@@ -71,6 +73,11 @@ const styles = StyleSheet.create({
   catalogTitle: { color: "#183B4E", fontSize: 17, fontWeight: "800", marginTop: 5 },
   catalogText: { color: "#526276", fontSize: 12, marginTop: 3 },
   catalogArrow: { color: "#4066B0", fontSize: 28, fontWeight: "700", paddingLeft: 10 },
+  toolRow: { flexDirection: "row", gap: 8, marginTop: 1 },
+  tool: { flex: 1, minHeight: 68, borderRadius: 15, borderWidth: 1, borderColor: "#DDE5EA", backgroundColor: "#FFFFFF", padding: 10, justifyContent: "center" },
+  toolTitle: { color: "#10243E", fontSize: 12, fontWeight: "900" },
+  toolText: { color: "#657488", fontSize: 10, fontWeight: "700", marginTop: 3 },
+  guidedHeading: { color: "#657488", fontSize: 11, fontWeight: "900", letterSpacing: 0.8, marginTop: 10 },
   card: { backgroundColor: "#FFFFFF", borderRadius: 22, padding: 18, borderWidth: 1, borderColor: "#E7E9EC", overflow: "hidden" },
   cardPressed: { opacity: 0.72, transform: [{ scale: 0.99 }] },
   cardTop: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },

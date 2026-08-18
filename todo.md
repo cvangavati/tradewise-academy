@@ -31,3 +31,9 @@
 - [x] Generate and validate a 2,000-plus lesson source-grounded curriculum index and lesson catalog.
 - [x] Add scalable curriculum discovery, search, and lesson detail delivery for the new catalog.
 - [x] Test the large lesson catalog, search behavior, and learning-state compatibility.
+- [x] Make the large lesson catalog the primary home and learning flow.
+- [x] Expand the source-grounded catalog beyond 4,000 lessons with additional specialized topic families.
+- [x] Add catalog quizzes and persistent adaptive review scheduling based on learner results.
+- [x] Add curated goal-based playlists for Market Basics, Filing Research, Risk Foundations, and Market Mechanics.
+- [x] Add downloadable offline study plans generated from playlists or catalog goals.
+- [x] Test the catalog-first navigation, expanded lesson index, adaptive review, playlists, and offline-plan generation.

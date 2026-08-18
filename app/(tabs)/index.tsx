@@ -3,19 +3,21 @@ import { ScrollView, StyleSheet, Text, View } from "react-native";
 
 import { ScreenContainer } from "@/components/screen-container";
 import { AppButton, Pill, ProgressBar, SectionHeading, ui } from "@/components/tradewise-ui";
-import { courses, dailyConcepts, totalLessons } from "@/data/curriculum";
+import { courses, dailyConcepts } from "@/data/curriculum";
+import { getMicroLesson, microLessonCount, microLessons } from "@/data/micro-curriculum";
 import { practiceChallenges } from "@/data/practice";
-import { learningProgress, useTradeWise } from "@/lib/tradewise-store";
+import { useTradeWise } from "@/lib/tradewise-store";
 
 function money(value: number) {
   return value.toLocaleString("en-US", { style: "currency", currency: "USD" });
 }
 
 export default function TodayScreen() {
-  const { completedCount, nextLessonId, portfolioValue, cash, isReady } = useTradeWise();
-  const progress = learningProgress(completedCount);
+  const { completedCount, nextLessonId, portfolioValue, cash, isReady, catalogCompletedCount, dueCatalogReviews, catalogQuizAccuracy } = useTradeWise();
+  const catalogProgress = Math.round((catalogCompletedCount / microLessonCount) * 100);
   const nextCourse = courses.find((course) => course.lessons.some((lesson) => lesson.id === nextLessonId));
   const nextLesson = nextCourse?.lessons.find((lesson) => lesson.id === nextLessonId) ?? courses[0].lessons[0];
+  const nextCatalogLesson = getMicroLesson(dueCatalogReviews[0]?.lessonId) ?? microLessons[catalogCompletedCount % microLessonCount];
   const challenge = practiceChallenges[completedCount % practiceChallenges.length];
   const concept = dailyConcepts[completedCount % dailyConcepts.length];
 
@@ -35,23 +37,28 @@ export default function TodayScreen() {
         <View style={styles.progressCard}>
           <View style={styles.rowBetween}>
             <View>
-              <Text style={styles.progressTitle}>Learning path</Text>
-              <Text style={styles.progressValue}>{completedCount} of {totalLessons} lessons</Text>
+              <Text style={styles.progressTitle}>CATALOG PROGRESS</Text>
+              <Text style={styles.progressValue}>{catalogCompletedCount.toLocaleString()} of {microLessonCount.toLocaleString()} lessons</Text>
             </View>
-            <View style={styles.progressBadge}><Text style={styles.progressBadgeText}>{progress}%</Text></View>
+            <View style={styles.progressBadge}><Text style={styles.progressBadgeText}>{catalogProgress}%</Text></View>
           </View>
-          <View style={styles.progressSpace}><ProgressBar value={progress} color="#7EE3DB" /></View>
-          <Text style={styles.progressHint}>Small, deliberate sessions compound into a clearer process.</Text>
+          <View style={styles.progressSpace}><ProgressBar value={catalogProgress} color="#7EE3DB" /></View>
+          <Text style={styles.progressHint}>{dueCatalogReviews.length ? `${dueCatalogReviews.length} adaptive review item${dueCatalogReviews.length === 1 ? "" : "s"} due today` : `Catalog quiz accuracy: ${catalogQuizAccuracy}%`}</Text>
         </View>
 
-        <View style={styles.section}><SectionHeading title="Continue learning" /></View>
+        <View style={styles.section}><SectionHeading title={dueCatalogReviews.length ? "Adaptive review" : "Continue the catalog"} /></View>
         <View style={[ui.card, styles.lessonCard]}>
-          <Pill label={nextCourse?.eyebrow ?? "Start here"} tone="teal" />
-          <Text style={[ui.cardTitle, styles.lessonTitle]}>{nextLesson.title}</Text>
-          <Text style={[ui.cardBody, styles.lessonBody]}>{nextLesson.objective}</Text>
-          <View style={styles.lessonMeta}><Text style={styles.metaText}>{nextLesson.duration}</Text><Text style={styles.metaDot}>•</Text><Text style={styles.metaText}>{nextCourse?.title}</Text></View>
-          <AppButton label={completedCount === totalLessons ? "Review lesson" : "Continue lesson"} onPress={() => router.push(`/lesson/${nextLesson.id}`)} />
+          <Pill label={dueCatalogReviews.length ? "Recall due" : nextCatalogLesson.frame} tone="teal" />
+          <Text style={[ui.cardTitle, styles.lessonTitle]}>{nextCatalogLesson.title}</Text>
+          <Text style={[ui.cardBody, styles.lessonBody]}>{nextCatalogLesson.studyPrompt}</Text>
+          <View style={styles.lessonMeta}><Text style={styles.metaText}>{nextCatalogLesson.domain.title}</Text><Text style={styles.metaDot}>•</Text><Text style={styles.metaText}>Knowledge check included</Text></View>
+          <AppButton label={dueCatalogReviews.length ? "Open review" : "Continue catalog lesson"} onPress={() => router.push(`/catalog/${nextCatalogLesson.id}` as never)} />
         </View>
+
+        <View style={styles.quickRow}><AppButton label="Playlists" variant="secondary" onPress={() => router.push("/playlists" as never)} style={styles.quickButton} /><AppButton label="Study plan" variant="secondary" onPress={() => router.push("/study-plan" as never)} style={styles.quickButton} /><AppButton label="Review queue" variant="secondary" onPress={() => router.push("/catalog-review" as never)} style={styles.quickButton} /></View>
+
+        <View style={styles.section}><SectionHeading title="Guided starter course" /></View>
+        <View style={[ui.card, styles.guidedCard]}><Pill label={nextCourse?.eyebrow ?? "Core course"} tone="navy" /><Text style={styles.guidedTitle}>{nextLesson.title}</Text><Text style={ui.cardBody}>{nextLesson.objective}</Text><AppButton label={`Open ${nextCourse?.title ?? "course"}`} variant="secondary" onPress={() => router.push(`/lesson/${nextLesson.id}`)} style={styles.guidedButton} /></View>
 
         <View style={styles.section}><SectionHeading title="Practice without the pressure" /></View>
         <View style={[ui.card, styles.practiceCard]}>
@@ -98,6 +105,11 @@ const styles = StyleSheet.create({
   lessonMeta: { flexDirection: "row", alignItems: "center", gap: 7 },
   metaText: { color: "#657488", fontSize: 12, fontWeight: "700" },
   metaDot: { color: "#A4B0BC" },
+  quickRow: { flexDirection: "row", gap: 8, marginTop: 12 },
+  quickButton: { flex: 1, minHeight: 41, paddingHorizontal: 7, borderRadius: 12 },
+  guidedCard: { gap: 9 },
+  guidedTitle: { color: "#10243E", fontSize: 18, lineHeight: 24, fontWeight: "800" },
+  guidedButton: { marginTop: 2 },
   practiceCard: { gap: 11 },
   practiceKicker: { color: "#657488", fontSize: 12, fontWeight: "700" },
   challengeTitle: { fontSize: 18 },

@@ -73,3 +73,15 @@ The municipal-bond track introduces issuer repayment, credit/default, interest-r
 [17]: https://www.investor.gov/introduction-investing/investing-basics/glossary/schedules-13d-and-13g "Investor.gov — Schedules 13D and 13G"
 [18]: https://www.sipc.org/for-investors/what-sipc-protects "SIPC — What SIPC Protects"
 [19]: https://www.msrb.org/Education/Municipal-Bond-Investment-Risks "MSRB — Municipal Bond Investment Risks"
+
+## Account Structures, Filing Process, and Decision Hygiene
+
+The additional account-structure lessons explain that tax-advantaged accounts may offer deductions, tax-deferred growth, and/or tax-free withdrawals for designated purposes, but users should consult a tax professional for their own rules and consequences.[20] The catalog uses this as a structural concept only and does not provide individual tax planning.
+
+The 10-K/10-Q research path distinguishes a company’s disclosure from a recommendation. Investor.gov notes that the annual and quarterly reports provide information on business, risks, operating and financial results, and management discussion; the lessons map their sections into evidence-checking prompts.[21]
+
+The decision-hygiene track treats social-sentiment material as potentially incomplete, stale, misleading, or conflicted. FINRA and the SEC’s investor bulletin cautions against relying solely on such tools and encourages review of public disclosures and tool methodology.[22]
+
+[20]: https://www.investor.gov/introduction-investing/investing-basics/investment-accounts/tax-advantaged-accounts "Investor.gov — Tax-Advantaged Accounts"
+[21]: https://www.investor.gov/introduction-investing/general-resources/news-alerts/alerts-bulletins/investor-bulletins/how-read "Investor.gov — How to Read a 10-K/10-Q"
+[22]: https://www.finra.org/investors/insights/social-sentiment-investing-tools "FINRA — Social Sentiment Investing Tools"

@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type PropsWithChildren } from "react";
 
+import { nextCatalogReviewAt } from "../data/catalog-learning";
 import { courses, totalLessons } from "../data/curriculum";
 import { syntheticScenarios } from "../data/market-lab";
 import { simulatedWatchlist } from "../data/practice";
@@ -13,10 +14,13 @@ export type Holding = { symbol: string; name: string; quantity: number; averageC
 export type Activity = { id: string; action: "BUY" | "SELL"; symbol: string; quantity: number; price: number; timestamp: string; scenarioId?: string };
 export type SavedTerm = { term: string; savedAt: string; dueAt: string; reviewCount: number };
 export type TradeReflection = { id: string; activityId: string; scenarioId?: string; thesis: string; discipline: string; emotion: string; lesson: string; createdAt: string };
+export type CatalogReview = { lessonId: string; dueAt: string; streak: number; attempts: number; lastCorrect: boolean };
 
 export type TradeWiseState = {
   completedLessonIds: string[];
   completedCatalogLessonIds: string[];
+  catalogQuizScores: Record<string, boolean>;
+  catalogReviews: CatalogReview[];
   cash: number;
   holdings: Holding[];
   activities: Activity[];
@@ -48,6 +52,8 @@ export type LearningAnalytics = {
 const defaultState: TradeWiseState = {
   completedLessonIds: [],
   completedCatalogLessonIds: [],
+  catalogQuizScores: {},
+  catalogReviews: [],
   cash: startingCash,
   holdings: [],
   activities: [],
@@ -60,6 +66,7 @@ type Store = TradeWiseState & {
   isReady: boolean;
   completeLesson: (lessonId: string, passedQuiz: boolean) => void;
   completeCatalogLesson: (lessonId: string) => void;
+  recordCatalogQuiz: (lessonId: string, correct: boolean) => void;
   placeOrder: (action: "BUY" | "SELL", symbol: string, quantity: number) => { ok: boolean; message: string; activityId?: string };
   toggleTermBookmark: (term: string) => void;
   rateSavedTerm: (term: string, rating: ReviewRating) => void;
@@ -69,9 +76,12 @@ type Store = TradeWiseState & {
   investedValue: number;
   completedCount: number;
   catalogCompletedCount: number;
+  catalogQuizAttempts: number;
+  catalogQuizAccuracy: number;
   nextLessonId: string;
   learningAnalytics: LearningAnalytics;
   dueTerms: SavedTerm[];
+  dueCatalogReviews: CatalogReview[];
 };
 
 const TradeWiseContext = createContext<Store | null>(null);
@@ -131,6 +141,25 @@ export function markCatalogLessonComplete(state: TradeWiseState, lessonId: strin
     completedCatalogLessonIds: state.completedCatalogLessonIds.includes(lessonId)
       ? state.completedCatalogLessonIds
       : [...state.completedCatalogLessonIds, lessonId],
+  };
+}
+
+export function applyCatalogQuizResult(state: TradeWiseState, lessonId: string, correct: boolean, now = new Date()): TradeWiseState {
+  const previous = state.catalogReviews.find((review) => review.lessonId === lessonId);
+  const previousStreak = previous?.streak ?? 0;
+  const streak = correct ? previousStreak + 1 : 0;
+  const review: CatalogReview = {
+    lessonId,
+    dueAt: nextCatalogReviewAt(correct, correct ? previousStreak : 0, now),
+    streak,
+    attempts: (previous?.attempts ?? 0) + 1,
+    lastCorrect: correct,
+  };
+  const withCompletion = markCatalogLessonComplete(state, lessonId);
+  return {
+    ...withCompletion,
+    catalogQuizScores: { ...withCompletion.catalogQuizScores, [lessonId]: correct },
+    catalogReviews: [review, ...withCompletion.catalogReviews.filter((item) => item.lessonId !== lessonId)],
   };
 }
 
@@ -212,6 +241,10 @@ export function TradeWiseProvider({ children }: PropsWithChildren) {
     setState((current) => markCatalogLessonComplete(current, lessonId));
   }, []);
 
+  const recordCatalogQuiz = useCallback((lessonId: string, correct: boolean) => {
+    setState((current) => applyCatalogQuizResult(current, lessonId, correct));
+  }, []);
+
   const placeOrder = useCallback((action: "BUY" | "SELL", symbol: string, quantity: number) => {
     const result = executeSimulatedOrder(state, action, symbol, quantity);
     if (result.ok) setState(result.nextState);
@@ -237,14 +270,19 @@ export function TradeWiseProvider({ children }: PropsWithChildren) {
     const portfolioValue = state.cash + investedValue;
     const completedCount = state.completedLessonIds.length;
     const catalogCompletedCount = state.completedCatalogLessonIds.length;
+    const catalogQuizAttempts = state.catalogReviews.reduce((sum, review) => sum + review.attempts, 0);
+    const catalogQuizCorrectCount = Object.values(state.catalogQuizScores).filter(Boolean).length;
+    const catalogQuizAccuracy = catalogQuizAttempts ? Math.round((catalogQuizCorrectCount / catalogQuizAttempts) * 100) : 0;
     const nextLessonId = courses.flatMap((course) => course.lessons).find((lesson) => !state.completedLessonIds.includes(lesson.id))?.id ?? courses[0].lessons[0].id;
     const learningAnalytics = getLearningAnalytics(state);
     const dueTerms = state.savedTerms.filter((term) => new Date(term.dueAt).getTime() <= Date.now());
+    const dueCatalogReviews = state.catalogReviews.filter((review) => new Date(review.dueAt).getTime() <= Date.now());
     return {
       ...state,
       isReady,
       completeLesson,
       completeCatalogLesson,
+      recordCatalogQuiz,
       placeOrder,
       toggleTermBookmark,
       rateSavedTerm,
@@ -254,11 +292,14 @@ export function TradeWiseProvider({ children }: PropsWithChildren) {
       investedValue,
       completedCount,
       catalogCompletedCount,
+      catalogQuizAttempts,
+      catalogQuizAccuracy,
       nextLessonId,
       learningAnalytics,
       dueTerms,
+      dueCatalogReviews,
     };
-  }, [state, isReady, completeLesson, completeCatalogLesson, placeOrder, toggleTermBookmark, rateSavedTerm, addReflection, resetProgress]);
+  }, [state, isReady, completeLesson, completeCatalogLesson, recordCatalogQuiz, placeOrder, toggleTermBookmark, rateSavedTerm, addReflection, resetProgress]);
 
   return <TradeWiseContext.Provider value={value}>{children}</TradeWiseContext.Provider>;
 }
