@@ -32,29 +32,32 @@ describe("searchable glossary", () => {
     expect(searchGlossary("price", "Options").every((entry) => entry.category === "Options")).toBe(true);
     expect(searchGlossary("settlement").map((entry) => entry.term)).toContain("Settlement");
     expect(searchGlossary("municipal bond").map((entry) => entry.term)).toContain("Municipal bond");
-    expect(allGlossaryEntries.length).toBeGreaterThanOrEqual(110);
+    expect(searchGlossary("ACATS").map((entry) => entry.term)).toContain("ACATS");
+    expect(allGlossaryEntries.length).toBeGreaterThanOrEqual(128);
     expect(searchGlossary("nonexistent phrase")).toHaveLength(0);
   });
 });
 
 describe("Stock Market Atlas", () => {
   it("organizes a broad source-linked reference library that can be searched across domains", () => {
-    expect(referenceDomains).toHaveLength(18);
-    expect(referenceTopicCount).toBeGreaterThanOrEqual(108);
+    expect(referenceDomains).toHaveLength(25);
+    expect(referenceTopicCount).toBeGreaterThanOrEqual(150);
     expect(searchReferenceTopics("settlement").map((topic) => topic.title)).toContain("Clearing and settlement");
     expect(searchReferenceTopics("SIPC").map((topic) => topic.title)).toContain("SIPC protection scope");
+    expect(searchReferenceTopics("financial stability").map((topic) => topic.title)).toContain("Financial stability");
     expect(searchReferenceTopics("fraud", "governance-protection").every((topic) => topic.domain.id === "governance-protection")).toBe(true);
     expect(searchReferenceTopics("nonsensical phrase")).toHaveLength(0);
   });
 });
 
-describe("5,000-plus lesson catalog", () => {
+describe("7,000-plus lesson catalog", () => {
   it("creates unique source-linked lessons across the full Atlas and supports scalable search", () => {
-    expect(microLessonCount).toBeGreaterThanOrEqual(5000);
+    expect(microLessonCount).toBeGreaterThanOrEqual(7000);
     expect(microLessons).toHaveLength(microLessonCount);
     expect(new Set(microLessons.map((lesson) => lesson.id)).size).toBe(microLessonCount);
     expect(getMicroLesson(microLessons[0].id)?.source.url).toMatch(/^https:\/\//);
     expect(searchMicroLessons("SIPC").length).toBeGreaterThanOrEqual(48);
+    expect(searchMicroLessons("ACATS").length).toBeGreaterThanOrEqual(48);
     expect(searchMicroLessons("nonsensical phrase")).toHaveLength(0);
   });
 

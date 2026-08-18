@@ -133,7 +133,28 @@ export const specialistGlossaryEntries: GlossaryEntry[] = [
   { term: "Yield to maturity", definition: "A bond-yield calculation that estimates a return if held to maturity under specified assumptions, including payment timing and price.", category: "Fundamental analysis", relatedCourse: "Municipal & Public Finance" },
 ];
 
-export const allGlossaryEntries = [...glossaryEntries, ...extendedGlossaryEntries, ...specialistGlossaryEntries];
+export const operationsGlossaryEntries: GlossaryEntry[] = [
+  { term: "ACATS", definition: "The Automated Customer Account Transfer Service, an electronic system used for many transfers of customer accounts between brokerage firms.", category: "Market mechanics", relatedCourse: "Account Portability" },
+  { term: "Arbitration award", definition: "The written decision issued by arbitrators after an arbitration process, subject to the applicable forum rules and review procedures.", category: "Risk", relatedCourse: "Investor Recourse & Records" },
+  { term: "Chapter 7 bankruptcy", definition: "A corporate bankruptcy process generally involving liquidation of assets to pay claims under the priority rules that apply.", category: "Risk", relatedCourse: "Securities Lending & Distress" },
+  { term: "Chapter 11 bankruptcy", definition: "A corporate bankruptcy process focused on reorganization and debt restructuring under court supervision.", category: "Risk", relatedCourse: "Securities Lending & Distress" },
+  { term: "Expense ratio", definition: "A fund’s annual operating expenses expressed as a percentage of its average net assets, as described in its disclosures.", category: "Fundamental analysis", relatedCourse: "Fund Disclosures & Costs" },
+  { term: "Fee waiver", definition: "An agreement by a fund or adviser to reduce fees or expenses for a stated period or condition; the terms and potential recoupment should be checked.", category: "Fundamental analysis", relatedCourse: "Fund Disclosures & Costs" },
+  { term: "Financial stability", definition: "The capacity of a financial system to keep providing financing and payment services even when it experiences adverse events or stress.", category: "Risk", relatedCourse: "Financial Stability" },
+  { term: "Fire sale", definition: "A rapid sale of assets under funding or liquidity stress that can amplify price pressure and losses across connected institutions or markets.", category: "Risk", relatedCourse: "Financial Stability" },
+  { term: "Funding risk", definition: "The possibility that a firm or vehicle cannot maintain needed funding when investors or lenders withdraw quickly, especially when assets are difficult to sell.", category: "Risk", relatedCourse: "Financial Stability" },
+  { term: "Fund share class", definition: "A class of shares in the same mutual fund that can have different sales loads, operating expenses, or other fee arrangements.", category: "Fundamental analysis", relatedCourse: "Fund Disclosures & Costs" },
+  { term: "Payment system", definition: "The network of institutions, rules, and infrastructure that facilitates transfers of value among consumers, businesses, investors, and issuers.", category: "Market mechanics", relatedCourse: "Payment & Settlement Infrastructure" },
+  { term: "Securities lending", definition: "The temporary transfer of securities from a lender to a borrower for a fee, typically within an arrangement that addresses collateral and operational terms.", category: "Market mechanics", relatedCourse: "Securities Lending & Distress" },
+  { term: "Shareholder fee", definition: "A fund fee charged directly to a shareholder, such as a sales load, redemption fee, exchange fee, or account fee, depending on the fund’s terms.", category: "Fundamental analysis", relatedCourse: "Fund Disclosures & Costs" },
+  { term: "Trading delay", definition: "A delay in opening or resuming trading intended to support an orderly market process, often around an order imbalance or material news.", category: "Market mechanics", relatedCourse: "Trading Interruptions" },
+  { term: "Trading halt", definition: "A temporary interruption in trading under an exchange or regulatory process, often to allow dissemination of material information or address market conditions.", category: "Market mechanics", relatedCourse: "Trading Interruptions" },
+  { term: "Trading suspension", definition: "An SEC action that can suspend trading in a stock for a limited period when the Commission determines it is necessary for the public interest and investor protection.", category: "Market mechanics", relatedCourse: "Trading Interruptions" },
+  { term: "Transfer Initiation Form", definition: "A form submitted to a receiving brokerage firm to begin an account-transfer process under the applicable procedures.", category: "Market mechanics", relatedCourse: "Account Portability" },
+  { term: "Valuation pressure", definition: "A financial-stability concept describing asset prices that appear high relative to stated fundamentals or historical norms, rather than a timing signal.", category: "Risk", relatedCourse: "Financial Stability" },
+];
+
+export const allGlossaryEntries = [...glossaryEntries, ...extendedGlossaryEntries, ...specialistGlossaryEntries, ...operationsGlossaryEntries];
 
 export const glossarySource = {
   label: "Definitions are original learning summaries informed by Investor.gov and the Options Industry Council reference glossaries.",

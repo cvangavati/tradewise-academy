@@ -20,6 +20,15 @@ const finraShort: ReferenceSource = { label: "FINRA — Short Interest", url: "h
 const taxAccounts: ReferenceSource = { label: "Investor.gov — Tax-Advantaged Accounts", url: "https://www.investor.gov/introduction-investing/investing-basics/investment-accounts/tax-advantaged-accounts" };
 const filingGuide: ReferenceSource = { label: "Investor.gov — How to Read a 10-K/10-Q", url: "https://www.investor.gov/introduction-investing/general-resources/news-alerts/alerts-bulletins/investor-bulletins/how-read" };
 const sentiment: ReferenceSource = { label: "FINRA — Social Sentiment Investing Tools", url: "https://www.finra.org/investors/insights/social-sentiment-investing-tools" };
+const halts: ReferenceSource = { label: "FINRA — Trading Halts, Delays and Suspensions", url: "https://www.finra.org/investors/investing/investment-products/stocks/trading-halts-delays-suspensions" };
+const transfers: ReferenceSource = { label: "FINRA — Customer Account Transfers", url: "https://www.finra.org/rules-guidance/key-topics/customer-account-transfers" };
+const fundFees: ReferenceSource = { label: "Investor.gov — Mutual Fund and ETF Fees and Expenses", url: "https://www.investor.gov/introduction-investing/general-resources/news-alerts/alerts-bulletins/investor-bulletins/mutual-fund-and-etf-fees-and-expenses-investor-bulletin" };
+const payments: ReferenceSource = { label: "Federal Reserve — Payment Systems", url: "https://www.federalreserve.gov/aboutthefed/fedexplained/payment-systems.htm" };
+const stability: ReferenceSource = { label: "Federal Reserve — Financial Stability Framework", url: "https://www.federalreserve.gov/publications/2026-may-financial-stability-report-purpose-and-framework.htm" };
+const arbitration: ReferenceSource = { label: "FINRA — Arbitration Process", url: "https://www.finra.org/arbitration-mediation/about/arbitration-process" };
+const complaints: ReferenceSource = { label: "FINRA — File a Complaint", url: "https://www.finra.org/investors/need-help/file-a-complaint" };
+const lending: ReferenceSource = { label: "Investor.gov — Securities Lending", url: "https://www.investor.gov/introduction-investing/investing-basics/glossary/securities-lending" };
+const bankruptcy: ReferenceSource = { label: "Investor.gov — Bankruptcy for a Public Company", url: "https://www.investor.gov/introduction-investing/general-resources/news-alerts/alerts-bulletins/investor-bulletins-84" };
 
 const topic = (id: string, title: string, summary: string, keywords: string[], source: ReferenceSource): ReferenceTopic => ({ id, title, summary, keywords, source });
 
@@ -202,6 +211,76 @@ export const referenceDomains: ReferenceDomain[] = [
       topic("benchmark-bias", "Benchmark selection bias", "A benchmark comparison needs a clearly defined, relevant benchmark and a consistent period, exposure, fee basis, and return convention.", ["benchmark", "bias", "comparison"], finraCosts),
       topic("correlation-regimes", "Correlation and regime change", "Relationships between assets can change across market environments. Historical correlation describes a past sample, not a promise of diversification in future stress.", ["correlation", "regime", "diversification"], fed),
       topic("backtest-boundaries", "Backtest boundaries", "Any historical test must avoid using information unavailable at the decision date, define its universe and costs, and distinguish a result from a forecast.", ["backtest", "look-ahead bias", "methodology"], sentiment),
+    ],
+  },
+  {
+    id: "trading-interruptions", title: "Trading interruptions", description: "Halt, delay, suspension, resumption, and information-dissemination concepts for reading disrupted trading conditions.", accent: "#A24D3D", topics: [
+      topic("trading-halts", "Trading halts", "A listed security may be halted to allow dissemination of material information or address an order imbalance. A halt is a market-process event, not a direction signal.", ["halt", "material news", "order imbalance"], halts),
+      topic("trading-delays", "Trading delays", "An opening delay can occur when an exchange allows time for buy and sell interest to form a more orderly open after material news or an imbalance.", ["delay", "opening", "imbalance"], halts),
+      topic("sec-suspensions", "SEC trading suspensions", "The SEC may suspend trading for up to 10 business days when it determines that a suspension is required in the public interest and for investor protection.", ["suspension", "SEC", "10 business days"], halts),
+      topic("halt-quotation-boundaries", "Quotation boundaries during a halt", "During an applicable halt, broker-dealers may be restricted from quoting or trading the security until the relevant notice or rules permit resumption.", ["quotation", "broker-dealer", "resumption"], halts),
+      topic("otc-halts", "OTC halt context", "OTC securities can have different halt and quotation processes from exchange-listed securities. The venue, source, and notice should be checked before interpreting a label.", ["OTC", "quotation halt", "venue"], halts),
+      topic("resumption-context", "Resumption context", "A trading resumption indicates that the interruption has ended under the applicable process; it does not resolve every information, liquidity, or price-risk question.", ["resumption", "liquidity", "risk"], halts),
+    ],
+  },
+  {
+    id: "account-portability", title: "Account portability", description: "Customer account transfers, records, transfer instructions, and operational exceptions without advising a specific account move.", accent: "#33708A", topics: [
+      topic("acats", "ACATS account transfers", "ACATS is an electronic system used for many transfers of customer accounts between brokerage firms. Not every asset or firm relationship is eligible for the same path.", ["ACATS", "account transfer", "brokerage"], transfers),
+      topic("transfer-initiation-form", "Transfer Initiation Form", "A customer account transfer begins when the customer submits a Transfer Initiation Form to the receiving firm under the applicable process.", ["TIF", "receiving firm", "transfer instruction"], transfers),
+      topic("validation-exception", "Validation and exception handling", "After an ACATS instruction is received, the carrying firm validates the instruction or takes an exception under the process. Data completeness and asset eligibility matter.", ["validation", "exception", "carrying firm"], transfers),
+      topic("manual-transfers", "Manual transfer context", "When a transfer cannot use ACATS, manual procedures may apply and can take longer. The reason for a different pathway is an operations question, not a market signal.", ["manual transfer", "asset eligibility", "operations"], transfers),
+      topic("transfer-portability", "Account portability", "Account portability refers to the ability to move transferable assets and records between firms under applicable processes. Transfer timing can depend on the account and assets involved.", ["portability", "transferable assets", "timing"], transfers),
+      topic("transfer-records", "Transfer records and cost basis", "Account transfers can involve records such as positions and cost-basis information. Preserve statements and review records rather than assuming every field moves identically.", ["cost basis", "statement", "records"], transfers),
+    ],
+  },
+  {
+    id: "fund-disclosures-costs", title: "Fund disclosures & costs", description: "Prospectus fee tables, shareholder reports, expense categories, and comparison boundaries for mutual funds and ETFs.", accent: "#6E4B9B", topics: [
+      topic("prospectus-fee-table", "Prospectus fee table", "Mutual funds and ETFs disclose standardized fee and expense information in prospectus fee tables. Read the date, category definitions, and share-class context.", ["prospectus", "fee table", "expense"], fundFees),
+      topic("fund-operating-expenses", "Fund operating expenses", "Annual fund operating expenses can include management, distribution, service, and other expenses. The expense ratio expresses total annual operating expenses relative to average net assets.", ["expense ratio", "management fee", "12b-1"], fundFees),
+      topic("shareholder-fees", "Shareholder fees", "Some funds disclose shareholder fees such as sales loads, redemption fees, exchange fees, or account fees. These categories are distinct from recurring operating expenses.", ["sales load", "redemption fee", "account fee"], fundFees),
+      topic("fee-waivers", "Fee waivers and reimbursements", "A fund may agree to reduce fees or expenses temporarily or indefinitely. A waiver label should prompt questions about its terms and whether costs may later be recouped.", ["fee waiver", "reimbursement", "expense"], fundFees),
+      topic("fund-share-classes", "Fund share classes", "A mutual fund can offer share classes with the same underlying portfolio but different sales loads or operating expenses. Confirm the correct share-class disclosure before comparing costs.", ["share class", "sales load", "mutual fund"], fundFees),
+      topic("etf-cost-boundaries", "ETF costs beyond fee tables", "ETF investing can involve transaction costs and market-price differences from net asset value that are not the same as the fund’s published operating expense ratio.", ["ETF", "NAV", "transaction cost"], fundFees),
+    ],
+  },
+  {
+    id: "payment-settlement-infrastructure", title: "Payment & settlement infrastructure", description: "The payments, clearing, and settlement systems that support financial transactions and market operations.", accent: "#237566", topics: [
+      topic("payment-system-role", "Payment system role", "Payment systems facilitate financial transactions among individuals, institutions, consumers, businesses, investors, and issuers. Their design matters for reliability and operational continuity.", ["payment system", "settlement", "financial transaction"], payments),
+      topic("ach-transfers", "ACH transfers", "Automated clearinghouse systems process many small-value electronic credit and debit transfers. Their role differs from securities settlement and from wholesale payment systems.", ["ACH", "electronic transfer", "clearing"], payments),
+      topic("fedwire-funds", "Wholesale funds transfers", "Fedwire Funds is a wholesale payment service used for large-value financial transactions. Understand its institutional role rather than treating it as a consumer investing feature.", ["Fedwire Funds", "wholesale", "payment"], payments),
+      topic("fedwire-securities", "Securities settlement services", "Fedwire Securities supports certain large-value securities transactions. It illustrates how payment and securities-delivery systems interact in market infrastructure.", ["Fedwire Securities", "delivery", "settlement"], payments),
+      topic("financial-market-infrastructure", "Financial market infrastructure", "Payment, clearing, and settlement systems are forms of financial market infrastructure. They connect trading, custody, funding, and the transfer of value.", ["infrastructure", "clearing", "custody"], payments),
+      topic("operational-resilience", "Operational resilience", "Safety, efficiency, cybersecurity, and continuity are infrastructure considerations. An operational disruption is not interchangeable with a fundamental assessment of an issuer.", ["resilience", "cybersecurity", "continuity"], payments),
+    ],
+  },
+  {
+    id: "financial-stability", title: "Financial stability", description: "System-level vulnerabilities, shocks, leverage, funding, and resilience concepts without producing market forecasts.", accent: "#7C6740", topics: [
+      topic("stability-definition", "Financial stability", "A stable financial system can continue providing financing and payment services even when it experiences adverse events. This is a system concept, not a forecast for a specific asset.", ["financial stability", "resilience", "system"], stability),
+      topic("shocks-vulnerabilities", "Shocks and vulnerabilities", "Shocks are difficult-to-predict adverse events, while vulnerabilities are conditions that can amplify stress. Monitoring frameworks separate the two concepts.", ["shock", "vulnerability", "stress"], stability),
+      topic("valuation-pressures", "Valuation pressures", "Valuation pressures describe situations where asset prices appear high relative to stated fundamentals or historical norms. They are a vulnerability lens, not a timing tool.", ["valuation", "asset prices", "risk appetite"], stability),
+      topic("borrower-vulnerabilities", "Borrowing vulnerabilities", "High debt burdens can make borrowers more vulnerable when income falls or asset values decline. The transmission to the broader economy depends on context.", ["debt", "household", "business"], stability),
+      topic("financial-sector-leverage", "Financial-sector leverage", "Leverage within financial institutions can make loss absorption more difficult and can contribute to asset sales or reduced lending under stress.", ["leverage", "financial sector", "loss absorption"], stability),
+      topic("funding-risks", "Funding risks and fire sales", "Funding risks can arise when investors can withdraw quickly from vehicles holding assets that are difficult to sell. Rapid sales can amplify price pressure in stress.", ["funding risk", "liquidity", "fire sale"], stability),
+    ],
+  },
+  {
+    id: "investor-recourse", title: "Investor recourse & records", description: "Complaint, arbitration, documentation, and dispute-process vocabulary for understanding available regulatory and forum processes.", accent: "#A65B48", topics: [
+      topic("question-unauthorized-activity", "Questioning unauthorized activity", "If an account transaction is not understood or appears unauthorized, the initial educational step is to identify the record, ask questions, and preserve relevant correspondence.", ["unauthorized trade", "confirmation", "records"], complaints),
+      topic("firm-escalation", "Firm escalation pathways", "A concern may be raised with a broker and, if unresolved, with the firm’s branch manager or compliance department. These are process vocabulary concepts, not legal advice.", ["branch manager", "compliance", "firm"], complaints),
+      topic("finra-complaint", "FINRA complaint program", "FINRA’s complaint program investigates complaints against brokerage firms and associated persons within its jurisdiction and may take disciplinary action.", ["FINRA complaint", "jurisdiction", "discipline"], complaints),
+      topic("arbitration-claim", "Arbitration claim basics", "An arbitration claim includes a statement of the dispute, parties, and requested relief under forum procedures. The process is distinct from a regulator complaint.", ["arbitration", "statement of claim", "dispute"], arbitration),
+      topic("discovery-hearing", "Discovery and hearing process", "In an arbitration process, parties exchange documents and identify witnesses before hearings where evidence and arguments are presented to arbitrators.", ["discovery", "hearing", "arbitrator"], arbitration),
+      topic("arbitration-award", "Arbitration awards", "An arbitration award is the forum decision after the process. It has specific procedural and review rules; learn the structure rather than assuming a particular outcome.", ["award", "arbitration", "forum"], arbitration),
+    ],
+  },
+  {
+    id: "securities-lending-distress", title: "Securities lending & distress", description: "Securities-lending mechanics and public-company distress or bankruptcy vocabulary, with clear risk and claim-priority boundaries.", accent: "#6D3B6F", topics: [
+      topic("securities-lending-basics", "Securities lending", "Securities lending temporarily transfers securities from a lender to a borrower for a fee. It is an institutional market practice with collateral and operational context.", ["securities lending", "borrower", "fee"], lending),
+      topic("lenders-borrowers", "Lenders and borrowers", "Large institutions often lend securities, while brokers and dealers can borrow for market making, customer activity, or operational needs. The ultimate borrower may not be visible to every participant.", ["lender", "broker-dealer", "market making"], lending),
+      topic("collateral-reinvestment", "Collateral and reinvestment", "Securities-lending arrangements can involve cash collateral and reinvestment. The arrangement’s terms, collateral, and risk controls are part of the structure.", ["collateral", "reinvestment", "securities loan"], lending),
+      topic("short-sale-connection", "Lending, short sales, and fails", "Borrowed securities can be used in market-making activity or in connection with short sales and fails to deliver. These are related operations, not interchangeable data labels.", ["short sale", "fails to deliver", "borrow"], lending),
+      topic("chapter-7-11", "Chapter 7 and Chapter 11", "Chapter 7 generally involves liquidation, while Chapter 11 seeks reorganization and debt restructuring under court supervision. Both are legal processes with different objectives.", ["Chapter 7", "Chapter 11", "reorganization"], bankruptcy),
+      topic("claim-priority-old-shares", "Claim priority and old shares", "In public-company bankruptcy, creditors generally rank ahead of common shareholders. Existing shares may continue to trade yet still face cancellation or little residual value under a reorganization plan.", ["claim priority", "common stock", "bankruptcy"], bankruptcy),
     ],
   },
 ];

@@ -37,3 +37,6 @@
 - [x] Add curated goal-based playlists for Market Basics, Filing Research, Risk Foundations, and Market Mechanics.
 - [x] Add downloadable offline study plans generated from playlists or catalog goals.
 - [x] Test the catalog-first navigation, expanded lesson index, adaptive review, playlists, and offline-plan generation.
+- [x] Research additional authoritative sources for market microstructure, securities operations, fund disclosures, corporate actions, financial stability, and investor protection.
+- [x] Integrate non-duplicative source-grounded topics and glossary coverage from the new research pass.
+- [x] Test the additional source-linked catalog topics and their discovery behavior.

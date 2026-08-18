@@ -85,3 +85,27 @@ The decision-hygiene track treats social-sentiment material as potentially incom
 [20]: https://www.investor.gov/introduction-investing/investing-basics/investment-accounts/tax-advantaged-accounts "Investor.gov — Tax-Advantaged Accounts"
 [21]: https://www.investor.gov/introduction-investing/general-resources/news-alerts/alerts-bulletins/investor-bulletins/how-read "Investor.gov — How to Read a 10-K/10-Q"
 [22]: https://www.finra.org/investors/insights/social-sentiment-investing-tools "FINRA — Social Sentiment Investing Tools"
+
+## Market Operations, Fund Disclosures, and Investor Recourse
+
+FINRA distinguishes temporary trading halts, opening delays, and SEC trading suspensions. Halts and delays can arise around material information or order imbalances, while the SEC may suspend trading for up to 10 business days when it finds that a suspension is required in the public interest and for investor protection.[23] The new lessons distinguish these terms and avoid treating a halt as a predictive signal.
+
+FINRA describes arbitration as a securities-dispute forum process with stages such as a claim, answer, arbitrator selection, discovery, hearings, and an award. The app presents this as general process vocabulary, not legal guidance.[24] FINRA’s complaint guidance also emphasizes questioning an unrecognized transaction, contacting the firm, and retaining correspondence; the relevant lessons explain documentation and escalation vocabulary without advising on an individual dispute.[25]
+
+The SEC’s 2025 Investor Bulletin explains that mutual-fund and ETF prospectuses use standardized fee tables; fees can include annual operating expenses and shareholder fees, while other trading or intermediary costs may not appear in the table.[26] The fund-disclosure topics therefore teach categories, source documents, and comparison boundaries rather than product selection.
+
+FINRA describes ACATS as an electronic account-transfer system and explains that manual transfers can take longer. Its customer-account-transfer discussion identifies a Transfer Initiation Form and an ACATS validation-or-exception process.[27] The app treats these as operations concepts, not instructions to transfer an account.
+
+The Federal Reserve describes payment and settlement systems as central to financial transactions, and explains its role in currency, check collection, ACH, and wholesale payment services.[28] Its financial-stability framework discusses four monitored vulnerability categories: valuation pressures, borrowing, financial-sector leverage, and funding risks.[29]
+
+Investor.gov explains that securities lending temporarily transfers securities for a fee, with institutional lenders and broker-dealer borrowers among the participants; the course distinguishes it from short interest and from a simple price view.[30] Its public-company bankruptcy bulletin explains Chapter 7 liquidation, Chapter 11 reorganization, the priority of claims, and the risks of confusing old shares with newly issued shares after a reorganization.[31]
+
+[23]: https://www.finra.org/investors/investing/investment-products/stocks/trading-halts-delays-suspensions "FINRA — Trading Halts, Delays and Suspensions"
+[24]: https://www.finra.org/arbitration-mediation/about/arbitration-process "FINRA — Arbitration Process"
+[25]: https://www.finra.org/investors/need-help/file-a-complaint "FINRA — File a Complaint"
+[26]: https://www.investor.gov/introduction-investing/general-resources/news-alerts/alerts-bulletins/investor-bulletins/mutual-fund-and-etf-fees-and-expenses-investor-bulletin "Investor.gov — Mutual Fund and ETF Fees and Expenses"
+[27]: https://www.finra.org/rules-guidance/key-topics/customer-account-transfers "FINRA — Customer Account Transfers"
+[28]: https://www.federalreserve.gov/aboutthefed/fedexplained/payment-systems.htm "Federal Reserve — Payment Systems"
+[29]: https://www.federalreserve.gov/publications/2026-may-financial-stability-report-purpose-and-framework.htm "Federal Reserve — Financial Stability Report: Purpose and Framework"
+[30]: https://www.investor.gov/introduction-investing/investing-basics/glossary/securities-lending "Investor.gov — Securities Lending"
+[31]: https://www.investor.gov/introduction-investing/general-resources/news-alerts/alerts-bulletins/investor-bulletins-84 "Investor.gov — Bankruptcy for a Public Company"
