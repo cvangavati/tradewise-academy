@@ -4,6 +4,7 @@ import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import { ScreenContainer } from "@/components/screen-container";
 import { Pill, ProgressBar, ui } from "@/components/tradewise-ui";
 import { courses, type Course } from "@/data/curriculum";
+import { microLessonCount } from "@/data/micro-curriculum";
 import { haptic } from "@/lib/haptics";
 import { learningProgress, useTradeWise } from "@/lib/tradewise-store";
 
@@ -24,6 +25,7 @@ export default function LearnScreen() {
             <Text style={ui.title}>Learn the whole process.</Text>
             <Text style={[ui.subtitle, styles.subtitle]}>Start with mechanics and risk, then explore company analysis, products, regulation, and market context. Every lesson includes a quick knowledge check.</Text>
             <View style={styles.overview}><View style={styles.overviewTop}><Text style={styles.overviewLabel}>COURSE COMPLETION</Text><Text style={styles.overviewPercent}>{progress}%</Text></View><ProgressBar value={progress} /><Text style={styles.overviewText}>{completedCount} lessons completed across {courses.length} skill areas</Text></View>
+            <Pressable onPress={() => { haptic.light(); router.push("/catalog" as never); }} style={({ pressed }) => [styles.catalog, pressed && styles.cardPressed]}><View><Text style={styles.catalogEyebrow}>NEW · {microLessonCount.toLocaleString()} MICRO-LESSONS</Text><Text style={styles.catalogTitle}>Open the complete lesson catalog</Text><Text style={styles.catalogText}>Search every topic through 24 short study lenses.</Text></View><Text style={styles.catalogArrow}>›</Text></Pressable>
             <Pressable onPress={() => { haptic.light(); router.push("/library" as never); }} style={({ pressed }) => [styles.atlas, pressed && styles.cardPressed]}><View><Text style={styles.atlasEyebrow}>NEW · REFERENCE LIBRARY</Text><Text style={styles.atlasTitle}>Browse the Stock Market Atlas</Text><Text style={styles.atlasText}>Search systems, products, disclosures, and risk concepts.</Text></View><Text style={styles.atlasArrow}>›</Text></Pressable>
           </View>
         }
@@ -64,6 +66,11 @@ const styles = StyleSheet.create({
   atlasTitle: { color: "#FFFFFF", fontSize: 17, fontWeight: "800", marginTop: 5 },
   atlasText: { color: "#C8D6E2", fontSize: 12, marginTop: 3 },
   atlasArrow: { color: "#82D8D1", fontSize: 28, fontWeight: "700", paddingLeft: 10 },
+  catalog: { backgroundColor: "#E6F2F8", borderRadius: 18, padding: 16, marginTop: 2, flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
+  catalogEyebrow: { color: "#4066B0", fontSize: 10, fontWeight: "800", letterSpacing: 0.8 },
+  catalogTitle: { color: "#183B4E", fontSize: 17, fontWeight: "800", marginTop: 5 },
+  catalogText: { color: "#526276", fontSize: 12, marginTop: 3 },
+  catalogArrow: { color: "#4066B0", fontSize: 28, fontWeight: "700", paddingLeft: 10 },
   card: { backgroundColor: "#FFFFFF", borderRadius: 22, padding: 18, borderWidth: 1, borderColor: "#E7E9EC", overflow: "hidden" },
   cardPressed: { opacity: 0.72, transform: [{ scale: 0.99 }] },
   cardTop: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },

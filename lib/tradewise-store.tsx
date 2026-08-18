@@ -16,6 +16,7 @@ export type TradeReflection = { id: string; activityId: string; scenarioId?: str
 
 export type TradeWiseState = {
   completedLessonIds: string[];
+  completedCatalogLessonIds: string[];
   cash: number;
   holdings: Holding[];
   activities: Activity[];
@@ -46,6 +47,7 @@ export type LearningAnalytics = {
 
 const defaultState: TradeWiseState = {
   completedLessonIds: [],
+  completedCatalogLessonIds: [],
   cash: startingCash,
   holdings: [],
   activities: [],
@@ -57,6 +59,7 @@ const defaultState: TradeWiseState = {
 type Store = TradeWiseState & {
   isReady: boolean;
   completeLesson: (lessonId: string, passedQuiz: boolean) => void;
+  completeCatalogLesson: (lessonId: string) => void;
   placeOrder: (action: "BUY" | "SELL", symbol: string, quantity: number) => { ok: boolean; message: string; activityId?: string };
   toggleTermBookmark: (term: string) => void;
   rateSavedTerm: (term: string, rating: ReviewRating) => void;
@@ -65,6 +68,7 @@ type Store = TradeWiseState & {
   portfolioValue: number;
   investedValue: number;
   completedCount: number;
+  catalogCompletedCount: number;
   nextLessonId: string;
   learningAnalytics: LearningAnalytics;
   dueTerms: SavedTerm[];
@@ -118,6 +122,15 @@ export function appendTradeReflection(state: TradeWiseState, reflection: Omit<Tr
   return {
     ...state,
     reflections: [{ ...reflection, id: `${now.getTime()}-${reflection.activityId}`, createdAt: now.toISOString() }, ...state.reflections].slice(0, 50),
+  };
+}
+
+export function markCatalogLessonComplete(state: TradeWiseState, lessonId: string): TradeWiseState {
+  return {
+    ...state,
+    completedCatalogLessonIds: state.completedCatalogLessonIds.includes(lessonId)
+      ? state.completedCatalogLessonIds
+      : [...state.completedCatalogLessonIds, lessonId],
   };
 }
 
@@ -195,6 +208,10 @@ export function TradeWiseProvider({ children }: PropsWithChildren) {
     }));
   }, []);
 
+  const completeCatalogLesson = useCallback((lessonId: string) => {
+    setState((current) => markCatalogLessonComplete(current, lessonId));
+  }, []);
+
   const placeOrder = useCallback((action: "BUY" | "SELL", symbol: string, quantity: number) => {
     const result = executeSimulatedOrder(state, action, symbol, quantity);
     if (result.ok) setState(result.nextState);
@@ -219,6 +236,7 @@ export function TradeWiseProvider({ children }: PropsWithChildren) {
     const investedValue = state.holdings.reduce((sum, holding) => sum + (quoteFor(holding.symbol)?.price ?? holding.averageCost) * holding.quantity, 0);
     const portfolioValue = state.cash + investedValue;
     const completedCount = state.completedLessonIds.length;
+    const catalogCompletedCount = state.completedCatalogLessonIds.length;
     const nextLessonId = courses.flatMap((course) => course.lessons).find((lesson) => !state.completedLessonIds.includes(lesson.id))?.id ?? courses[0].lessons[0].id;
     const learningAnalytics = getLearningAnalytics(state);
     const dueTerms = state.savedTerms.filter((term) => new Date(term.dueAt).getTime() <= Date.now());
@@ -226,6 +244,7 @@ export function TradeWiseProvider({ children }: PropsWithChildren) {
       ...state,
       isReady,
       completeLesson,
+      completeCatalogLesson,
       placeOrder,
       toggleTermBookmark,
       rateSavedTerm,
@@ -234,11 +253,12 @@ export function TradeWiseProvider({ children }: PropsWithChildren) {
       portfolioValue,
       investedValue,
       completedCount,
+      catalogCompletedCount,
       nextLessonId,
       learningAnalytics,
       dueTerms,
     };
-  }, [state, isReady, completeLesson, placeOrder, toggleTermBookmark, rateSavedTerm, addReflection, resetProgress]);
+  }, [state, isReady, completeLesson, completeCatalogLesson, placeOrder, toggleTermBookmark, rateSavedTerm, addReflection, resetProgress]);
 
   return <TradeWiseContext.Provider value={value}>{children}</TradeWiseContext.Provider>;
 }

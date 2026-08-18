@@ -7,6 +7,7 @@ import { executeSimulatedOrder, type TradeWiseState } from "../lib/tradewise-sto
 
 const cleanState: TradeWiseState = {
   completedLessonIds: [],
+  completedCatalogLessonIds: [],
   cash: 10_000,
   holdings: [],
   activities: [],

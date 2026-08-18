@@ -2,12 +2,14 @@ import { describe, expect, it } from "vitest";
 
 import { allGlossaryEntries, searchGlossary } from "../data/glossary";
 import { marketLabDisclosure, syntheticScenarios } from "../data/market-lab";
+import { getMicroLesson, microLessonCount, microLessons, searchMicroLessons } from "../data/micro-curriculum";
 import { referenceDomains, referenceTopicCount, searchReferenceTopics } from "../data/reference-library";
 import { nextReviewAt } from "../data/spaced-review";
-import { appendTradeReflection, applyReviewRating, getLearningAnalytics, toggleSavedTerm, type TradeWiseState } from "../lib/tradewise-store";
+import { appendTradeReflection, applyReviewRating, getLearningAnalytics, markCatalogLessonComplete, toggleSavedTerm, type TradeWiseState } from "../lib/tradewise-store";
 
 const learnerState: TradeWiseState = {
   completedLessonIds: ["stock-ownership", "order-language", "risk-first", "trend-structure"],
+  completedCatalogLessonIds: [],
   cash: 10_000,
   holdings: [],
   activities: [],
@@ -40,6 +42,27 @@ describe("Stock Market Atlas", () => {
     expect(searchReferenceTopics("SIPC").map((topic) => topic.title)).toContain("SIPC protection scope");
     expect(searchReferenceTopics("fraud", "governance-protection").every((topic) => topic.domain.id === "governance-protection")).toBe(true);
     expect(searchReferenceTopics("nonsensical phrase")).toHaveLength(0);
+  });
+});
+
+describe("2,000-plus lesson catalog", () => {
+  it("creates unique source-linked lessons across the full Atlas and supports scalable search", () => {
+    expect(microLessonCount).toBeGreaterThanOrEqual(2000);
+    expect(microLessons).toHaveLength(microLessonCount);
+    expect(new Set(microLessons.map((lesson) => lesson.id)).size).toBe(microLessonCount);
+    expect(getMicroLesson(microLessons[0].id)?.source.url).toMatch(/^https:\/\//);
+    expect(searchMicroLessons("SIPC").length).toBeGreaterThanOrEqual(24);
+    expect(searchMicroLessons("nonsensical phrase")).toHaveLength(0);
+  });
+
+  it("keeps catalog completion separate from core lesson completion and avoids duplicates", () => {
+    const lessonId = microLessons[0].id;
+    const once = markCatalogLessonComplete(learnerState, lessonId);
+    const twice = markCatalogLessonComplete(once, lessonId);
+
+    expect(once.completedCatalogLessonIds).toEqual([lessonId]);
+    expect(twice.completedCatalogLessonIds).toEqual([lessonId]);
+    expect(twice.completedLessonIds).toEqual(learnerState.completedLessonIds);
   });
 });
 

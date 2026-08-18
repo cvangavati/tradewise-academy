@@ -27,3 +27,7 @@
 - [x] Add specialized Atlas domains for securities issuance, market data, ownership structures, portfolio measurement, global markets, and additional investor-protection concepts.
 - [x] Expand glossary support for the newly added advanced topics.
 - [x] Test and validate the enlarged Atlas taxonomy and specialized topic search.
+- [x] Design a 2,000-plus lesson architecture with coherent families, levels, lesson templates, and source attribution rules.
+- [x] Generate and validate a 2,000-plus lesson source-grounded curriculum index and lesson catalog.
+- [x] Add scalable curriculum discovery, search, and lesson detail delivery for the new catalog.
+- [x] Test the large lesson catalog, search behavior, and learning-state compatibility.
