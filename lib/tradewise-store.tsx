@@ -4,12 +4,15 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState, t
 import { courses, totalLessons } from "../data/curriculum";
 import { syntheticScenarios } from "../data/market-lab";
 import { simulatedWatchlist } from "../data/practice";
+import { nextReviewAt, type ReviewRating } from "../data/spaced-review";
 
 const STORAGE_KEY = "tradewise-academy-state-v1";
 const startingCash = 10_000;
 
 export type Holding = { symbol: string; name: string; quantity: number; averageCost: number };
-export type Activity = { id: string; action: "BUY" | "SELL"; symbol: string; quantity: number; price: number; timestamp: string };
+export type Activity = { id: string; action: "BUY" | "SELL"; symbol: string; quantity: number; price: number; timestamp: string; scenarioId?: string };
+export type SavedTerm = { term: string; savedAt: string; dueAt: string; reviewCount: number };
+export type TradeReflection = { id: string; activityId: string; scenarioId?: string; thesis: string; discipline: string; emotion: string; lesson: string; createdAt: string };
 
 export type TradeWiseState = {
   completedLessonIds: string[];
@@ -17,6 +20,8 @@ export type TradeWiseState = {
   holdings: Holding[];
   activities: Activity[];
   quizScores: Record<string, boolean>;
+  savedTerms: SavedTerm[];
+  reflections: TradeReflection[];
 };
 
 export type CourseProgress = {
@@ -45,18 +50,24 @@ const defaultState: TradeWiseState = {
   holdings: [],
   activities: [],
   quizScores: {},
+  savedTerms: [],
+  reflections: [],
 };
 
 type Store = TradeWiseState & {
   isReady: boolean;
   completeLesson: (lessonId: string, passedQuiz: boolean) => void;
-  placeOrder: (action: "BUY" | "SELL", symbol: string, quantity: number) => { ok: boolean; message: string };
+  placeOrder: (action: "BUY" | "SELL", symbol: string, quantity: number) => { ok: boolean; message: string; activityId?: string };
+  toggleTermBookmark: (term: string) => void;
+  rateSavedTerm: (term: string, rating: ReviewRating) => void;
+  addReflection: (reflection: Omit<TradeReflection, "id" | "createdAt">) => void;
   resetProgress: () => void;
   portfolioValue: number;
   investedValue: number;
   completedCount: number;
   nextLessonId: string;
   learningAnalytics: LearningAnalytics;
+  dueTerms: SavedTerm[];
 };
 
 const TradeWiseContext = createContext<Store | null>(null);
@@ -87,6 +98,29 @@ export function getLearningAnalytics(state: Pick<TradeWiseState, "completedLesso
   return { completedCount: state.completedLessonIds.length, quizAttempts, quizCorrect, quizAccuracy: quizAttempts ? Math.round((quizCorrect / quizAttempts) * 100) : 0, courseProgress };
 }
 
+export function toggleSavedTerm(state: TradeWiseState, term: string, now = new Date()): TradeWiseState {
+  const existing = state.savedTerms.find((item) => item.term === term);
+  if (existing) return { ...state, savedTerms: state.savedTerms.filter((item) => item.term !== term) };
+  const timestamp = now.toISOString();
+  return { ...state, savedTerms: [...state.savedTerms, { term, savedAt: timestamp, dueAt: timestamp, reviewCount: 0 }] };
+}
+
+export function applyReviewRating(state: TradeWiseState, term: string, rating: ReviewRating, now = new Date()): TradeWiseState {
+  return {
+    ...state,
+    savedTerms: state.savedTerms.map((item) => item.term === term
+      ? { ...item, dueAt: nextReviewAt(rating, now), reviewCount: item.reviewCount + 1 }
+      : item),
+  };
+}
+
+export function appendTradeReflection(state: TradeWiseState, reflection: Omit<TradeReflection, "id" | "createdAt">, now = new Date()): TradeWiseState {
+  return {
+    ...state,
+    reflections: [{ ...reflection, id: `${now.getTime()}-${reflection.activityId}`, createdAt: now.toISOString() }, ...state.reflections].slice(0, 50),
+  };
+}
+
 export function executeSimulatedOrder(state: TradeWiseState, action: "BUY" | "SELL", symbol: string, quantity: number, now = new Date()): { nextState: TradeWiseState; ok: boolean; message: string } {
   const quote = quoteFor(symbol);
   if (!quote || !Number.isInteger(quantity) || quantity <= 0) return { nextState: state, ok: false, message: "Enter a whole-share quantity greater than zero." };
@@ -103,6 +137,7 @@ export function executeSimulatedOrder(state: TradeWiseState, action: "BUY" | "SE
     quantity,
     price: quote.price,
     timestamp: now.toISOString(),
+    scenarioId: syntheticScenarios.find((scenario) => scenario.symbol === symbol)?.id,
   };
 
   const holdings = action === "BUY"
@@ -163,8 +198,20 @@ export function TradeWiseProvider({ children }: PropsWithChildren) {
   const placeOrder = useCallback((action: "BUY" | "SELL", symbol: string, quantity: number) => {
     const result = executeSimulatedOrder(state, action, symbol, quantity);
     if (result.ok) setState(result.nextState);
-    return { ok: result.ok, message: result.message };
+    return { ok: result.ok, message: result.message, activityId: result.ok ? result.nextState.activities[0]?.id : undefined };
   }, [state]);
+
+  const toggleTermBookmark = useCallback((term: string) => {
+    setState((current) => toggleSavedTerm(current, term));
+  }, []);
+
+  const rateSavedTerm = useCallback((term: string, rating: ReviewRating) => {
+    setState((current) => applyReviewRating(current, term, rating));
+  }, []);
+
+  const addReflection = useCallback((reflection: Omit<TradeReflection, "id" | "createdAt">) => {
+    setState((current) => appendTradeReflection(current, reflection));
+  }, []);
 
   const resetProgress = useCallback(() => setState(defaultState), []);
 
@@ -174,19 +221,24 @@ export function TradeWiseProvider({ children }: PropsWithChildren) {
     const completedCount = state.completedLessonIds.length;
     const nextLessonId = courses.flatMap((course) => course.lessons).find((lesson) => !state.completedLessonIds.includes(lesson.id))?.id ?? courses[0].lessons[0].id;
     const learningAnalytics = getLearningAnalytics(state);
+    const dueTerms = state.savedTerms.filter((term) => new Date(term.dueAt).getTime() <= Date.now());
     return {
       ...state,
       isReady,
       completeLesson,
       placeOrder,
+      toggleTermBookmark,
+      rateSavedTerm,
+      addReflection,
       resetProgress,
       portfolioValue,
       investedValue,
       completedCount,
       nextLessonId,
       learningAnalytics,
+      dueTerms,
     };
-  }, [state, isReady, completeLesson, placeOrder, resetProgress]);
+  }, [state, isReady, completeLesson, placeOrder, toggleTermBookmark, rateSavedTerm, addReflection, resetProgress]);
 
   return <TradeWiseContext.Provider value={value}>{children}</TradeWiseContext.Provider>;
 }

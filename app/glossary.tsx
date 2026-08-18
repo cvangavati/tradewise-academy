@@ -6,12 +6,14 @@ import { ScreenContainer } from "@/components/screen-container";
 import { Pill, ui } from "@/components/tradewise-ui";
 import { glossaryCategories, glossarySource, searchGlossary, type GlossaryCategory, type GlossaryEntry } from "@/data/glossary";
 import { haptic } from "@/lib/haptics";
+import { useTradeWise } from "@/lib/tradewise-store";
 
 type Filter = "All" | GlossaryCategory;
 
 export default function GlossaryScreen() {
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<Filter>("All");
+  const { savedTerms, toggleTermBookmark } = useTradeWise();
   const entries = useMemo(() => searchGlossary(query, filter), [filter, query]);
   const filters: Filter[] = ["All", ...glossaryCategories];
 
@@ -22,8 +24,8 @@ export default function GlossaryScreen() {
         keyExtractor={(entry) => entry.term}
         contentContainerStyle={ui.content}
         showsVerticalScrollIndicator={false}
-        ListHeaderComponent={<View style={styles.header}><Pressable onPress={() => router.back()} style={({ pressed }) => [styles.back, pressed && styles.pressed]}><Text style={styles.backText}>‹  Profile</Text></Pressable><Text style={ui.eyebrow}>Reference library</Text><Text style={ui.title}>Trading glossary</Text><Text style={ui.subtitle}>Search plain-language definitions across market mechanics, risk, analysis, orders, and options.</Text><TextInput value={query} onChangeText={setQuery} placeholder="Search a term, e.g. stop order" placeholderTextColor="#8B98A6" returnKeyType="search" style={styles.search} /><FlatList horizontal data={filters} keyExtractor={(item) => item} showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filterList} renderItem={({ item }) => <Pressable onPress={() => { haptic.selection(); setFilter(item); }} style={({ pressed }) => [styles.filter, filter === item && styles.filterActive, pressed && styles.pressed]}><Text style={[styles.filterLabel, filter === item && styles.filterLabelActive]}>{item}</Text></Pressable>} /><Text style={styles.resultCount}>{entries.length} terms</Text></View>}
-        renderItem={({ item }) => <GlossaryCard entry={item} />}
+        ListHeaderComponent={<View style={styles.header}><Pressable onPress={() => router.back()} style={({ pressed }) => [styles.back, pressed && styles.pressed]}><Text style={styles.backText}>‹  Profile</Text></Pressable><Text style={ui.eyebrow}>Reference library</Text><Text style={ui.title}>Trading glossary</Text><Text style={ui.subtitle}>Search plain-language definitions across market mechanics, financial systems, risk, analysis, orders, and options.</Text><TextInput value={query} onChangeText={setQuery} placeholder="Search a term, e.g. settlement" placeholderTextColor="#8B98A6" returnKeyType="search" style={styles.search} /><FlatList horizontal data={filters} keyExtractor={(item) => item} showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filterList} renderItem={({ item }) => <Pressable onPress={() => { haptic.selection(); setFilter(item); }} style={({ pressed }) => [styles.filter, filter === item && styles.filterActive, pressed && styles.pressed]}><Text style={[styles.filterLabel, filter === item && styles.filterLabelActive]}>{item}</Text></Pressable>} /><View style={styles.resultRow}><Text style={styles.resultCount}>{entries.length} terms</Text><Pressable onPress={() => router.push("/review" as never)} style={({ pressed }) => [styles.reviewLink, pressed && styles.pressed]}><Text style={styles.reviewLinkText}>Review {savedTerms.length} saved ›</Text></Pressable></View></View>}
+        renderItem={({ item }) => <GlossaryCard entry={item} saved={savedTerms.some((saved) => saved.term === item.term)} onToggle={() => toggleTermBookmark(item.term)} />}
         ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
         ListEmptyComponent={<View style={styles.empty}><Text style={styles.emptyTitle}>No matching term</Text><Text style={styles.emptyText}>Try a different word or reset the category filter.</Text></View>}
         ListFooterComponent={<View style={styles.source}><Text style={styles.sourceTitle}>Learning source note</Text><Text style={styles.sourceText}>{glossarySource.label}</Text><Text style={styles.sourceUrl}>{glossarySource.urls.join("\n")}</Text></View>}
@@ -32,8 +34,8 @@ export default function GlossaryScreen() {
   );
 }
 
-function GlossaryCard({ entry }: { entry: GlossaryEntry }) {
-  return <View style={styles.card}><View style={styles.cardTop}><Text style={styles.term}>{entry.term}</Text><Pill label={entry.category} tone={entry.category === "Risk" ? "coral" : entry.category === "Options" ? "navy" : "teal"} /></View><Text style={styles.definition}>{entry.definition}</Text><Text style={styles.related}>Related: {entry.relatedCourse}</Text></View>;
+function GlossaryCard({ entry, saved, onToggle }: { entry: GlossaryEntry; saved: boolean; onToggle: () => void }) {
+  return <View style={styles.card}><View style={styles.cardTop}><Text style={styles.term}>{entry.term}</Text><Pill label={entry.category} tone={entry.category === "Risk" ? "coral" : entry.category === "Options" ? "navy" : "teal"} /></View><Text style={styles.definition}>{entry.definition}</Text><View style={styles.cardFooter}><Text style={styles.related}>Related: {entry.relatedCourse}</Text><Pressable onPress={() => { haptic.selection(); onToggle(); }} style={({ pressed }) => [styles.bookmark, saved && styles.bookmarkSaved, pressed && styles.pressed]}><Text style={[styles.bookmarkText, saved && styles.bookmarkTextSaved]}>{saved ? "Saved" : "Save"}</Text></Pressable></View></View>;
 }
 
 const styles = StyleSheet.create({
@@ -46,12 +48,20 @@ const styles = StyleSheet.create({
   filterActive: { backgroundColor: "#10243E", borderColor: "#10243E" },
   filterLabel: { color: "#526276", fontSize: 12, fontWeight: "800" },
   filterLabelActive: { color: "#FFFFFF" },
-  resultCount: { color: "#657488", fontSize: 12, fontWeight: "700", marginTop: 6, marginBottom: 13 },
+  resultRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 6, marginBottom: 13 },
+  resultCount: { color: "#657488", fontSize: 12, fontWeight: "700" },
+  reviewLink: { paddingVertical: 5, paddingLeft: 8 },
+  reviewLinkText: { color: "#007C78", fontSize: 12, fontWeight: "800" },
   card: { backgroundColor: "#FFFFFF", borderRadius: 18, borderWidth: 1, borderColor: "#E4E9ED", padding: 16, gap: 8 },
   cardTop: { flexDirection: "row", alignItems: "flex-start", justifyContent: "space-between", gap: 12 },
   term: { color: "#10243E", fontSize: 17, lineHeight: 22, fontWeight: "800", flex: 1 },
   definition: { color: "#46596C", fontSize: 14, lineHeight: 21 },
+  cardFooter: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 10 },
   related: { color: "#007C78", fontSize: 12, fontWeight: "800", marginTop: 1 },
+  bookmark: { borderRadius: 999, paddingHorizontal: 11, paddingVertical: 6, backgroundColor: "#F0F3F5" },
+  bookmarkSaved: { backgroundColor: "#DDF0ED" },
+  bookmarkText: { color: "#526276", fontSize: 11, fontWeight: "800" },
+  bookmarkTextSaved: { color: "#007C78" },
   empty: { backgroundColor: "#FFFFFF", borderWidth: 1, borderColor: "#E4E9ED", borderRadius: 18, padding: 20, alignItems: "center" },
   emptyTitle: { color: "#10243E", fontSize: 16, fontWeight: "800" },
   emptyText: { color: "#657488", fontSize: 13, marginTop: 4 },

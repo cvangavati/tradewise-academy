@@ -19,10 +19,12 @@ The experience is designed for **portrait 9:16 usage** with one-handed interacti
 | Progress Dashboard | Visual course completion, quiz accuracy, recent activity, and a course-by-course proficiency view. |
 | Glossary | Searchable alphabetical trading terminology, categories, plain-language definitions, and related lesson links. |
 | Market Lab | Scenario selector, synthetic chart movement, event cards, and a simulated trade ticket that deliberately uses no live data. |
+| Saved Terms Review | A focused spaced-repetition queue for bookmarked glossary definitions, with a simple recall rating that schedules the next local review. |
+| Trade Reflection | A compact post-trade journal sheet for recording the thesis, discipline, emotion, outcome, and next-process improvement on a simulated trade. |
 
 ## Primary Navigation and Layout
 
-The bottom tab bar contains **Today, Learn, Practice, and Profile**. Portfolio information is reached from the Practice screen in a pushed detail view, keeping the top-level navigation focused and reachable with the thumb. Today uses a vertical scroll with the next lesson and a small practice summary above the fold. Learn uses filtered course cards with clear difficulty and duration metadata. Practice begins with the paper account and then exposes tools in a segmented layout to minimize screen changes. The Profile screen provides one-handed links to the **Progress Dashboard** and **Glossary**, while Practice leads to **Market Lab**.
+The bottom tab bar contains **Today, Learn, Practice, and Profile**. Portfolio information is reached from the Practice screen in a pushed detail view, keeping the top-level navigation focused and reachable with the thumb. Today uses a vertical scroll with the next lesson and a small practice summary above the fold. Learn uses grouped curriculum tracks with clear beginner-to-advanced labels, duration metadata, and a visible “what you will learn” summary. Practice begins with the paper account and then exposes tools in a segmented layout to minimize screen changes. The Profile screen provides one-handed links to the **Progress Dashboard**, **Glossary**, and **Saved Terms Review**, while Practice leads to **Market Lab**.
 
 Cards use a calm near-white canvas with slate text and a deep navy hierarchy. A directional emerald color is reserved for learning progress and simulated gains; coral is reserved for downside or validation errors. Charts are intentionally high contrast, with educational annotations rather than a live-market visual density.
 
@@ -38,6 +40,8 @@ Cards use a calm near-white canvas with slate text and a deep navy hierarchy. A 
 | Understand a term | Profile → Glossary → type a term or select a category → scan the definition and related learning topic. |
 | Review learning quality | Profile → Progress Dashboard → view lesson completion, quiz accuracy, and course-by-course progress. |
 | Rehearse a market regime | Practice → Market Lab → select synthetic scenario → inspect an illustrative trend and event context → enter a cash-only simulated order. |
+| Retain a new term | Glossary → bookmark a definition → Profile → Saved Terms Review → recall the definition → mark it as again, good, or easy → next local review is scheduled. |
+| Reflect after a scenario trade | Market Lab → submit a cash-only synthetic order → open Trade Reflection → record thesis, discipline, emotion, and next improvement → journal entry appears in the local record. |
 
 ## Visual Language
 

@@ -52,6 +52,32 @@ export const syntheticScenarios: SyntheticScenario[] = [
     volumes: [58, 55, 49, 47, 45, 41, 40, 37, 35, 34, 33, 31, 30, 28, 27, 25],
     startingCash: 10_000,
   },
+  {
+    id: "earnings-gap",
+    title: "Earnings gap",
+    symbol: "LUMEN",
+    regime: "Event-driven repricing",
+    description: "A hand-authored scenario where a simulated company report produces an overnight gap, heavy opening activity, and a volatile attempt to establish a new range. Practice separating a narrative from an executable plan.",
+    lesson: "Catalysts, gaps, and execution risk",
+    event: "Synthetic earnings narrative: the company reports stronger revenue but provides uncertain forward commentary.",
+    color: "#B66A22",
+    prices: [82, 83, 82.5, 84, 83, 85, 86, 102, 108, 104, 111, 107, 113, 109, 115, 112],
+    volumes: [31, 28, 30, 35, 32, 38, 42, 168, 182, 141, 157, 128, 133, 109, 121, 98],
+    startingCash: 10_000,
+  },
+  {
+    id: "sector-rotation",
+    title: "Sector rotation",
+    symbol: "NORTH",
+    regime: "Relative-strength shift",
+    description: "A hand-authored scenario that depicts a gradual shift in simulated capital preference after a macro narrative changes. Practice distinguishing a sector framework from a signal to buy or sell.",
+    lesson: "Sectors and business cycles",
+    event: "Synthetic macro narrative: input costs stabilize while rate expectations change across the simulated economy.",
+    color: "#775CB5",
+    prices: [64, 63.5, 64.2, 65, 64.6, 66, 67.5, 68, 69.2, 70.4, 69.8, 71.6, 73, 72.5, 74.4, 76],
+    volumes: [43, 39, 42, 46, 44, 49, 55, 61, 68, 75, 64, 82, 90, 73, 98, 107],
+    startingCash: 10_000,
+  },
 ];
 
 export const marketLabDisclosure = "Every Market Lab chart, symbol, price, volume bar, and event is hand-authored for education. It is synthetic, delayed by design, and does not represent live, historical, or forecast market data.";

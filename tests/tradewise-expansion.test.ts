@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
 
-import { searchGlossary } from "../data/glossary";
+import { allGlossaryEntries, searchGlossary } from "../data/glossary";
 import { marketLabDisclosure, syntheticScenarios } from "../data/market-lab";
-import { getLearningAnalytics, type TradeWiseState } from "../lib/tradewise-store";
+import { nextReviewAt } from "../data/spaced-review";
+import { appendTradeReflection, applyReviewRating, getLearningAnalytics, toggleSavedTerm, type TradeWiseState } from "../lib/tradewise-store";
 
 const learnerState: TradeWiseState = {
   completedLessonIds: ["stock-ownership", "order-language", "risk-first", "trend-structure"],
@@ -15,13 +16,37 @@ const learnerState: TradeWiseState = {
     "risk-first": true,
     "trend-structure": true,
   },
+  savedTerms: [],
+  reflections: [],
 };
 
 describe("searchable glossary", () => {
   it("searches across terms and definitions while honoring categories", () => {
     expect(searchGlossary("stop order").map((entry) => entry.term)).toContain("Stop order");
     expect(searchGlossary("price", "Options").every((entry) => entry.category === "Options")).toBe(true);
+    expect(searchGlossary("settlement").map((entry) => entry.term)).toContain("Settlement");
+    expect(allGlossaryEntries.length).toBeGreaterThanOrEqual(90);
     expect(searchGlossary("nonexistent phrase")).toHaveLength(0);
+  });
+});
+
+describe("spaced review scheduling", () => {
+  it("uses clear local review intervals for again, good, and easy ratings", () => {
+    const base = new Date("2026-08-18T12:00:00.000Z");
+    expect(nextReviewAt("again", base)).toBe("2026-08-19T12:00:00.000Z");
+    expect(nextReviewAt("good", base)).toBe("2026-08-21T12:00:00.000Z");
+    expect(nextReviewAt("easy", base)).toBe("2026-08-25T12:00:00.000Z");
+  });
+
+  it("bookmarks terms locally and updates review state without changing learning history", () => {
+    const saved = toggleSavedTerm(learnerState, "Settlement", new Date("2026-08-18T12:00:00.000Z"));
+    const reviewed = applyReviewRating(saved, "Settlement", "easy", new Date("2026-08-18T12:00:00.000Z"));
+    const removed = toggleSavedTerm(reviewed, "Settlement");
+
+    expect(saved.savedTerms[0]).toMatchObject({ term: "Settlement", reviewCount: 0 });
+    expect(reviewed.savedTerms[0]).toMatchObject({ reviewCount: 1, dueAt: "2026-08-25T12:00:00.000Z" });
+    expect(removed.savedTerms).toHaveLength(0);
+    expect(removed.completedLessonIds).toEqual(learnerState.completedLessonIds);
   });
 });
 
@@ -40,9 +65,26 @@ describe("learning analytics", () => {
 
 describe("Market Lab", () => {
   it("uses clearly disclosed, hand-authored synthetic scenarios", () => {
-    expect(syntheticScenarios).toHaveLength(3);
+    expect(syntheticScenarios).toHaveLength(5);
+    expect(syntheticScenarios.map((scenario) => scenario.id)).toEqual(expect.arrayContaining(["earnings-gap", "sector-rotation"]));
     expect(syntheticScenarios.every((scenario) => scenario.prices.length === scenario.volumes.length && scenario.prices.length > 10)).toBe(true);
     expect(marketLabDisclosure.toLowerCase()).toContain("synthetic");
     expect(marketLabDisclosure.toLowerCase()).toContain("does not represent live");
+  });
+});
+
+describe("post-trade reflections", () => {
+  it("attaches an explanatory local journal entry to a simulated scenario order", () => {
+    const withReflection = appendTradeReflection(learnerState, {
+      activityId: "synthetic-order-1",
+      scenarioId: "earnings-gap",
+      thesis: "Wait for an opening range before acting.",
+      discipline: "Used a small simulated size.",
+      emotion: "Curious but patient.",
+      lesson: "Event volatility needs an invalidation plan.",
+    }, new Date("2026-08-18T12:00:00.000Z"));
+
+    expect(withReflection.reflections[0]).toMatchObject({ activityId: "synthetic-order-1", scenarioId: "earnings-gap", createdAt: "2026-08-18T12:00:00.000Z" });
+    expect(withReflection.reflections[0].lesson).toContain("invalidation");
   });
 });

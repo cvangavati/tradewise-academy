@@ -23,7 +23,7 @@ export default function LearnScreen() {
             <Text style={ui.eyebrow}>Structured curriculum</Text>
             <Text style={ui.title}>Learn the whole process.</Text>
             <Text style={[ui.subtitle, styles.subtitle]}>Start with mechanics and risk, then compare major methodologies. Every lesson includes a quick knowledge check.</Text>
-            <View style={styles.overview}><View style={styles.overviewTop}><Text style={styles.overviewLabel}>COURSE COMPLETION</Text><Text style={styles.overviewPercent}>{progress}%</Text></View><ProgressBar value={progress} /><Text style={styles.overviewText}>{completedCount} lessons completed across six skill areas</Text></View>
+            <View style={styles.overview}><View style={styles.overviewTop}><Text style={styles.overviewLabel}>COURSE COMPLETION</Text><Text style={styles.overviewPercent}>{progress}%</Text></View><ProgressBar value={progress} /><Text style={styles.overviewText}>{completedCount} lessons completed across {courses.length} skill areas</Text></View>
           </View>
         }
         renderItem={({ item }) => <CourseCard course={item} completedLessonIds={completedLessonIds} />}

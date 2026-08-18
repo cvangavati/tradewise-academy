@@ -14,3 +14,9 @@
 - [x] Add a visual progress dashboard for completed lessons, quiz accuracy, and course-level progress.
 - [x] Add synthetic, trend-inspired market scenarios and chart movement with no live or real-market data.
 - [x] Test and validate the glossary search, progress calculations, and synthetic simulator behavior.
+- [x] Expand the learning content to cover market structure, financial systems, instruments, and analytical frameworks more comprehensively.
+- [x] Refine navigation and learning surfaces for a more user-friendly mobile experience.
+- [x] Add local glossary bookmarking and a spaced-repetition review queue for saved terms.
+- [x] Add synthetic earnings-gap and sector-rotation Market Lab scenarios with clear no-real-data disclosure.
+- [x] Add local post-trade reflection journaling to Market Lab simulated trades.
+- [x] Test and validate the expanded curriculum, bookmarking review schedule, journaling, and synthetic scenarios.

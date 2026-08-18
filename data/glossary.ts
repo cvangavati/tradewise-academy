@@ -71,6 +71,44 @@ export const glossaryEntries: GlossaryEntry[] = [
   { term: "Volatility", definition: "The degree of price variation over time; higher volatility can increase both opportunity and the risk of large moves.", category: "Risk", relatedCourse: "Risk & Trade Process" },
 ];
 
+export const extendedGlossaryEntries: GlossaryEntry[] = [
+  { term: "Alternative trading system (ATS)", definition: "An SEC-regulated trading system that can match securities orders while operating under an exemption from registering as a national securities exchange.", category: "Market mechanics", relatedCourse: "Market Structure & Trade Lifecycle" },
+  { term: "Assets", definition: "Resources a company owns or controls that are expected to provide value, such as cash, inventory, equipment, or investments.", category: "Fundamental analysis", relatedCourse: "Company Reporting & Capital Structure" },
+  { term: "Book value", definition: "The accounting value of a company’s equity after subtracting liabilities from assets, subject to the limits of accounting measurements.", category: "Fundamental analysis", relatedCourse: "Company Reporting & Capital Structure" },
+  { term: "Broker-dealer", definition: "A firm that handles securities transactions for customers and may also trade from its own inventory, subject to applicable rules.", category: "Market mechanics", relatedCourse: "Market Structure & Trade Lifecycle" },
+  { term: "Capital structure", definition: "The mix of financing claims a company uses, commonly including debt and different forms of equity.", category: "Fundamental analysis", relatedCourse: "Financial Systems" },
+  { term: "Clearing agency", definition: "A registered market-infrastructure organization that helps compare, clear, and prepare securities transactions for settlement.", category: "Market mechanics", relatedCourse: "Market Structure & Trade Lifecycle" },
+  { term: "Coupon", definition: "The stated interest payment rate on a bond, usually expressed as a percentage of face value.", category: "Fundamental analysis", relatedCourse: "Investment Vehicles & Instruments" },
+  { term: "Credit spread", definition: "The difference in yield between a debt instrument and a chosen benchmark, often used as one indicator of perceived credit risk and liquidity conditions.", category: "Risk", relatedCourse: "Financial Systems" },
+  { term: "Current assets", definition: "Assets a company expects to convert to cash, sell, or use within one year or its operating cycle.", category: "Fundamental analysis", relatedCourse: "Company Reporting & Capital Structure" },
+  { term: "Current liabilities", definition: "Obligations a company expects to settle within one year or its operating cycle.", category: "Fundamental analysis", relatedCourse: "Company Reporting & Capital Structure" },
+  { term: "Custody", definition: "The safeguarding and recordkeeping function for client assets and securities positions.", category: "Market mechanics", relatedCourse: "Market Structure & Trade Lifecycle" },
+  { term: "Debt-to-equity ratio", definition: "A leverage ratio that compares a company’s debt with its shareholders’ equity under a stated accounting basis.", category: "Fundamental analysis", relatedCourse: "Financial Systems" },
+  { term: "Dilution", definition: "A reduction in an existing shareholder’s proportional ownership when additional shares are issued, subject to the transaction’s terms and effects.", category: "Fundamental analysis", relatedCourse: "Company Reporting & Capital Structure" },
+  { term: "Duration", definition: "A measure of a bond’s sensitivity to changes in interest rates, based on the timing and size of expected cash flows.", category: "Risk", relatedCourse: "Investment Vehicles & Instruments" },
+  { term: "Enterprise value", definition: "A valuation framework that starts with equity market value and adjusts for debt, cash, and other claims according to the selected convention.", category: "Fundamental analysis", relatedCourse: "Fundamental Analysis" },
+  { term: "Exchange", definition: "A regulated market venue where securities can be bought and sold under a defined rulebook.", category: "Market mechanics", relatedCourse: "Market Structure & Trade Lifecycle" },
+  { term: "Free cash flow", definition: "A cash-flow measure often defined as operating cash flow less capital expenditures; definitions can vary and should be checked.", category: "Fundamental analysis", relatedCourse: "Company Reporting & Capital Structure" },
+  { term: "Gross margin", definition: "Gross profit divided by revenue, showing the portion of revenue remaining after direct costs of sales under the company’s reporting method.", category: "Fundamental analysis", relatedCourse: "Company Reporting & Capital Structure" },
+  { term: "Index", definition: "A calculated measure designed to represent the performance of a defined group of securities or other assets.", category: "Market mechanics", relatedCourse: "Macro & Cross-Asset Context" },
+  { term: "Initial public offering (IPO)", definition: "The first public sale of a company’s shares, subject to the offering terms and securities-law disclosures.", category: "Market mechanics", relatedCourse: "Company Reporting & Capital Structure" },
+  { term: "Liabilities", definition: "Amounts a company owes to others, including loans, supplier obligations, accrued expenses, and future performance obligations.", category: "Fundamental analysis", relatedCourse: "Company Reporting & Capital Structure" },
+  { term: "Maturity", definition: "The date on which a debt instrument’s principal is scheduled to be repaid, subject to its contract terms.", category: "Fundamental analysis", relatedCourse: "Investment Vehicles & Instruments" },
+  { term: "Money market fund", definition: "A type of pooled fund that generally invests in short-term debt instruments and has risks and rules distinct from a bank deposit account.", category: "Risk", relatedCourse: "Investment Vehicles & Instruments" },
+  { term: "Mutual fund", definition: "A pooled investment vehicle that issues and redeems shares according to its structure and may hold a portfolio of assets.", category: "Fundamental analysis", relatedCourse: "Investment Vehicles & Instruments" },
+  { term: "Operating margin", definition: "Operating income divided by revenue, showing operating profitability under a defined reporting basis.", category: "Fundamental analysis", relatedCourse: "Company Reporting & Capital Structure" },
+  { term: "Primary market", definition: "The market in which an issuer sells newly created securities to raise capital.", category: "Market mechanics", relatedCourse: "Market Structure & Trade Lifecycle" },
+  { term: "Real estate investment trust (REIT)", definition: "A company or trust structure that owns, finances, or operates income-producing real estate under specific legal and tax rules.", category: "Fundamental analysis", relatedCourse: "Investment Vehicles & Instruments" },
+  { term: "Secondary market", definition: "The market in which existing securities are traded among investors after issuance.", category: "Market mechanics", relatedCourse: "Market Structure & Trade Lifecycle" },
+  { term: "Settlement", definition: "The completion of a securities transaction through the exchange of securities and cash obligations under applicable rules.", category: "Market mechanics", relatedCourse: "Market Structure & Trade Lifecycle" },
+  { term: "Shareholders’ equity", definition: "The residual interest in a company’s assets after liabilities are deducted; it represents the accounting claim of owners.", category: "Fundamental analysis", relatedCourse: "Company Reporting & Capital Structure" },
+  { term: "Treasury stock", definition: "A company’s own shares that it has repurchased and holds, rather than shares currently outstanding with investors.", category: "Fundamental analysis", relatedCourse: "Company Reporting & Capital Structure" },
+  { term: "Working capital", definition: "A liquidity measure commonly calculated as current assets minus current liabilities.", category: "Fundamental analysis", relatedCourse: "Company Reporting & Capital Structure" },
+  { term: "Yield curve", definition: "A chart of yields across bonds of different maturities at a point in time, often used to describe the term structure of interest rates.", category: "Risk", relatedCourse: "Macro & Cross-Asset Context" },
+];
+
+export const allGlossaryEntries = [...glossaryEntries, ...extendedGlossaryEntries];
+
 export const glossarySource = {
   label: "Definitions are original learning summaries informed by Investor.gov and the Options Industry Council reference glossaries.",
   urls: ["https://www.investor.gov/introduction-investing/investing-basics/glossary", "https://www.optionseducation.org/referencelibrary/optionsglossary"],
@@ -78,7 +116,7 @@ export const glossarySource = {
 
 export function searchGlossary(query: string, category: "All" | GlossaryCategory = "All") {
   const normalizedQuery = query.trim().toLowerCase();
-  return glossaryEntries.filter((entry) => {
+  return allGlossaryEntries.filter((entry) => {
     const inCategory = category === "All" || entry.category === category;
     const searchable = `${entry.term} ${entry.definition} ${entry.relatedCourse}`.toLowerCase();
     return inCategory && searchable.includes(normalizedQuery);

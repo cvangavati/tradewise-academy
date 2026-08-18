@@ -34,7 +34,9 @@ export default function ProfileScreen() {
         <View style={styles.section}><SectionHeading title="Learning tools" /></View>
         <ToolLink title="Progress dashboard" detail="Review completed lessons and knowledge-check accuracy." onPress={() => router.push("/progress" as never)} />
         <View style={{ height: 10 }} />
-        <ToolLink title="Trading glossary" detail="Search definitions across 60 essential terms." onPress={() => router.push("/glossary" as never)} />
+        <ToolLink title="Trading glossary" detail="Search definitions across the complete learning library." onPress={() => router.push("/glossary" as never)} />
+        <View style={{ height: 10 }} />
+        <ToolLink title="Saved terms review" detail="Revisit bookmarked definitions with a local spaced-review queue." onPress={() => router.push("/review" as never)} />
 
         <View style={styles.section}><SectionHeading title="Practice record" /></View>
         <View style={ui.card}><Text style={ui.metricLabel}>SIMULATED ORDERS</Text><Text style={ui.metricValue}>{activities.length}</Text><Text style={[ui.cardBody, styles.progressCaption]}>Orders use illustrative quotes. They are not routed to any market or brokerage.</Text></View>

@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { courses, totalLessons } from "../data/curriculum";
+import { syntheticScenarios } from "../data/market-lab";
 import { simulatedWatchlist } from "../data/practice";
 import { executeSimulatedOrder, type TradeWiseState } from "../lib/tradewise-store";
 
@@ -10,12 +11,14 @@ const cleanState: TradeWiseState = {
   holdings: [],
   activities: [],
   quizScores: {},
+  savedTerms: [],
+  reflections: [],
 };
 
 describe("TradeWise curriculum", () => {
   it("contains a complete, quiz-backed learning path", () => {
-    expect(courses).toHaveLength(6);
-    expect(totalLessons).toBeGreaterThanOrEqual(18);
+    expect(courses.length).toBeGreaterThanOrEqual(11);
+    expect(totalLessons).toBeGreaterThanOrEqual(33);
     expect(courses.flatMap((course) => course.lessons).every((lesson) => lesson.quiz.options.length === 4 && lesson.source.url.startsWith("https://"))).toBe(true);
   });
 });
@@ -50,5 +53,13 @@ describe("cash-only paper-trading simulation", () => {
     expect(sell.ok).toBe(true);
     expect(sell.nextState.cash).toBeCloseTo(cleanState.cash);
     expect(sell.nextState.holdings).toHaveLength(0);
+  });
+
+  it("records Market Lab trades as synthetic scenario activity", () => {
+    const scenario = syntheticScenarios.find((item) => item.id === "earnings-gap")!;
+    const result = executeSimulatedOrder(cleanState, "BUY", scenario.symbol, 1);
+
+    expect(result.ok).toBe(true);
+    expect(result.nextState.activities[0].scenarioId).toBe("earnings-gap");
   });
 });

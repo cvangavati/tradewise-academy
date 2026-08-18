@@ -20,3 +20,12 @@ The expanded Market Lab uses only hand-authored **synthetic scenarios**. Its sym
 
 [4]: https://www.investor.gov/introduction-investing/investing-basics/glossary "Investor.gov — Glossary"
 [5]: https://www.optionseducation.org/referencelibrary/optionsglossary "Options Industry Council — Options Glossary"
+
+## Financial Systems and Market Structure Expansion
+
+The financial-structure curriculum treats company reporting and market plumbing as connected systems. The SEC’s guide explains that balance sheets show assets, liabilities, and shareholder equity at a point in time; income and cash-flow statements describe activity over periods; and a statement of shareholders’ equity shows changes in owners’ interests.[6] The accompanying lessons emphasize interpretation and questions, not the selection of any security.
+
+The market-structure track distinguishes the different roles that interact around a trade. Investor.gov describes broker-dealers, clearing agencies, exchanges, alternative trading systems, investment advisers, self-regulatory organizations, and transfer agents as separate market participants with different functions.[7] The app uses this structure to make execution, clearing, settlement, and custody concepts easier to connect.
+
+[6]: https://www.sec.gov/about/reports-publications/investorpubsbegfinstmtguide "SEC — A Beginner’s Guide to Financial Statements"
+[7]: https://www.investor.gov/introduction-investing/investing-basics/how-stock-markets-work/market-participants "Investor.gov — Market Participants"
