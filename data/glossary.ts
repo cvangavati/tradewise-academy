@@ -107,7 +107,33 @@ export const extendedGlossaryEntries: GlossaryEntry[] = [
   { term: "Yield curve", definition: "A chart of yields across bonds of different maturities at a point in time, often used to describe the term structure of interest rates.", category: "Risk", relatedCourse: "Macro & Cross-Asset Context" },
 ];
 
-export const allGlossaryEntries = [...glossaryEntries, ...extendedGlossaryEntries];
+export const specialistGlossaryEntries: GlossaryEntry[] = [
+  { term: "American depositary receipt (ADR)", definition: "A negotiable receipt that represents an interest in shares of a foreign company through a depositary arrangement, subject to the program’s terms.", category: "Market mechanics", relatedCourse: "Global & Cross-Border" },
+  { term: "Beneficial ownership", definition: "Direct or indirect voting power or investment power over a security, as defined under applicable SEC rules.", category: "Market mechanics", relatedCourse: "Issuance & Ownership" },
+  { term: "Call risk", definition: "The risk that a callable bond will be redeemed before maturity, potentially requiring an investor to reinvest proceeds at a different rate.", category: "Risk", relatedCourse: "Municipal & Public Finance" },
+  { term: "Country risk", definition: "The possibility that political, regulatory, economic, legal, or currency conditions in a country can affect an investment or issuer.", category: "Risk", relatedCourse: "Global & Cross-Border" },
+  { term: "CUSIP", definition: "A unique nine-character identifier assigned to many financial instruments to help identify a specific security.", category: "Market mechanics", relatedCourse: "Market Data & Benchmarks" },
+  { term: "Drawdown", definition: "The decline from a prior peak in a portfolio or security value over a defined period.", category: "Risk", relatedCourse: "Portfolio Measurement" },
+  { term: "EMMA", definition: "The Municipal Securities Rulemaking Board’s Electronic Municipal Market Access system, which provides municipal-market data and disclosure documents.", category: "Market mechanics", relatedCourse: "Municipal & Public Finance" },
+  { term: "Follow-on offering", definition: "An additional public securities offering by a company that has already completed an initial public offering.", category: "Fundamental analysis", relatedCourse: "Issuance & Ownership" },
+  { term: "Free float", definition: "Shares that are available for public trading under a stated definition, rather than shares held by insiders or other restricted holders.", category: "Market mechanics", relatedCourse: "Market Data & Benchmarks" },
+  { term: "Initial public offering (IPO)", definition: "The first public offering and sale of a company’s securities, typically accompanied by a registration statement and prospectus.", category: "Market mechanics", relatedCourse: "Issuance & Ownership" },
+  { term: "Market capitalization", definition: "A commonly used measure of equity size, calculated as share price multiplied by shares outstanding under a stated convention.", category: "Fundamental analysis", relatedCourse: "Market Data & Benchmarks" },
+  { term: "Municipal bond", definition: "A debt security issued by a state or local government, or related entity, with repayment sources and legal terms that vary by issue.", category: "Fundamental analysis", relatedCourse: "Municipal & Public Finance" },
+  { term: "Official statement", definition: "A disclosure document that typically describes a municipal offering’s terms, risks, repayment sources, and other information at issuance.", category: "Fundamental analysis", relatedCourse: "Municipal & Public Finance" },
+  { term: "Portfolio turnover", definition: "A measure of how frequently a portfolio’s holdings are bought and sold over a stated period; definitions may vary by provider.", category: "Fundamental analysis", relatedCourse: "Portfolio Measurement" },
+  { term: "Price return", definition: "A return series that reflects price change while excluding the assumed reinvestment of distributions.", category: "Fundamental analysis", relatedCourse: "Market Data & Benchmarks" },
+  { term: "Prospectus", definition: "A document that discloses information about a securities offering or registered fund, including stated objectives, risks, fees, and terms.", category: "Fundamental analysis", relatedCourse: "Issuance & Ownership" },
+  { term: "Public float", definition: "The portion of a company’s shares held by public investors under the definition used for a particular reporting or market purpose.", category: "Market mechanics", relatedCourse: "Market Data & Benchmarks" },
+  { term: "Reinvestment risk", definition: "The risk that cash received from a bond’s maturity, sale, or early redemption cannot be reinvested at an equivalent rate or under equivalent terms.", category: "Risk", relatedCourse: "Municipal & Public Finance" },
+  { term: "SIPC", definition: "The Securities Investor Protection Corporation, which has a defined role in restoring eligible customer assets when a SIPC-member brokerage firm fails and assets are missing.", category: "Risk", relatedCourse: "Account Safeguards" },
+  { term: "Total return", definition: "A return series that conventionally combines price change with the assumed reinvestment of distributions under stated assumptions.", category: "Fundamental analysis", relatedCourse: "Market Data & Benchmarks" },
+  { term: "Treasury security", definition: "A debt security issued by the U.S. Treasury with terms that vary by instrument type and maturity.", category: "Fundamental analysis", relatedCourse: "Funds & Fixed Income" },
+  { term: "Volatility", definition: "The size of observed price variation over a stated period; it is a historical description and not a forecast of future moves.", category: "Risk", relatedCourse: "Portfolio Measurement" },
+  { term: "Yield to maturity", definition: "A bond-yield calculation that estimates a return if held to maturity under specified assumptions, including payment timing and price.", category: "Fundamental analysis", relatedCourse: "Municipal & Public Finance" },
+];
+
+export const allGlossaryEntries = [...glossaryEntries, ...extendedGlossaryEntries, ...specialistGlossaryEntries];
 
 export const glossarySource = {
   label: "Definitions are original learning summaries informed by Investor.gov and the Options Industry Council reference glossaries.",

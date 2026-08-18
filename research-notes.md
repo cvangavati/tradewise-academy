@@ -61,3 +61,15 @@ The investor-protection track teaches independent research, source verification,
 [14]: https://www.investor.gov/introduction-investing/getting-started/researching-investments/using-edgar-research-investments "Investor.gov — Using EDGAR to Research Investments"
 [15]: https://www.finra.org/investors/insights/corporate-actions-public-companies-what-you-should-know "FINRA — Corporate Actions by Public Companies"
 [16]: https://www.investor.gov/protect-your-investments/fraud/how-avoid-fraud/what-you-can-do-avoid-investment-fraud "Investor.gov — What You Can Do to Avoid Investment Fraud"
+
+## Ownership, Account Protection, and Municipal Securities
+
+The ownership track distinguishes beneficial ownership reporting from a recommendation signal. Investor.gov describes Schedules 13D and 13G as beneficial-ownership reports for specified owners of more than five percent of a registered voting class, with availability through EDGAR.[17] The Atlas frames such forms as disclosures to interpret in time and context.
+
+The account-protection track distinguishes custody protection from protection against market loss. SIPC states that it protects specified customer cash and securities when a SIPC-member brokerage firm fails financially and assets are missing, but does not protect a decline in a security’s value or inappropriate advice.[18]
+
+The municipal-bond track introduces issuer repayment, credit/default, interest-rate, call, reinvestment, and liquidity risk. MSRB notes that a municipal bond’s official statement and continuing disclosures can contain information relevant to those questions, while a credit rating is an agency opinion rather than a recommendation.[19]
+
+[17]: https://www.investor.gov/introduction-investing/investing-basics/glossary/schedules-13d-and-13g "Investor.gov — Schedules 13D and 13G"
+[18]: https://www.sipc.org/for-investors/what-sipc-protects "SIPC — What SIPC Protects"
+[19]: https://www.msrb.org/Education/Municipal-Bond-Investment-Risks "MSRB — Municipal Bond Investment Risks"

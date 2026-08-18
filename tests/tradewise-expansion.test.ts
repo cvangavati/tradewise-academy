@@ -26,16 +26,18 @@ describe("searchable glossary", () => {
     expect(searchGlossary("stop order").map((entry) => entry.term)).toContain("Stop order");
     expect(searchGlossary("price", "Options").every((entry) => entry.category === "Options")).toBe(true);
     expect(searchGlossary("settlement").map((entry) => entry.term)).toContain("Settlement");
-    expect(allGlossaryEntries.length).toBeGreaterThanOrEqual(90);
+    expect(searchGlossary("municipal bond").map((entry) => entry.term)).toContain("Municipal bond");
+    expect(allGlossaryEntries.length).toBeGreaterThanOrEqual(110);
     expect(searchGlossary("nonexistent phrase")).toHaveLength(0);
   });
 });
 
 describe("Stock Market Atlas", () => {
   it("organizes a broad source-linked reference library that can be searched across domains", () => {
-    expect(referenceDomains).toHaveLength(8);
-    expect(referenceTopicCount).toBeGreaterThanOrEqual(48);
+    expect(referenceDomains).toHaveLength(14);
+    expect(referenceTopicCount).toBeGreaterThanOrEqual(84);
     expect(searchReferenceTopics("settlement").map((topic) => topic.title)).toContain("Clearing and settlement");
+    expect(searchReferenceTopics("SIPC").map((topic) => topic.title)).toContain("SIPC protection scope");
     expect(searchReferenceTopics("fraud", "governance-protection").every((topic) => topic.domain.id === "governance-protection")).toBe(true);
     expect(searchReferenceTopics("nonsensical phrase")).toHaveLength(0);
   });

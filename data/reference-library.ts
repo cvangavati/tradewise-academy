@@ -13,6 +13,10 @@ const reits: ReferenceSource = { label: "Investor.gov — Real Estate Investment
 const cftc: ReferenceSource = { label: "CFTC — Customer Education and Outreach", url: "https://www.cftc.gov/About/CFTCOrganization/OCEO" };
 const fed: ReferenceSource = { label: "Federal Reserve — Monetary Policy", url: "https://www.federalreserve.gov/aboutthefed/fedexplained/monetary-policy.htm" };
 const fraud: ReferenceSource = { label: "Investor.gov — Avoiding Investment Fraud", url: "https://www.investor.gov/protect-your-investments/fraud/how-avoid-fraud/what-you-can-do-avoid-investment-fraud" };
+const ownership: ReferenceSource = { label: "Investor.gov — Schedules 13D and 13G", url: "https://www.investor.gov/introduction-investing/investing-basics/glossary/schedules-13d-and-13g" };
+const sipc: ReferenceSource = { label: "SIPC — What SIPC Protects", url: "https://www.sipc.org/for-investors/what-sipc-protects" };
+const msrb: ReferenceSource = { label: "MSRB — Municipal Bond Investment Risks", url: "https://www.msrb.org/Education/Municipal-Bond-Investment-Risks" };
+const finraShort: ReferenceSource = { label: "FINRA — Short Interest", url: "https://www.finra.org/investors/insights/short-interest" };
 
 const topic = (id: string, title: string, summary: string, keywords: string[], source: ReferenceSource): ReferenceTopic => ({ id, title, summary, keywords, source });
 
@@ -95,6 +99,66 @@ export const referenceDomains: ReferenceDomain[] = [
       topic("fraud-red-flags", "Fraud red flags", "Unsolicited pitches, pressure to act immediately, opaque information, and claims of guaranteed or extraordinary returns are warning signs worth investigating.", ["fraud", "scam", "red flags"], fraud),
       topic("independent-research", "Independent research", "Use primary disclosures and independent sources. Do not treat posts, messages, or company promotion as sufficient evidence on their own.", ["research", "EDGAR", "verification"], fraud),
       topic("risk-process", "Risk process and review", "A disciplined process states a thesis, evidence, uncertainty, exposure, invalidation condition, and a post-decision review. It does not guarantee an outcome.", ["risk", "thesis", "journal"], fraud),
+    ],
+  },
+  {
+    id: "issuance-ownership", title: "Issuance & ownership", description: "How companies raise capital, disclose ownership, and involve shareholders in governance.", accent: "#5E65A8", topics: [
+      topic("ipo-registration", "Initial public offerings", "An IPO is a company’s first public offer and sale of securities. A registration statement and prospectus describe the company and offering under the applicable framework.", ["IPO", "registration statement", "prospectus"], edgar),
+      topic("follow-on-offerings", "Follow-on offerings", "A reporting company can register additional securities offerings. The structure, use of proceeds, dilution effects, and timing are research questions rather than price signals.", ["follow-on", "secondary offering", "dilution"], edgar),
+      topic("exempt-offerings", "Exempt offerings and crowdfunding", "Some offerings use exemptions with different disclosure and eligibility conditions. Understand the legal structure and available information before interpreting the label.", ["Regulation A", "crowdfunding", "private offering"], edgar),
+      topic("beneficial-ownership", "Beneficial ownership reports", "Schedules 13D and 13G can disclose specified beneficial ownership. They are reports of ownership and related information, not a recommendation to transact.", ["13D", "13G", "beneficial owner"], ownership),
+      topic("insider-forms", "Insider transaction forms", "Forms 3, 4, and 5 are used for specified insider ownership and transaction disclosures. A filing’s timing, role, and context matter when reading it.", ["Form 3", "Form 4", "Form 5"], edgar),
+      topic("proxy-voting", "Proxy statements and voting", "Proxy materials describe matters put to shareholder vote and may include governance, compensation, and ownership information.", ["proxy", "DEF 14A", "shareholder vote"], edgar),
+    ],
+  },
+  {
+    id: "market-data-benchmarks", title: "Market data & benchmarks", description: "How prices, volume, indexes, and reported short data can be described without confusing data with a signal.", accent: "#197C83", topics: [
+      topic("quote-fields", "Quote fields and timestamps", "A quote can include bid, ask, last trade, volume, and a time reference. The field definition and time of observation are essential context.", ["quote", "bid", "ask", "timestamp"], investorGov),
+      topic("price-volume", "Price and volume", "Price records the level at which a security last traded, while volume records the quantity traded over a stated interval. Neither explains motivation on its own.", ["price", "volume", "turnover"], investorGov),
+      topic("market-cap-float", "Market capitalization and float", "Market capitalization is commonly calculated from share price and shares outstanding. Public float refers to shares available for public trading under a stated definition.", ["market cap", "float", "shares outstanding"], edgar),
+      topic("index-construction", "Index construction", "An index follows published inclusion, weighting, rebalancing, and calculation rules. Different weighting methods can create different exposures.", ["index", "weighting", "rebalancing"], etfs),
+      topic("price-total-return", "Price return and total return", "A price-return series tracks price change. A total-return series conventionally incorporates reinvested distributions under stated assumptions; compare like with like.", ["total return", "price return", "benchmark"], etfs),
+      topic("short-data-interpretation", "Short interest and short-sale volume", "Short interest is a dated snapshot of open short positions, while short-sale volume reflects transaction volume under a different methodology. They should not be treated as interchangeable.", ["short interest", "short volume", "data methodology"], finraShort),
+    ],
+  },
+  {
+    id: "portfolio-measurement", title: "Portfolio measurement", description: "Concepts for describing allocation, concentration, volatility, and process without personalized allocation recommendations.", accent: "#6B7B33", topics: [
+      topic("goals-time-horizon", "Goals and time horizon", "An investment objective, time horizon, liquidity needs, and risk tolerance provide context for evaluating an instrument’s fit. They are individual considerations, not a product prescription.", ["goal", "time horizon", "liquidity"], { label: "Investor.gov — Investment Products", url: "https://www.investor.gov/introduction-investing/investing-basics/investment-products" }),
+      topic("asset-allocation", "Asset allocation", "Asset allocation describes how a portfolio is divided among broad asset classes. It changes the mix of risks and return drivers, but does not eliminate loss risk.", ["asset allocation", "stocks", "bonds"], { label: "Investor.gov — Investment Products", url: "https://www.investor.gov/introduction-investing/investing-basics/investment-products" }),
+      topic("diversification", "Diversification", "Diversification spreads exposure across investments with different characteristics. It can reduce concentration risk but cannot guarantee positive performance.", ["diversification", "concentration", "exposure"], { label: "Investor.gov — Investment Products", url: "https://www.investor.gov/introduction-investing/investing-basics/investment-products" }),
+      topic("correlation", "Correlation and common exposures", "Correlation describes how two return series moved over a selected period. Relationships can shift, especially when stress changes market behavior.", ["correlation", "regime", "risk"], fed),
+      topic("volatility-drawdown", "Volatility and drawdown", "Volatility describes the size of observed price variation. Drawdown describes the decline from a previous peak over a defined period. Both depend on the chosen window.", ["volatility", "drawdown", "risk measure"], fraud),
+      topic("benchmark-review", "Benchmarking and review", "A benchmark comparison should identify the benchmark, period, fees, risk profile, and whether the comparison measures the same objective or exposure.", ["benchmark", "performance", "fees"], finraCosts),
+    ],
+  },
+  {
+    id: "global-cross-border", title: "Global & cross-border", description: "International issuer, currency, market-access, and cross-border disclosure concepts for context-aware research.", accent: "#6C5AA6", topics: [
+      topic("foreign-private-issuers", "Foreign private issuers", "Some companies organized outside the United States report on different SEC forms, such as 20-F and 6-K, under the applicable foreign-private-issuer framework.", ["20-F", "6-K", "foreign private issuer"], edgar),
+      topic("adr-ownership", "Depositary receipts", "A depositary receipt can represent an interest in shares of a foreign company through a depositary arrangement. Terms, voting rights, fees, and currency exposure may differ by program.", ["ADR", "depositary receipt", "foreign shares"], edgar),
+      topic("currency-exposure", "Currency exposure", "Cross-border investments can be affected by changes in the value of currencies relative to the investor’s home currency, alongside company and market factors.", ["foreign exchange", "currency", "translation"], cftc),
+      topic("country-regulatory-risk", "Country and regulatory context", "Legal systems, disclosure practices, capital controls, taxation, and market-access rules can differ across jurisdictions and can change over time.", ["country risk", "regulation", "cross-border"], edgar),
+      topic("global-funds", "Global funds and exposures", "A global fund can provide access to multiple markets, but its holdings, currency risks, country concentrations, fees, and underlying liquidity remain relevant.", ["international fund", "country exposure", "ETF"], etfs),
+      topic("market-hours-settlement", "Market hours and settlement differences", "Trading calendars, market hours, holidays, settlement practices, and local-currency conventions differ across venues and can affect execution and operational expectations.", ["market hours", "settlement", "time zone"], participants),
+    ],
+  },
+  {
+    id: "municipal-public-finance", title: "Municipal & public finance", description: "Municipal-bond structures, official disclosures, and risks without personal tax or bond recommendations.", accent: "#A16827", topics: [
+      topic("municipal-bonds", "Municipal bonds", "Municipal securities are debt instruments issued by state and local governments or related entities. Repayment sources and legal pledges can differ by issue.", ["municipal bond", "issuer", "repayment"], msrb),
+      topic("official-statements", "Official statements", "An official statement typically describes a municipal offering’s terms, sources of payment, risks, and other disclosures as of issuance.", ["official statement", "disclosure", "municipal"], msrb),
+      topic("municipal-credit", "Municipal credit and default risk", "Credit/default risk concerns whether the issuer or obligor can make principal and interest payments when due. Ratings are opinions, not recommendations.", ["credit risk", "default", "rating"], msrb),
+      topic("municipal-rate-risk", "Municipal interest-rate risk", "When prevailing rates change, a fixed-rate bond’s market value can change. Sensitivity can differ by maturity and other features.", ["interest rate risk", "maturity", "bond price"], msrb),
+      topic("municipal-call-reinvestment", "Call and reinvestment risk", "Callable bonds may be redeemed before maturity. Reinvestment risk is the risk that proceeds cannot be reinvested at a similar rate.", ["callable bond", "reinvestment", "redemption"], msrb),
+      topic("municipal-liquidity", "Municipal liquidity and continuing disclosure", "Some bonds can have limited secondary-market trading. Continuing disclosures can provide updated financial, operating, and event information after issuance.", ["liquidity", "EMMA", "continuing disclosure"], msrb),
+    ],
+  },
+  {
+    id: "account-safeguards", title: "Account safeguards", description: "Custody, statement-review, protection boundaries, identity awareness, and account-security concepts.", accent: "#1E6478", topics: [
+      topic("sipc-scope", "SIPC protection scope", "SIPC addresses missing eligible customer cash and securities when a SIPC-member brokerage firm fails financially. It is not protection against investment-market declines.", ["SIPC", "broker failure", "missing assets"], sipc),
+      topic("sipc-fdic-difference", "SIPC and bank-deposit protection", "SIPC protection for brokerage custody is different from FDIC deposit insurance. Both have defined scopes and do not guarantee an investment’s market value.", ["SIPC", "FDIC", "custody"], sipc),
+      topic("account-statements", "Account statements and confirmations", "Review statements and trade confirmations for positions, cash, activity, fees, and unexpected changes. Records are a starting point for questions and documentation.", ["statement", "confirmation", "records"], finraCosts),
+      topic("broker-adviser-check", "Checking financial professionals", "Use official registration and disciplinary-history resources to verify a broker, adviser, or firm before relying on a sales pitch or relationship.", ["BrokerCheck", "registration", "disciplinary history"], fraud),
+      topic("identity-phishing", "Identity and phishing awareness", "Unsolicited messages, urgent payment requests, and requests for credentials can be warning signs. Verify contact channels independently.", ["phishing", "identity", "social engineering"], fraud),
+      topic("protection-boundaries", "Protection boundaries", "Protection programs, disclosures, and regulators have specific roles. Learn what each covers, the relevant conditions, and what market or advice losses remain outside the scope.", ["coverage", "risk", "investor protection"], sipc),
     ],
   },
 ];

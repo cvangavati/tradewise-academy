@@ -15,3 +15,7 @@ The expanded academy is designed as a structured learning library rather than an
 | Practice and reflection | Synthetic scenarios, order rehearsal, journaling, review, decision-process habits | App-authored educational content |
 
 The implementation will deliberately exclude real-time recommendations, personalized security selection, live trade signals, and individual tax, legal, or investment advice. Every simulator and scenario remains local, hand-authored, and synthetic.
+
+## Next Atlas Expansion Domains
+
+The next research and authoring set is deliberately bounded to six independent inputs: **SEC and Investor.gov** for public offerings, disclosure forms, ownership reports, and market-data literacy; **FINRA** for order handling, short interest, margin, and portfolio-risk education; **Federal Reserve** for international and financial-system context; **CFTC** for global derivatives and contract-risk boundaries; **SIPC** for account-protection distinctions; and **MSRB** for municipal-securities education. The resulting Atlas additions will cover securities issuance, ownership and governance, market data and benchmarks, portfolio measurement, global and cross-border market context, and account-protection concepts.

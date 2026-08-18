@@ -24,3 +24,6 @@
 - [x] Expand the glossary and lesson library with authoritative reference links and broader market terminology.
 - [x] Improve curriculum discovery with topic browsing, search, and clear learning-path orientation.
 - [x] Test and validate the expanded reference library and discovery experience.
+- [x] Add specialized Atlas domains for securities issuance, market data, ownership structures, portfolio measurement, global markets, and additional investor-protection concepts.
+- [x] Expand glossary support for the newly added advanced topics.
+- [x] Test and validate the enlarged Atlas taxonomy and specialized topic search.
