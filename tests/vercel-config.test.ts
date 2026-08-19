@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest";
 
 const root = resolve(__dirname, "..");
 const packageJson = JSON.parse(readFileSync(resolve(root, "package.json"), "utf8")) as { scripts: Record<string, string> };
+const metroConfig = readFileSync(resolve(root, "metro.config.js"), "utf8");
 const vercelConfig = JSON.parse(readFileSync(resolve(root, "vercel.json"), "utf8")) as {
   buildCommand: string;
   outputDirectory: string;
@@ -22,5 +23,10 @@ describe("Vercel deployment configuration", () => {
       source: "/:path((?!api/).*)",
       destination: "/index.html",
     });
+  });
+
+  it("uses NativeWind’s virtual CSS module behavior instead of a node_modules disk cache", () => {
+    expect(metroConfig).toContain("withNativeWind");
+    expect(metroConfig).not.toContain("forceWriteFileSystem");
   });
 });

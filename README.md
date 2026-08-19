@@ -87,6 +87,8 @@ The repository configuration uses `pnpm build:web` (`expo export --platform web`
 
 After pushing this configuration, open the existing Vercel project and choose **Redeploy** for the latest `main` commit. Vercel’s rewrite configuration preserves the browser URL while serving the target route internally.[2]
 
+The Metro configuration intentionally uses NativeWind’s normal virtual CSS-module path rather than forcing CSS into `react-native-css-interop/cache`. This avoids the Vercel build-time SHA-1 error that can occur when Metro watches a generated cache file inside `node_modules`. NativeWind uses disk output automatically only when virtual modules are unavailable or required for a production target.[3]
+
 > **AI note:** the Catalog Guide always has a deterministic, local-catalog fallback. On a Vercel deployment, it can use the server-side model only when an appropriate hosted AI credential is configured for that deployment. Do not copy internal platform credentials into Vercel environment variables.
 
 ## Validation
@@ -117,3 +119,4 @@ The current catalog contains **7,200** short lessons across **150** source-linke
 
 [1]: https://docs.expo.dev/guides/publishing-websites/ "Expo: Publish websites"
 [2]: https://vercel.com/docs/routing/rewrites "Vercel: Rewrites"
+[3]: https://www.nativewind.dev/blog/announcement-nativewind-v4-1 "NativeWind: v4.1 announcement"

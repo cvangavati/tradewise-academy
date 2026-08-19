@@ -49,3 +49,6 @@
 - [x] Add Vercel-compatible Expo web-export and server routing configuration.
 - [x] Validate the local Vercel build output and document the required Vercel settings.
 - [x] Commit and push the Vercel deployment configuration to GitHub.
+- [x] Resolve the Vercel Metro react-native-css-interop cache-resolution failure with a clean production web-build strategy.
+- [x] Validate the fixed web export from a dependency-clean environment and re-run automated checks.
+- [x] Push the Vercel Metro build fix to GitHub with updated redeployment guidance.
