@@ -52,3 +52,7 @@
 - [x] Resolve the Vercel Metro react-native-css-interop cache-resolution failure with a clean production web-build strategy.
 - [x] Validate the fixed web export from a dependency-clean environment and re-run automated checks.
 - [x] Push the Vercel Metro build fix to GitHub with updated redeployment guidance.
+- [x] Add a broader collection of clearly labeled synthetic stock profiles across sectors.
+- [x] Add detailed educational profile views with business, metric, risk, and research-context information.
+- [x] Add deterministic synthetic price, revenue, earnings, and margin charts for stock-learning exercises.
+- [x] Test the synthetic stock explorer, chart rendering, and no-live-data boundaries.

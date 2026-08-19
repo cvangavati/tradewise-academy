@@ -6,6 +6,7 @@ import { marketLabDisclosure, syntheticScenarios } from "../data/market-lab";
 import { getMicroLesson, microLessonCount, microLessons, searchMicroLessons } from "../data/micro-curriculum";
 import { referenceDomains, referenceTopicCount, searchReferenceTopics } from "../data/reference-library";
 import { nextReviewAt } from "../data/spaced-review";
+import { getSyntheticStockProfile, searchSyntheticStockProfiles, syntheticStockDisclosure, syntheticStockProfiles, syntheticStockSectors } from "../data/synthetic-stocks";
 import { appendTradeReflection, applyCatalogQuizResult, applyReviewRating, getLearningAnalytics, markCatalogLessonComplete, toggleSavedTerm, type TradeWiseState } from "../lib/tradewise-store";
 
 const learnerState: TradeWiseState = {
@@ -153,5 +154,25 @@ describe("post-trade reflections", () => {
 
     expect(withReflection.reflections[0]).toMatchObject({ activityId: "synthetic-order-1", scenarioId: "earnings-gap", createdAt: "2026-08-18T12:00:00.000Z" });
     expect(withReflection.reflections[0].lesson).toContain("invalidation");
+  });
+});
+
+describe("Synthetic Stock Explorer", () => {
+  it("provides diverse, deterministic fictional profiles with complete chart inputs", () => {
+    expect(syntheticStockProfiles).toHaveLength(22);
+    expect(syntheticStockSectors.length).toBeGreaterThanOrEqual(10);
+    expect(new Set(syntheticStockProfiles.map((profile) => profile.id)).size).toBe(syntheticStockProfiles.length);
+    expect(syntheticStockProfiles.every((profile) => profile.symbol.startsWith("SIM-") && profile.priceHistory.length >= 20)).toBe(true);
+    expect(syntheticStockProfiles.every((profile) => profile.revenueHistory.length === 4 && profile.earningsHistory.length === 4 && profile.operatingMarginHistory.length === 4)).toBe(true);
+    expect(syntheticStockProfiles.every((profile) => profile.risks.length >= 3 && profile.researchQuestions.length >= 3 && profile.relatedTopics.length >= 3)).toBe(true);
+  });
+
+  it("supports educational discovery while preserving the no-live-data boundary", () => {
+    expect(getSyntheticStockProfile("SIM-ARC")?.name).toBe("Arcforge Cloudworks");
+    expect(searchSyntheticStockProfiles("health").every((profile) => profile.sector === "Health Care")).toBe(true);
+    expect(searchSyntheticStockProfiles("revenue recognition").map((profile) => profile.symbol)).toContain("SIM-ARC");
+    expect(syntheticStockDisclosure.toLowerCase()).toContain("synthetic");
+    expect(syntheticStockDisclosure.toLowerCase()).toContain("not live");
+    expect(syntheticStockDisclosure.toLowerCase()).toContain("not a recommendation");
   });
 });
