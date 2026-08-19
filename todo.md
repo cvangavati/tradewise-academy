@@ -40,3 +40,7 @@
 - [x] Research additional authoritative sources for market microstructure, securities operations, fund disclosures, corporate actions, financial stability, and investor protection.
 - [x] Integrate non-duplicative source-grounded topics and glossary coverage from the new research pass.
 - [x] Test the additional source-linked catalog topics and their discovery behavior.
+- [x] Add a server-side AI catalog guide that maps a learner’s natural-language goal to source-linked catalog lessons.
+- [x] Add a user-friendly AI search screen with loading, error, and recommendation-reason states.
+- [x] Keep AI output constrained to the existing educational catalog and add an explicit no-personalized-advice boundary.
+- [x] Test deterministic recommendation validation and the AI guide client flow.

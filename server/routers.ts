@@ -1,4 +1,6 @@
 import { COOKIE_NAME } from "../shared/const.js";
+import { z } from "zod";
+import { guideCatalog } from "./catalog-guide";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
@@ -15,6 +17,12 @@ export const appRouter = router({
         success: true,
       } as const;
     }),
+  }),
+
+  catalogGuide: router({
+    recommend: publicProcedure
+      .input(z.object({ goal: z.string().trim().min(2).max(280) }))
+      .mutation(({ input }) => guideCatalog(input.goal)),
   }),
 
   // TODO: add feature routers here, e.g.

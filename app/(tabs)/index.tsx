@@ -57,6 +57,8 @@ export default function TodayScreen() {
 
         <View style={styles.quickRow}><AppButton label="Playlists" variant="secondary" onPress={() => router.push("/playlists" as never)} style={styles.quickButton} /><AppButton label="Study plan" variant="secondary" onPress={() => router.push("/study-plan" as never)} style={styles.quickButton} /><AppButton label="Review queue" variant="secondary" onPress={() => router.push("/catalog-review" as never)} style={styles.quickButton} /></View>
 
+        <View style={styles.guideCard}><View><Text style={styles.guideEyebrow}>AI-ASSISTED DISCOVERY</Text><Text style={styles.guideTitle}>Not sure where to start?</Text><Text style={styles.guideText}>Describe your learning goal and get a focused, source-linked path through the catalog.</Text></View><AppButton label="Ask the catalog guide" variant="secondary" onPress={() => router.push("/ai-guide" as never)} style={styles.guideButton} /></View>
+
         <View style={styles.section}><SectionHeading title="Guided starter course" /></View>
         <View style={[ui.card, styles.guidedCard]}><Pill label={nextCourse?.eyebrow ?? "Core course"} tone="navy" /><Text style={styles.guidedTitle}>{nextLesson.title}</Text><Text style={ui.cardBody}>{nextLesson.objective}</Text><AppButton label={`Open ${nextCourse?.title ?? "course"}`} variant="secondary" onPress={() => router.push(`/lesson/${nextLesson.id}`)} style={styles.guidedButton} /></View>
 
@@ -107,6 +109,11 @@ const styles = StyleSheet.create({
   metaDot: { color: "#A4B0BC" },
   quickRow: { flexDirection: "row", gap: 8, marginTop: 12 },
   quickButton: { flex: 1, minHeight: 41, paddingHorizontal: 7, borderRadius: 12 },
+  guideCard: { backgroundColor: "#E5F0EE", borderRadius: 20, padding: 17, marginTop: 14, gap: 10 },
+  guideEyebrow: { color: "#007C78", fontSize: 11, fontWeight: "900", letterSpacing: 0.8 },
+  guideTitle: { color: "#183B4E", fontSize: 18, lineHeight: 24, fontWeight: "800", marginTop: 3 },
+  guideText: { color: "#526276", fontSize: 13, lineHeight: 19, marginTop: 3 },
+  guideButton: { marginTop: 1 },
   guidedCard: { gap: 9 },
   guidedTitle: { color: "#10243E", fontSize: 18, lineHeight: 24, fontWeight: "800" },
   guidedButton: { marginTop: 2 },
