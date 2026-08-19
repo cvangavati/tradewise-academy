@@ -56,3 +56,7 @@
 - [x] Add detailed educational profile views with business, metric, risk, and research-context information.
 - [x] Add deterministic synthetic price, revenue, earnings, and margin charts for stock-learning exercises.
 - [x] Test the synthetic stock explorer, chart rendering, and no-live-data boundaries.
+- [x] Audit the existing lesson templates and technical-analysis coverage for depth and discovery gaps.
+- [x] Research and add source-grounded technical-analysis topics, glossary coverage, and expanded catalog lessons.
+- [x] Enrich lesson detail views with structured explanation, chart-reading context, limitations, and practice prompts.
+- [x] Test the enriched lesson content, technical-analysis discovery, and education-only boundaries.

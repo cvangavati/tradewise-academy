@@ -41,25 +41,27 @@ describe("searchable glossary", () => {
 
 describe("Stock Market Atlas", () => {
   it("organizes a broad source-linked reference library that can be searched across domains", () => {
-    expect(referenceDomains).toHaveLength(25);
-    expect(referenceTopicCount).toBeGreaterThanOrEqual(150);
+    expect(referenceDomains).toHaveLength(26);
+    expect(referenceTopicCount).toBeGreaterThanOrEqual(168);
     expect(searchReferenceTopics("settlement").map((topic) => topic.title)).toContain("Clearing and settlement");
     expect(searchReferenceTopics("SIPC").map((topic) => topic.title)).toContain("SIPC protection scope");
     expect(searchReferenceTopics("financial stability").map((topic) => topic.title)).toContain("Financial stability");
     expect(searchReferenceTopics("fraud", "governance-protection").every((topic) => topic.domain.id === "governance-protection")).toBe(true);
     expect(searchReferenceTopics("nonsensical phrase")).toHaveLength(0);
+    expect(searchReferenceTopics("stochastic", "technical-analysis").map((topic) => topic.title)).toContain("Stochastic oscillator context");
   });
 });
 
 describe("7,000-plus lesson catalog", () => {
   it("creates unique source-linked lessons across the full Atlas and supports scalable search", () => {
-    expect(microLessonCount).toBeGreaterThanOrEqual(7000);
+    expect(microLessonCount).toBeGreaterThanOrEqual(8064);
     expect(microLessons).toHaveLength(microLessonCount);
     expect(new Set(microLessons.map((lesson) => lesson.id)).size).toBe(microLessonCount);
     expect(getMicroLesson(microLessons[0].id)?.source.url).toMatch(/^https:\/\//);
     expect(searchMicroLessons("SIPC").length).toBeGreaterThanOrEqual(48);
     expect(searchMicroLessons("ACATS").length).toBeGreaterThanOrEqual(48);
     expect(searchMicroLessons("nonsensical phrase")).toHaveLength(0);
+    expect(searchMicroLessons("Fibonacci", "technical-analysis").length).toBeGreaterThanOrEqual(48);
   });
 
   it("keeps catalog completion separate from core lesson completion and avoids duplicates", () => {
@@ -95,6 +97,10 @@ describe("7,000-plus lesson catalog", () => {
     expect(text).toContain("TRADEWISE ACADEMY — OFFLINE STUDY PLAN");
     expect(text).toContain("Educational material only");
     expect(text).toContain("Source lane:");
+
+    const technicalPlaylist = catalogPlaylists.find((item) => item.id === "technical-analysis-lab");
+    expect(technicalPlaylist).toMatchObject({ title: "Technical Analysis Lab", days: 21 });
+    expect(lessonsForPlaylist("technical-analysis-lab").length).toBeGreaterThan(100);
   });
 });
 

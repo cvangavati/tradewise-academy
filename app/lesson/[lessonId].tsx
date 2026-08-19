@@ -37,7 +37,13 @@ export default function LessonScreen() {
 
         <View style={styles.bodyCard}><Text style={styles.bodyText}>{lesson.body}</Text></View>
 
+        {lesson.chartContext && <View style={styles.contextCard}><Text style={styles.contextLabel}>CHART-READING CONTEXT</Text><Text style={styles.contextText}>{lesson.chartContext}</Text></View>}
+
         <View style={styles.takeawayCard}><Text style={styles.takeawayLabel}>KEY TAKEAWAYS</Text><Text style={styles.takeawayText}>• {lesson.takeaways.join("\n• ")}</Text></View>
+
+        {lesson.practicePrompt && <View style={styles.practiceCard}><Text style={styles.practiceLabel}>PRACTICE PROMPT</Text><Text style={styles.practiceText}>{lesson.practicePrompt}</Text></View>}
+
+        {lesson.limitation && <View style={styles.limitCard}><Text style={styles.limitLabel}>LIMITATION CHECK</Text><Text style={styles.limitText}>{lesson.limitation}</Text></View>}
 
         <View style={styles.sourceCard}><Text style={styles.sourceLabel}>FURTHER READING</Text><Text style={styles.sourceText}>{lesson.source.label}</Text><Text style={styles.sourceUrl}>{lesson.source.url}</Text></View>
 
@@ -63,9 +69,18 @@ const styles = StyleSheet.create({
   duration: { color: "#657488", fontSize: 12, fontWeight: "700" },
   bodyCard: { backgroundColor: "#FFFFFF", borderRadius: 22, padding: 20, marginTop: 24, borderWidth: 1, borderColor: "#E7E9EC" },
   bodyText: { color: "#263D55", fontSize: 16, lineHeight: 25 },
+  contextCard: { backgroundColor: "#F0F3F9", borderRadius: 20, padding: 18, marginTop: 14, gap: 7 },
+  contextLabel: { color: "#4666B0", fontSize: 11, letterSpacing: 0.9, fontWeight: "800" },
+  contextText: { color: "#31465D", fontSize: 14, lineHeight: 21, fontWeight: "600" },
   takeawayCard: { backgroundColor: "#E7F0EF", borderRadius: 20, padding: 18, marginTop: 14, gap: 8 },
   takeawayLabel: { color: "#007C78", fontSize: 11, letterSpacing: 0.9, fontWeight: "800" },
   takeawayText: { color: "#22465B", fontSize: 14, lineHeight: 22, fontWeight: "700" },
+  practiceCard: { backgroundColor: "#FFFFFF", borderRadius: 20, padding: 18, marginTop: 14, gap: 8, borderWidth: 1, borderColor: "#D7E1E8" },
+  practiceLabel: { color: "#007C78", fontSize: 11, letterSpacing: 0.9, fontWeight: "800" },
+  practiceText: { color: "#314A60", fontSize: 14, lineHeight: 21, fontWeight: "700" },
+  limitCard: { backgroundColor: "#FFF5E7", borderRadius: 18, padding: 16, marginTop: 14, gap: 6 },
+  limitLabel: { color: "#9A601E", fontSize: 10, letterSpacing: 0.8, fontWeight: "900" },
+  limitText: { color: "#704C26", fontSize: 13, lineHeight: 19, fontWeight: "600" },
   sourceCard: { backgroundColor: "#F0F2F4", borderRadius: 18, padding: 15, marginTop: 14, gap: 4 },
   sourceLabel: { color: "#657488", fontSize: 10, letterSpacing: 0.8, fontWeight: "800" },
   sourceText: { color: "#354A61", fontSize: 13, fontWeight: "700" },

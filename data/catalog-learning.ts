@@ -8,6 +8,7 @@ export const catalogPlaylists: CatalogPlaylist[] = [
   { id: "filing-research", title: "Filing Research", subtitle: "Learn a repeatable path through EDGAR, 10-Ks, 10-Qs, ownership reports, and corporate events.", domainIds: ["disclosures-corporate-events", "issuance-ownership", "filing-analysis", "company-analysis"], accent: "#9C5E22", days: 14 },
   { id: "risk-foundations", title: "Risk Foundations", subtitle: "Study risk, liquidity, leverage, behavioral guardrails, and portfolio measurement concepts.", domainIds: ["portfolio-measurement", "derivatives-advanced", "decision-hygiene", "macro-context"], accent: "#B14A66", days: 14 },
   { id: "market-mechanics", title: "Market Mechanics", subtitle: "Understand execution, clearing, market data, benchmarks, and quantitative-data guardrails.", domainIds: ["market-system", "execution-accounts", "market-data-benchmarks", "quant-data-literacy"], accent: "#4066B0", days: 14 },
+  { id: "technical-analysis-lab", title: "Technical Analysis Lab", subtitle: "Build chart-reading vocabulary for price, volume, patterns, indicators, timeframes, and limitation-aware practice.", domainIds: ["technical-analysis"], accent: "#4666B0", days: 21 },
 ];
 
 const playlistFrames = new Set(["Orientation", "Definition", "Mechanism", "Evidence", "Risk boundary", "Process checkpoint", "Recall prompt", "Quiz preparation"]);

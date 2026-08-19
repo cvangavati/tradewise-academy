@@ -9,6 +9,9 @@ export type MicroLesson = {
   topicTitle: string;
   summary: string;
   studyPrompt: string;
+  explanation: string;
+  practiceLoop: string;
+  limitation: string;
   source: ReferenceSource;
 };
 
@@ -75,6 +78,9 @@ function buildLesson(domain: ReferenceDomain, topic: ReferenceDomain["topics"][n
     topicTitle: topic.title,
     summary: `${topic.summary} ${frame.followUp(topic.title)}`,
     studyPrompt: frame.studyPrompt(topic.title),
+    explanation: `Study ${topic.title} through the ${frame.label.toLowerCase()} lens. Begin with the source-grounded definition and identify the timeframe, inputs, or record that makes the observation meaningful before drawing any conclusion.`,
+    practiceLoop: `1. Observe: ${frame.studyPrompt(topic.title)}\n2. Check context: ${frame.followUp(topic.title)}\n3. Record the source, date, and uncertainty instead of turning one observation into a prediction.`,
+    limitation: `${topic.title} can organize a research question, but it cannot on its own determine a future price path, a transaction, or an appropriate level of risk.`,
     source: topic.source,
   };
 }

@@ -154,7 +154,26 @@ export const operationsGlossaryEntries: GlossaryEntry[] = [
   { term: "Valuation pressure", definition: "A financial-stability concept describing asset prices that appear high relative to stated fundamentals or historical norms, rather than a timing signal.", category: "Risk", relatedCourse: "Financial Stability" },
 ];
 
-export const allGlossaryEntries = [...glossaryEntries, ...extendedGlossaryEntries, ...specialistGlossaryEntries, ...operationsGlossaryEntries];
+export const technicalAnalysisGlossaryEntries: GlossaryEntry[] = [
+  { term: "Average true range (ATR)", definition: "A volatility measure that summarizes the typical size of price ranges over a selected lookback period; it is a description of past movement, not a forecast.", category: "Technical analysis", relatedCourse: "Technical Analysis" },
+  { term: "Candlestick body", definition: "The portion of a candle between its open and close for the selected interval; the wicks show the interval’s high and low beyond that body.", category: "Technical analysis", relatedCourse: "Technical Analysis" },
+  { term: "Channel", definition: "A pair of roughly parallel reference lines or zones used to organize repeated price movement around a slope or range; the chosen anchors affect the drawing.", category: "Technical analysis", relatedCourse: "Technical Analysis" },
+  { term: "Divergence", definition: "A difference between the direction of price and an indicator over a selected period. It is an observation that needs context, not a stand-alone reversal prediction.", category: "Technical analysis", relatedCourse: "Technical Analysis" },
+  { term: "Exponential moving average (EMA)", definition: "A moving average that places more weight on recent observations according to its formula and selected lookback period.", category: "Technical analysis", relatedCourse: "Technical Analysis" },
+  { term: "Fibonacci retracement", definition: "A charting tool that applies selected ratios to a chosen price range to create reference levels; different anchors can produce different levels.", category: "Technical analysis", relatedCourse: "Technical Analysis" },
+  { term: "False breakout", definition: "A move outside a watched range or zone that later returns inside it. The label is descriptive and does not guarantee the next direction.", category: "Technical analysis", relatedCourse: "Technical Analysis" },
+  { term: "MACD", definition: "Moving Average Convergence Divergence, an indicator derived from relationships among selected moving averages and often displayed with a signal line or histogram.", category: "Technical analysis", relatedCourse: "Technical Analysis" },
+  { term: "Momentum", definition: "The pace and direction of price change over a stated lookback period. Momentum describes past movement under a chosen calculation basis.", category: "Technical analysis", relatedCourse: "Technical Analysis" },
+  { term: "OHLC", definition: "Open, high, low, and close—the four common price observations summarized by a bar or candlestick for a selected interval.", category: "Technical analysis", relatedCourse: "Technical Analysis" },
+  { term: "Relative strength index (RSI)", definition: "A bounded oscillator calculated from selected price changes over a stated lookback. It is sensitive to settings and should not be treated as a directive.", category: "Technical analysis", relatedCourse: "Technical Analysis" },
+  { term: "Relative volume", definition: "Volume viewed against a defined comparison baseline, such as a recent average for the same session window. The comparison method must be made explicit.", category: "Technical analysis", relatedCourse: "Technical Analysis" },
+  { term: "Simple moving average (SMA)", definition: "The arithmetic average of a selected number of past observations, displayed as a rolling series that changes as each new observation enters the window.", category: "Technical analysis", relatedCourse: "Technical Analysis" },
+  { term: "Stochastic oscillator", definition: "An indicator comparing a selected close with a recent high-low range. Its output depends on the chosen lookback and smoothing settings.", category: "Technical analysis", relatedCourse: "Technical Analysis" },
+  { term: "Trendline", definition: "A line drawn through selected swing points to organize slope and structure. The line depends on the analyst’s chosen anchors and timeframe.", category: "Technical analysis", relatedCourse: "Technical Analysis" },
+  { term: "Volume confirmation", definition: "A process of comparing price movement with trading volume under a stated reference period. It can add context but does not establish causation or certainty.", category: "Technical analysis", relatedCourse: "Technical Analysis" },
+];
+
+export const allGlossaryEntries = [...glossaryEntries, ...extendedGlossaryEntries, ...specialistGlossaryEntries, ...operationsGlossaryEntries, ...technicalAnalysisGlossaryEntries];
 
 export const glossarySource = {
   label: "Definitions are original learning summaries informed by Investor.gov and the Options Industry Council reference glossaries.",
