@@ -4,6 +4,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState, t
 import { nextCatalogReviewAt } from "../data/catalog-learning";
 import { courses, totalLessons } from "../data/curriculum";
 import { syntheticScenarios } from "../data/market-lab";
+import { migrateLegacyCatalogLessonId } from "../data/micro-curriculum";
 import { simulatedWatchlist } from "../data/practice";
 import { nextReviewAt, type ReviewRating } from "../data/spaced-review";
 
@@ -61,6 +62,23 @@ const defaultState: TradeWiseState = {
   savedTerms: [],
   reflections: [],
 };
+
+/** Preserve local learning history when short catalog frames are merged into broader units. */
+export function migrateCatalogState(state: TradeWiseState): TradeWiseState {
+  const completedCatalogLessonIds = [...new Set(state.completedCatalogLessonIds.map(migrateLegacyCatalogLessonId))];
+  const catalogQuizScores = Object.entries(state.catalogQuizScores).reduce<Record<string, boolean>>((scores, [lessonId, correct]) => {
+    const migratedId = migrateLegacyCatalogLessonId(lessonId);
+    scores[migratedId] = scores[migratedId] || correct;
+    return scores;
+  }, {});
+  const reviewByLessonId = new Map<string, CatalogReview>();
+  state.catalogReviews.forEach((review) => {
+    const migrated = { ...review, lessonId: migrateLegacyCatalogLessonId(review.lessonId) };
+    const existing = reviewByLessonId.get(migrated.lessonId);
+    if (!existing || migrated.attempts >= existing.attempts) reviewByLessonId.set(migrated.lessonId, migrated);
+  });
+  return { ...state, completedCatalogLessonIds, catalogQuizScores, catalogReviews: [...reviewByLessonId.values()] };
+}
 
 type Store = TradeWiseState & {
   isReady: boolean;
@@ -214,7 +232,7 @@ export function TradeWiseProvider({ children }: PropsWithChildren) {
         const saved = await AsyncStorage.getItem(STORAGE_KEY);
         if (saved) {
           const parsed = JSON.parse(saved) as Partial<TradeWiseState>;
-          setState({ ...defaultState, ...parsed });
+          setState(migrateCatalogState({ ...defaultState, ...parsed }));
         }
       } finally {
         setIsReady(true);

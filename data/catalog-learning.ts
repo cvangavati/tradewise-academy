@@ -11,7 +11,7 @@ export const catalogPlaylists: CatalogPlaylist[] = [
   { id: "technical-analysis-lab", title: "Technical Analysis Lab", subtitle: "Build chart-reading vocabulary for price, volume, patterns, indicators, timeframes, and limitation-aware practice.", domainIds: ["technical-analysis"], accent: "#4666B0", days: 21 },
 ];
 
-const playlistFrames = new Set(["Orientation", "Definition", "Mechanism", "Evidence", "Risk boundary", "Process checkpoint", "Recall prompt", "Quiz preparation"]);
+const playlistFrames = new Set(["Foundations & scope", "Mechanics & actors", "Evidence & disclosure", "Comparison & relationships", "Research process", "Scenario & market context", "Risk & trade-offs", "Data & metrics", "Critical thinking", "Synthesis & review", "Memory & teach-back", "Assessment preparation"]);
 
 export function getCatalogQuiz(lessonId: string): CatalogQuiz | undefined {
   const lesson = getMicroLesson(lessonId);

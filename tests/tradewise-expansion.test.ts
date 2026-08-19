@@ -3,11 +3,11 @@ import { describe, expect, it } from "vitest";
 import { buildStudyPlanText, catalogPlaylists, getCatalogQuiz, lessonsForPlaylist, nextCatalogReviewAt } from "../data/catalog-learning";
 import { allGlossaryEntries, searchGlossary } from "../data/glossary";
 import { marketLabDisclosure, syntheticScenarios } from "../data/market-lab";
-import { getMicroLesson, microLessonCount, microLessons, searchMicroLessons } from "../data/micro-curriculum";
+import { getMicroLesson, microLessonCount, microLessons, migrateLegacyCatalogLessonId, searchMicroLessons } from "../data/micro-curriculum";
 import { referenceDomains, referenceTopicCount, searchReferenceTopics } from "../data/reference-library";
 import { nextReviewAt } from "../data/spaced-review";
 import { getSyntheticStockProfile, searchSyntheticStockProfiles, syntheticStockDisclosure, syntheticStockProfiles, syntheticStockSectors } from "../data/synthetic-stocks";
-import { appendTradeReflection, applyCatalogQuizResult, applyReviewRating, getLearningAnalytics, markCatalogLessonComplete, toggleSavedTerm, type TradeWiseState } from "../lib/tradewise-store";
+import { appendTradeReflection, applyCatalogQuizResult, applyReviewRating, getLearningAnalytics, markCatalogLessonComplete, migrateCatalogState, toggleSavedTerm, type TradeWiseState } from "../lib/tradewise-store";
 
 const learnerState: TradeWiseState = {
   completedLessonIds: ["stock-ownership", "order-language", "risk-first", "trend-structure"],
@@ -34,7 +34,8 @@ describe("searchable glossary", () => {
     expect(searchGlossary("settlement").map((entry) => entry.term)).toContain("Settlement");
     expect(searchGlossary("municipal bond").map((entry) => entry.term)).toContain("Municipal bond");
     expect(searchGlossary("ACATS").map((entry) => entry.term)).toContain("ACATS");
-    expect(allGlossaryEntries.length).toBeGreaterThanOrEqual(128);
+    expect(allGlossaryEntries.length).toBeGreaterThanOrEqual(144);
+    expect(searchGlossary("relative strength index").map((entry) => entry.term)).toContain("Relative strength index (RSI)");
     expect(searchGlossary("nonexistent phrase")).toHaveLength(0);
   });
 });
@@ -52,16 +53,17 @@ describe("Stock Market Atlas", () => {
   });
 });
 
-describe("7,000-plus lesson catalog", () => {
+describe("2,000-plus consolidated lesson catalog", () => {
   it("creates unique source-linked lessons across the full Atlas and supports scalable search", () => {
-    expect(microLessonCount).toBeGreaterThanOrEqual(8064);
+    expect(microLessonCount).toBeGreaterThanOrEqual(2016);
+    expect(microLessonCount).toBe(referenceTopicCount * 12);
     expect(microLessons).toHaveLength(microLessonCount);
     expect(new Set(microLessons.map((lesson) => lesson.id)).size).toBe(microLessonCount);
     expect(getMicroLesson(microLessons[0].id)?.source.url).toMatch(/^https:\/\//);
-    expect(searchMicroLessons("SIPC").length).toBeGreaterThanOrEqual(48);
-    expect(searchMicroLessons("ACATS").length).toBeGreaterThanOrEqual(48);
+    expect(searchMicroLessons("SIPC").length).toBeGreaterThanOrEqual(12);
+    expect(searchMicroLessons("ACATS").length).toBeGreaterThanOrEqual(12);
     expect(searchMicroLessons("nonsensical phrase")).toHaveLength(0);
-    expect(searchMicroLessons("Fibonacci", "technical-analysis").length).toBeGreaterThanOrEqual(48);
+    expect(searchMicroLessons("Fibonacci", "technical-analysis").length).toBeGreaterThanOrEqual(12);
   });
 
   it("keeps catalog completion separate from core lesson completion and avoids duplicates", () => {
@@ -72,6 +74,22 @@ describe("7,000-plus lesson catalog", () => {
     expect(once.completedCatalogLessonIds).toEqual([lessonId]);
     expect(twice.completedCatalogLessonIds).toEqual([lessonId]);
     expect(twice.completedLessonIds).toEqual(learnerState.completedLessonIds);
+  });
+
+  it("maps prior short-frame completions and reviews to their merged learning units", () => {
+    const legacyId = "catalog-technical-analysis-rsi-context-orientation";
+    const migratedId = "catalog-technical-analysis-rsi-context-foundations-scope";
+    const migrated = migrateCatalogState({
+      ...learnerState,
+      completedCatalogLessonIds: [legacyId],
+      catalogQuizScores: { [legacyId]: true },
+      catalogReviews: [{ lessonId: legacyId, dueAt: "2026-08-20T12:00:00.000Z", streak: 2, attempts: 2, lastCorrect: true }],
+    });
+
+    expect(migrateLegacyCatalogLessonId(legacyId)).toBe(migratedId);
+    expect(migrated.completedCatalogLessonIds).toEqual([migratedId]);
+    expect(migrated.catalogQuizScores[migratedId]).toBe(true);
+    expect(migrated.catalogReviews[0]).toMatchObject({ lessonId: migratedId, attempts: 2 });
   });
 
   it("creates a transparent one-question check and schedules local adaptive review", () => {

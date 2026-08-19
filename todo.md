@@ -60,3 +60,6 @@
 - [x] Research and add source-grounded technical-analysis topics, glossary coverage, and expanded catalog lessons.
 - [x] Enrich lesson detail views with structured explanation, chart-reading context, limitations, and practice prompts.
 - [x] Test the enriched lesson content, technical-analysis discovery, and education-only boundaries.
+- [x] Audit lesson families for overlap and define consolidation groups without losing distinct skills.
+- [x] Merge closely related guided and catalog lessons into substantial, clearly sequenced learning units.
+- [x] Test consolidated lesson counts, navigation, search, playlists, and completion-state behavior.

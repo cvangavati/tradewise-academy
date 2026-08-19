@@ -15,81 +15,137 @@ export type MicroLesson = {
   source: ReferenceSource;
 };
 
-type LessonFrame = { id: string; label: string; studyPrompt: (topic: string) => string; followUp: (topic: string) => string };
+type LessonUnit = {
+  id: string;
+  label: string;
+  legacyFrameIds: string[];
+  focus: (topic: string) => string;
+  studyPrompt: (topic: string) => string;
+  practice: (topic: string) => string;
+};
 
-const frames: LessonFrame[] = [
-  { id: "orientation", label: "Orientation", studyPrompt: (topic) => `Where does ${topic} sit in the broader market system?`, followUp: (topic) => `Connect ${topic} to the investor, issuer, or market participant it affects.` },
-  { id: "definition", label: "Definition", studyPrompt: (topic) => `State the working definition of ${topic} in one sentence.`, followUp: () => "Identify the key words that make the definition narrower than a casual use of the term." },
-  { id: "mechanism", label: "Mechanism", studyPrompt: (topic) => `Describe the process through which ${topic} operates.`, followUp: () => "Name the sequence of inputs, actions, and outcomes without assuming the outcome is favorable." },
-  { id: "actors", label: "Key actors", studyPrompt: (topic) => `Which people, firms, or institutions have a role in ${topic}?`, followUp: () => "Separate the party making a decision from the party recording, executing, supervising, or bearing the risk." },
-  { id: "inputs", label: "Inputs", studyPrompt: (topic) => `What information or conditions would you inspect before discussing ${topic}?`, followUp: () => "Distinguish reported facts, market observations, and assumptions." },
-  { id: "outputs", label: "Outputs", studyPrompt: (topic) => `What records, claims, prices, or obligations can result from ${topic}?`, followUp: () => "Explain which output is observable and which remains uncertain." },
-  { id: "evidence", label: "Evidence", studyPrompt: (topic) => `What primary document or reliable record could help verify ${topic}?`, followUp: () => "Check the document date, definition, and reporting period before using it." },
-  { id: "timing", label: "Timing", studyPrompt: (topic) => `Why might the timing of information matter when studying ${topic}?`, followUp: () => "Separate the event date, disclosure date, settlement date, and research date when relevant." },
-  { id: "comparison", label: "Comparison", studyPrompt: (topic) => `What nearby concept is commonly confused with ${topic}?`, followUp: () => "Write one difference in purpose, structure, or risk between the two concepts." },
-  { id: "tradeoff", label: "Trade-off", studyPrompt: (topic) => `What trade-off can arise when considering ${topic}?`, followUp: () => "Frame the trade-off as a balance of constraints rather than a guaranteed benefit." },
-  { id: "risk-boundary", label: "Risk boundary", studyPrompt: (topic) => `What risk does ${topic} not remove?`, followUp: () => "Name a condition under which a reassuring label, statistic, or structure could be misleading." },
-  { id: "data-caveat", label: "Data caveat", studyPrompt: (topic) => `What definition, methodology, or reporting limitation should you check for ${topic}?`, followUp: () => "Avoid treating a data label as interchangeable with a related metric." },
-  { id: "disclosure-lens", label: "Disclosure lens", studyPrompt: (topic) => `Where might a disclosure add useful context about ${topic}?`, followUp: () => "Look for terms, risks, fees, ownership, or timing details instead of relying on a headline." },
-  { id: "research-question", label: "Research question", studyPrompt: (topic) => `Write one neutral research question about ${topic}.`, followUp: () => "The question should be answerable with evidence and should not assume a buy-or-sell conclusion." },
-  { id: "scenario-observation", label: "Scenario observation", studyPrompt: (topic) => `In a fictional scenario, what observation would make ${topic} relevant?`, followUp: () => "Describe the context without turning the observation into a prediction or signal." },
-  { id: "misconception", label: "Misconception check", studyPrompt: (topic) => `What oversimplified claim about ${topic} should a learner challenge?`, followUp: () => "Replace the claim with a conditional explanation that includes uncertainty." },
-  { id: "relationship-map", label: "Relationship map", studyPrompt: (topic) => `Name two concepts that connect to ${topic} and explain the link.`, followUp: () => "Use a short cause, constraint, or reporting relationship—never a promised market outcome." },
-  { id: "metric-lens", label: "Metric lens", studyPrompt: (topic) => `Which measurement could help describe ${topic}, and what does it omit?`, followUp: () => "Specify the units, period, calculation basis, or benchmark before interpreting it." },
-  { id: "process-checkpoint", label: "Process checkpoint", studyPrompt: (topic) => `What process step should come before acting on information about ${topic}?`, followUp: () => "State how a learner would document the evidence, uncertainty, and risk boundary." },
-  { id: "volatility-context", label: "Volatility context", studyPrompt: (topic) => `How can changing conditions alter the interpretation of ${topic}?`, followUp: () => "Explain why historical stability does not guarantee future stability." },
-  { id: "liquidity-context", label: "Liquidity context", studyPrompt: (topic) => `What liquidity or execution consideration could matter for ${topic}?`, followUp: () => "Consider the ability to transact, the terms of exit, and the distinction between a quote and a fill." },
-  { id: "governance-context", label: "Governance context", studyPrompt: (topic) => `What disclosure, conflict, or oversight question could be relevant to ${topic}?`, followUp: () => "Identify who has authority, who bears the risk, and where the relevant record may be found." },
-  { id: "recall", label: "Recall prompt", studyPrompt: (topic) => `Without looking, explain ${topic} to a new learner.`, followUp: () => "Then compare your explanation with the source-grounded summary and correct any missing qualifier." },
-  { id: "synthesis", label: "Synthesis", studyPrompt: (topic) => `Summarize how ${topic} fits into a careful research process.`, followUp: () => "Include what to verify, what remains uncertain, and why the concept alone cannot determine an investment outcome." },
-  { id: "plain-language", label: "Plain language", studyPrompt: (topic) => `Rewrite ${topic} for a learner encountering it for the first time.`, followUp: () => "Keep the essential qualifier and remove any implication that the concept predicts an outcome." },
-  { id: "boundary-case", label: "Boundary case", studyPrompt: (topic) => `Describe a situation where ${topic} might not apply in the expected way.`, followUp: () => "State which definition, rule, or condition would need checking before drawing a conclusion." },
-  { id: "document-path", label: "Document path", studyPrompt: (topic) => `What document path would you follow to research ${topic}?`, followUp: () => "Start with the relevant primary disclosure or regulator guidance, then compare dates and definitions." },
-  { id: "risk-ranking", label: "Risk ranking", studyPrompt: (topic) => `List two risks connected to ${topic} without ranking them as certainties.`, followUp: () => "Explain why materiality, time horizon, and context can change how a risk is viewed." },
-  { id: "cost-lens", label: "Cost lens", studyPrompt: (topic) => `What direct or indirect cost could be relevant to ${topic}?`, followUp: () => "Identify where a learner would verify the fee, spread, tax, financing, or opportunity-cost assumption." },
-  { id: "claim-check", label: "Claim check", studyPrompt: (topic) => `Choose one claim about ${topic} that needs verification.`, followUp: () => "Name the primary record, methodology note, or disclosure that could confirm or challenge it." },
-  { id: "counterargument", label: "Counterargument", studyPrompt: (topic) => `What is a reasonable counterargument to a simple narrative about ${topic}?`, followUp: () => "Use evidence, a different assumption, or a limitation rather than hindsight." },
-  { id: "sequence", label: "Sequence", studyPrompt: (topic) => `Put the major steps related to ${topic} in a logical order.`, followUp: () => "Flag any step that can vary by product, venue, legal structure, or account type." },
-  { id: "stakeholder-view", label: "Stakeholder view", studyPrompt: (topic) => `How could ${topic} look different to an issuer, investor, intermediary, or regulator?`, followUp: () => "Separate incentives, duties, and exposures for each perspective." },
-  { id: "assumption-audit", label: "Assumption audit", studyPrompt: (topic) => `Which assumption commonly appears when people discuss ${topic}?`, followUp: () => "State how you would test whether that assumption is relevant, current, and well-defined." },
-  { id: "time-series", label: "Time-series lens", studyPrompt: (topic) => `If you tracked ${topic} over time, what consistency checks would you make?`, followUp: () => "Confirm period alignment, adjustment basis, methodology continuity, and any missing observations." },
-  { id: "concentration", label: "Concentration lens", studyPrompt: (topic) => `What concentration or dependency question could be connected to ${topic}?`, followUp: () => "Consider customers, suppliers, issuers, sectors, geographies, or data sources as relevant." },
-  { id: "stress-context", label: "Stress context", studyPrompt: (topic) => `How could stressful market conditions change the practical meaning of ${topic}?`, followUp: () => "Focus on liquidity, financing, information gaps, or changing correlations without forecasting a crisis." },
-  { id: "comparison-basis", label: "Comparison basis", studyPrompt: (topic) => `What must be held constant when comparing two instances of ${topic}?`, followUp: () => "Check definitions, period, currency, fee basis, risk exposure, and relevant market conditions." },
-  { id: "source-conflict", label: "Source conflict", studyPrompt: (topic) => `How would you handle conflicting sources about ${topic}?`, followUp: () => "Trace each claim to its origin, prefer primary evidence when appropriate, and preserve unresolved uncertainty." },
-  { id: "calculation-guardrail", label: "Calculation guardrail", studyPrompt: (topic) => `What calculation guardrail could matter for ${topic}?`, followUp: () => "Name the inputs, units, dates, and assumptions that should be visible before interpreting a result." },
-  { id: "review-loop", label: "Review loop", studyPrompt: (topic) => `What would you review after using information about ${topic} in a learning exercise?`, followUp: () => "Compare the original question, evidence, assumptions, and result rather than judging only the outcome." },
-  { id: "ethical-lens", label: "Ethical lens", studyPrompt: (topic) => `What fairness, disclosure, or conflict concern might arise around ${topic}?`, followUp: () => "Identify the stakeholder affected and the record or rule that could provide context." },
-  { id: "system-link", label: "System link", studyPrompt: (topic) => `Which market-system component links to ${topic}?`, followUp: () => "Explain whether the connection is about issuance, trading, custody, reporting, regulation, or a different function." },
-  { id: "memory-anchor", label: "Memory anchor", studyPrompt: (topic) => `Create a concise memory anchor for ${topic}.`, followUp: () => "Make it accurate enough to guide later research, not a slogan that erases the concept’s limitations." },
-  { id: "quiz-prep", label: "Quiz preparation", studyPrompt: (topic) => `What one fact and one caveat should you recall about ${topic}?`, followUp: () => "Use the source-grounded summary to check that both the fact and caveat are correctly framed." },
-  { id: "next-question", label: "Next question", studyPrompt: (topic) => `After understanding the basics of ${topic}, what should you study next?`, followUp: () => "Choose a connected concept that deepens process, risk, disclosure, or measurement understanding." },
-  { id: "scope-check", label: "Scope check", studyPrompt: (topic) => `What does ${topic} explain, and what does it leave outside its scope?`, followUp: () => "State the boundary explicitly so the concept is not mistaken for a complete model of a market outcome." },
-  { id: "teach-back", label: "Teach-back", studyPrompt: (topic) => `Teach ${topic} through a short, neutral example.`, followUp: () => "Use the example to clarify structure and uncertainty, not to imply a trade or investment conclusion." },
+/**
+ * Earlier catalog versions split every topic into 48 short prompts. These units
+ * merge closely related prompts into durable, multi-part lessons while retaining
+ * the original instructional coverage and an ID migration path for local state.
+ */
+const units: LessonUnit[] = [
+  {
+    id: "foundations-scope", label: "Foundations & scope",
+    legacyFrameIds: ["orientation", "definition", "plain-language", "scope-check"],
+    focus: (topic) => `Define ${topic}, locate it in the wider market system, and state both the concept’s purpose and what it cannot explain by itself.`,
+    studyPrompt: (topic) => `Explain ${topic} in plain language, then identify one connected market function and one question that remains outside its scope.`,
+    practice: (topic) => `1. Write a one-sentence definition of ${topic}.\n2. Name the market participant, record, or process it connects to.\n3. State one outcome that cannot be inferred from the concept alone.`,
+  },
+  {
+    id: "mechanics-actors", label: "Mechanics & actors",
+    legacyFrameIds: ["mechanism", "actors", "inputs", "outputs", "system-link"],
+    focus: (topic) => `Trace how ${topic} works by separating the relevant inputs, actions, participants, outputs, and market-system link.`,
+    studyPrompt: (topic) => `Map the inputs, participants, and resulting records or obligations for ${topic}. Which actor makes a decision and which actor records, executes, or bears risk?`,
+    practice: (topic) => `1. List the key inputs for ${topic}.\n2. Put the major process steps in order.\n3. Identify who acts, who records, and who bears the remaining risk.`,
+  },
+  {
+    id: "evidence-disclosure", label: "Evidence & disclosure",
+    legacyFrameIds: ["evidence", "timing", "disclosure-lens", "document-path", "claim-check"],
+    focus: (topic) => `Find the most useful evidence for ${topic}, check the document path and timing, and distinguish a sourced fact from an unsupported claim.`,
+    studyPrompt: (topic) => `Choose a primary document or regulator source for ${topic}. What dates, definitions, reporting periods, or disclosure details must be checked before using it?`,
+    practice: (topic) => `1. Locate the primary source lane for ${topic}.\n2. Record the document date and applicable period.\n3. Test one claim against the source and preserve any uncertainty.`,
+  },
+  {
+    id: "comparison-relationships", label: "Comparison & relationships",
+    legacyFrameIds: ["comparison", "relationship-map", "stakeholder-view", "comparison-basis"],
+    focus: (topic) => `Compare ${topic} with nearby concepts and describe how incentives, obligations, or exposure differ across stakeholders.`,
+    studyPrompt: (topic) => `Compare ${topic} with one easily confused concept. What must remain consistent in a fair comparison, and how could the issue look different to two stakeholders?`,
+    practice: (topic) => `1. Name a related concept.\n2. Write one structural difference.\n3. List the definitions, period, and risk exposure that must be held constant before comparing.`,
+  },
+  {
+    id: "research-process", label: "Research process",
+    legacyFrameIds: ["research-question", "process-checkpoint", "assumption-audit", "calculation-guardrail"],
+    focus: (topic) => `Turn ${topic} into a neutral research question by documenting assumptions, calculation inputs, and the process step that comes before action.`,
+    studyPrompt: (topic) => `Write a neutral research question about ${topic}. Identify the evidence, assumption, units, and timing inputs needed to answer it without implying a trade conclusion.`,
+    practice: (topic) => `1. Frame a question about ${topic}.\n2. List the evidence and assumptions required.\n3. Check units, dates, and definitions before interpreting a result.`,
+  },
+  {
+    id: "scenario-context", label: "Scenario & market context",
+    legacyFrameIds: ["scenario-observation", "boundary-case", "sequence", "volatility-context", "liquidity-context"],
+    focus: (topic) => `Use ${topic} in a fictional scenario while recognizing how timing, volatility, liquidity, and boundary cases can change its practical meaning.`,
+    studyPrompt: (topic) => `Describe a fictional observation that makes ${topic} relevant. Which conditions could make the usual interpretation incomplete, and what sequence or liquidity question would you check?`,
+    practice: (topic) => `1. State the fictional context.\n2. Describe the sequence of events.\n3. Identify the volatility, liquidity, or boundary condition that could alter the interpretation.`,
+  },
+  {
+    id: "risk-tradeoffs", label: "Risk & trade-offs",
+    legacyFrameIds: ["tradeoff", "risk-boundary", "risk-ranking", "stress-context", "cost-lens"],
+    focus: (topic) => `Evaluate the trade-offs, costs, and risk boundaries around ${topic}, including how stressful conditions can change the practical result.`,
+    studyPrompt: (topic) => `What trade-off does ${topic} involve? List two relevant risks, the cost or friction to verify, and one reason the risk may change under stress.`,
+    practice: (topic) => `1. Name the benefit and constraint.\n2. List two non-certain risks.\n3. Check a direct or indirect cost and describe how stress could change the outcome.`,
+  },
+  {
+    id: "data-metrics", label: "Data & metrics",
+    legacyFrameIds: ["metric-lens", "data-caveat", "time-series", "concentration"],
+    focus: (topic) => `Choose an appropriate metric for ${topic} while checking definitions, calculation limits, time-series consistency, and concentration or dependency.`,
+    studyPrompt: (topic) => `Which measure can describe ${topic}, what does it omit, and which definition, period, methodology, or concentration issue must be visible before comparing it?`,
+    practice: (topic) => `1. Select a metric.\n2. State its unit, period, and calculation basis.\n3. Identify one limitation and one dependency or concentration question.`,
+  },
+  {
+    id: "critical-thinking", label: "Critical thinking",
+    legacyFrameIds: ["misconception", "counterargument", "source-conflict", "ethical-lens"],
+    focus: (topic) => `Challenge simplified claims about ${topic} by testing counterarguments, resolving source conflicts, and recognizing fairness or conflict considerations.`,
+    studyPrompt: (topic) => `Identify a common oversimplification about ${topic}. What evidence or alternative assumption challenges it, and how would you handle conflicting sources or stakeholder concerns?`,
+    practice: (topic) => `1. Write the oversimplified claim.\n2. Add a conditional counterargument.\n3. Trace conflicting evidence to its origin and identify any fairness or conflict issue.`,
+  },
+  {
+    id: "synthesis-review", label: "Synthesis & review",
+    legacyFrameIds: ["synthesis", "review-loop", "next-question"],
+    focus: (topic) => `Synthesize ${topic} into a careful research process, review the evidence and assumptions used, and choose the next connected question to study.`,
+    studyPrompt: (topic) => `Summarize how ${topic} fits into a careful research process. What would you review afterward, and which connected concept would deepen the analysis?`,
+    practice: (topic) => `1. Summarize the concept and its caveat.\n2. Review the original question, evidence, assumptions, and result.\n3. Choose the next connected topic to investigate.`,
+  },
+  {
+    id: "memory-teachback", label: "Memory & teach-back",
+    legacyFrameIds: ["recall", "memory-anchor", "teach-back"],
+    focus: (topic) => `Rehearse ${topic} through recall and a neutral teach-back that preserves the concept’s key qualifier.`,
+    studyPrompt: (topic) => `Explain ${topic} to a new learner without looking. What concise memory anchor is accurate enough to guide later research without becoming a misleading slogan?`,
+    practice: (topic) => `1. Recall the definition from memory.\n2. Teach it using a neutral example.\n3. Compare your explanation with the source summary and restore any missing qualifier.`,
+  },
+  {
+    id: "assessment-prep", label: "Assessment preparation",
+    legacyFrameIds: ["quiz-prep"],
+    focus: (topic) => `Prepare to assess ${topic} by pairing one source-grounded fact with one limitation that prevents overconfidence.`,
+    studyPrompt: (topic) => `State one fact and one caveat about ${topic}. Why would leaving out either part create an incomplete answer?`,
+    practice: (topic) => `1. Write the key fact.\n2. Write the key caveat.\n3. Explain how both belong in a careful answer.`,
+  },
 ];
 
-function buildLesson(domain: ReferenceDomain, topic: ReferenceDomain["topics"][number], frame: LessonFrame): MicroLesson {
+function buildLesson(domain: ReferenceDomain, topic: ReferenceDomain["topics"][number], unit: LessonUnit): MicroLesson {
   return {
-    id: `catalog-${domain.id}-${topic.id}-${frame.id}`,
-    title: `${topic.title}: ${frame.label}`,
-    frame: frame.label,
+    id: `catalog-${domain.id}-${topic.id}-${unit.id}`,
+    title: `${topic.title}: ${unit.label}`,
+    frame: unit.label,
     domain,
     topicId: topic.id,
     topicTitle: topic.title,
-    summary: `${topic.summary} ${frame.followUp(topic.title)}`,
-    studyPrompt: frame.studyPrompt(topic.title),
-    explanation: `Study ${topic.title} through the ${frame.label.toLowerCase()} lens. Begin with the source-grounded definition and identify the timeframe, inputs, or record that makes the observation meaningful before drawing any conclusion.`,
-    practiceLoop: `1. Observe: ${frame.studyPrompt(topic.title)}\n2. Check context: ${frame.followUp(topic.title)}\n3. Record the source, date, and uncertainty instead of turning one observation into a prediction.`,
+    summary: `${topic.summary} ${unit.focus(topic.title)}`,
+    studyPrompt: unit.studyPrompt(topic.title),
+    explanation: `This substantial unit combines closely related learning prompts so you can define, investigate, and explain ${topic.title} as one coherent concept rather than repeat a single idea across short fragments.`,
+    practiceLoop: unit.practice(topic.title),
     limitation: `${topic.title} can organize a research question, but it cannot on its own determine a future price path, a transaction, or an appropriate level of risk.`,
     source: topic.source,
   };
 }
 
-export const microLessons: MicroLesson[] = referenceDomains.flatMap((domain) => domain.topics.flatMap((topic) => frames.map((frame) => buildLesson(domain, topic, frame))));
+export const microLessons: MicroLesson[] = referenceDomains.flatMap((domain) => domain.topics.flatMap((topic) => units.map((unit) => buildLesson(domain, topic, unit))));
 export const microLessonCount = microLessons.length;
 
 export function getMicroLesson(lessonId: string) {
   return microLessons.find((lesson) => lesson.id === lessonId);
+}
+
+/** Converts a legacy 48-frame catalog ID to the appropriate merged-unit ID. */
+export function migrateLegacyCatalogLessonId(lessonId: string) {
+  const unit = units.find((candidate) => candidate.legacyFrameIds.some((frameId) => lessonId.endsWith(`-${frameId}`)));
+  if (!unit) return lessonId;
+  const matchedFrameId = unit.legacyFrameIds.find((frameId) => lessonId.endsWith(`-${frameId}`));
+  return matchedFrameId ? `${lessonId.slice(0, -matchedFrameId.length)}${unit.id}` : lessonId;
 }
 
 export function searchMicroLessons(query: string, domainId: string | "All" = "All") {
@@ -101,4 +157,4 @@ export function searchMicroLessons(query: string, domainId: string | "All" = "Al
   });
 }
 
-export const microLessonFrames = frames.map(({ id, label }) => ({ id, label }));
+export const microLessonFrames = units.map(({ id, label }) => ({ id, label }));
