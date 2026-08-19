@@ -44,3 +44,5 @@
 - [x] Add a user-friendly AI search screen with loading, error, and recommendation-reason states.
 - [x] Keep AI output constrained to the existing educational catalog and add an explicit no-personalized-advice boundary.
 - [x] Test deterministic recommendation validation and the AI guide client flow.
+- [x] Write a comprehensive README documenting TradeWise Academy’s features, architecture, local-first behavior, and development workflow.
+- [ ] Commit and push the current documented project state to the connected GitHub repository.
