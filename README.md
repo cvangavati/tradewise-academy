@@ -69,6 +69,25 @@ The development command starts the Express/tRPC service and Expo Metro web previ
 | `pnpm lint` | Run Expo ESLint checks. |
 | `pnpm check` | Run TypeScript validation. |
 | `pnpm build` | Bundle the Express/tRPC server for production. |
+| `pnpm build:web` | Export the Expo web application into `dist/` for static hosting. |
+
+## Vercel Web Deployment
+
+This repository includes a `vercel.json` configuration for the Expo web build. It resolves the common Vercel error that expects a `public` directory after a Node server build: Expo exports its production web files to **`dist/`**, not `public/`.[1]
+
+The repository configuration uses `pnpm build:web` (`expo export --platform web`) and sets Vercel’s output directory to `dist`. The resulting Expo Router pages are served as a single-page application, while `/api/*` remains outside the SPA fallback. A catch-all Vercel function at `api/[...path].ts` imports the same Express/tRPC application used in local development, so relative API calls such as `/api/trpc` can reach the API function on the same Vercel domain.
+
+| Vercel setting | Recommended value |
+|---|---|
+| Framework preset | Other |
+| Build command | Leave the repository setting in place: `pnpm build:web` |
+| Output directory | Leave the repository setting in place: `dist` |
+| Root directory | Repository root |
+| API base URL | Leave `EXPO_PUBLIC_API_BASE_URL` unset for same-origin `/api` routing, unless you intentionally host the API elsewhere. |
+
+After pushing this configuration, open the existing Vercel project and choose **Redeploy** for the latest `main` commit. Vercel’s rewrite configuration preserves the browser URL while serving the target route internally.[2]
+
+> **AI note:** the Catalog Guide always has a deterministic, local-catalog fallback. On a Vercel deployment, it can use the server-side model only when an appropriate hosted AI credential is configured for that deployment. Do not copy internal platform credentials into Vercel environment variables.
 
 ## Validation
 
@@ -93,3 +112,8 @@ When adding curriculum content, keep the following rules intact:
 ## Status
 
 The current catalog contains **7,200** short lessons across **150** source-linked topics. The app is designed as an extensible learning platform: adding Atlas topics automatically expands the generated micro-learning catalog while keeping lesson framing and source provenance consistent.
+
+## References
+
+[1]: https://docs.expo.dev/guides/publishing-websites/ "Expo: Publish websites"
+[2]: https://vercel.com/docs/routing/rewrites "Vercel: Rewrites"

@@ -46,3 +46,6 @@
 - [x] Test deterministic recommendation validation and the AI guide client flow.
 - [x] Write a comprehensive README documenting TradeWise Academy’s features, architecture, local-first behavior, and development workflow.
 - [x] Commit and push the current documented project state to the connected GitHub repository.
+- [x] Add Vercel-compatible Expo web-export and server routing configuration.
+- [x] Validate the local Vercel build output and document the required Vercel settings.
+- [x] Commit and push the Vercel deployment configuration to GitHub.
